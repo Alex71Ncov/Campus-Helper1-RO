@@ -176,10 +176,10 @@ export default async function Home() {
             <div className="text-center max-w-3xl mx-auto">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
                 Campusul tau,
-                <span className="text-[#d4af37]"> Connected</span>
+                <span className="text-[#d4af37]"> Conectat</span>
               </h1>
               <p className="text-xl text-gray-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.08s' }}>
-                Find jobs, buy and sell materials, and connect with your university community all in one place.
+                Gaseste joburi, cumpara si vinde, si ramai conectat cu comunitatea ta universitara intr-o singura platforma de incredere.
               </p>
               <div className="animate-fade-in-up" style={{ animationDelay: '0.16s' }}>
                 <HomeHeroActions />
@@ -194,7 +194,7 @@ export default async function Home() {
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f]">Live Campus Feed</h2>
                 <p className="text-lg text-gray-600">
-                  Feel free to explore!
+                  Exploreaza!
                 </p>
               </div>
               <div className="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto">
