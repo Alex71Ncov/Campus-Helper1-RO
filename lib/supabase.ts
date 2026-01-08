@@ -31,9 +31,9 @@ export type Job = {
   description: string;
   category: string;
   pay_rate: number;
-  pay_type: 'hourly' | 'fixed' | 'negotiable';
+  pay_type: 'cu ora' | 'constant' | 'negociabil';
   location: string;
-  status: 'open' | 'in_progress' | 'completed' | 'cancelled';
+  status: 'deschis' | 'in_progres' | 'complet' | 'anulat';
   created_at: string;
   updated_at: string;
 };
@@ -43,9 +43,9 @@ export type MarketplaceItem = {
   user_id: string;
   title: string;
   description: string;
-  category: 'books' | 'notes' | 'exams' | 'equipment' | 'other';
+  category: 'carti' | 'notite' | 'examene' | 'echipament' | 'altele';
   price: number;
-  condition: 'new' | 'like_new' | 'good' | 'fair';
+  condition: 'nou' | 'ca_nou' | 'bun' | 'decent';
   images?: string[];
   status: 'available' | 'sold' | 'reserved';
   created_at: string;

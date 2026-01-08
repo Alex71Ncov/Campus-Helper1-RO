@@ -19,12 +19,12 @@ const FALLBACK_DATA: SupabaseHighlights = {
     {
       id: 'demo-1',
       user_id: 'demo',
-      title: 'Library Desk Assistant',
-      description: 'Evening shift helping students check out books and equipment.',
+      title: 'Asistent Bibliotecă',
+      description: 'Tură de seară pentru ajutarea studenților la împrumutul cărților și echipamentelor.',
       category: 'Campus',
       pay_rate: 17,
       pay_type: 'hourly',
-      location: 'On campus',
+      location: 'În campus',
       status: 'open',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -32,12 +32,12 @@ const FALLBACK_DATA: SupabaseHighlights = {
     {
       id: 'demo-2',
       user_id: 'demo',
-      title: 'Peer Tutor - Calculus',
-      description: 'Work 4–6 hrs/week tutoring Calc I & II students.',
-      category: 'Tutoring',
+      title: 'Tutor Analiză Matematică',
+      description: 'Lucrează 4–6 ore/săptămână cu studenții de anul I.',
+      category: 'Meditații',
       pay_rate: 22,
       pay_type: 'hourly',
-      location: 'Hybrid',
+      location: 'Hibrid',
       status: 'open',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -48,9 +48,9 @@ const FALLBACK_DATA: SupabaseHighlights = {
       id: 'demo-3',
       user_id: 'demo',
       title: 'MacBook Air M1 8GB/256GB',
-      description: 'Lightly used, includes charger.',
-      category: 'equipment',
-      price: 625,
+      description: 'Puțin utilizat, include încărcător original.',
+      category: 'echipamente',
+      price: 3200,
       condition: 'good',
       images: [],
       status: 'available',
@@ -60,10 +60,10 @@ const FALLBACK_DATA: SupabaseHighlights = {
     {
       id: 'demo-4',
       user_id: 'demo',
-      title: 'Organic Chemistry Notes + Flashcards',
-      description: 'Full semester set with practice questions.',
-      category: 'notes',
-      price: 35,
+      title: 'Cursuri + Flashcard-uri Chimie Organică',
+      description: 'Set complet pentru tot semestrul cu întrebări de practică.',
+      category: 'cursuri',
+      price: 150,
       condition: 'like_new',
       images: [],
       status: 'available',
@@ -75,8 +75,8 @@ const FALLBACK_DATA: SupabaseHighlights = {
     {
       id: 'demo-5',
       user_id: 'demo',
-      title: 'Best places to study late?',
-      content: 'Looking for quiet spots open after 10pm.',
+      title: 'Cele mai bune locuri de învățat noaptea?',
+      content: 'Caut locuri liniștite deschise după ora 22:00.',
       category: 'general',
       views: 42,
       created_at: new Date().toISOString(),
@@ -85,8 +85,8 @@ const FALLBACK_DATA: SupabaseHighlights = {
     {
       id: 'demo-6',
       user_id: 'demo',
-      title: 'Anyone selling a lab coat (size M)?',
-      content: 'Need one for CHEM 201 next week.',
+      title: 'Vinde cineva un halat de laborator (M)?',
+      content: 'Am nevoie urgent pentru laboratorul de săptămâna viitoare.',
       category: 'academic',
       views: 30,
       created_at: new Date().toISOString(),
@@ -132,25 +132,22 @@ async function loadSupabaseHighlights(): Promise<SupabaseHighlights> {
     const posts = postsRes.data ?? [];
 
     if (jobsRes.error || itemsRes.error || postsRes.error) {
-      console.error('Supabase read error', { jobsError: jobsRes.error, itemsError: itemsRes.error, postsError: postsRes.error });
       return FALLBACK_DATA;
     }
 
-    // If tables are empty, fall back to demo content so the section is not blank.
     return {
       jobs: jobs.length ? jobs : FALLBACK_DATA.jobs,
       items: items.length ? items : FALLBACK_DATA.items,
       posts: posts.length ? posts : FALLBACK_DATA.posts,
     };
   } catch (error) {
-    console.error('Supabase read failed', error);
     return FALLBACK_DATA;
   }
 }
 
-const currency = new Intl.NumberFormat('en-US', {
+const currency = new Intl.NumberFormat('ro-RO', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'RON',
   maximumFractionDigits: 0,
 });
 
@@ -166,20 +163,15 @@ export default async function Home() {
           <div className="pointer-events-none absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_20%_30%,rgba(244,208,63,0.25),transparent_35%),radial-gradient(circle_at_80%_15%,rgba(255,255,255,0.15),transparent_35%),radial-gradient(circle_at_50%_85%,rgba(15,31,51,0.45),transparent_35%)] bg-[length:160%_160%] animate-gradient-move" />
           <div className="pointer-events-none absolute inset-0 mix-blend-screen opacity-35 bg-[linear-gradient(120deg,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(-120deg,rgba(212,175,55,0.12)_1px,transparent_1px)] bg-[length:26px_26px] animate-gradient-move" />
           <div className="pointer-events-none absolute inset-y-0 left-1/4 w-1/2 bg-gradient-to-r from-white/10 via-white/35 to-transparent blur-3xl opacity-70 animate-float" />
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -left-10 -top-16 h-64 w-64 rounded-full bg-gradient-to-br from-[#d4af37] to-[#f4d03f] blur-3xl opacity-70 animate-float" />
-            <div className="absolute right-0 top-10 h-72 w-72 rounded-full bg-gradient-to-br from-white/40 via-transparent to-[#d4af37]/20 blur-3xl opacity-70 animate-float" />
-            <div className="absolute -bottom-12 left-1/2 h-64 w-64 rounded-full bg-gradient-to-br from-[#0f1f33] via-transparent to-transparent blur-3xl opacity-60 animate-float" />
-          </div>
-
+          
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
-                Campusul tau,
+                Campusul tău,
                 <span className="text-[#d4af37]"> Conectat</span>
               </h1>
               <p className="text-xl text-gray-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.08s' }}>
-                Gaseste joburi, cumpara si vinde, si ramai conectat cu comunitatea ta universitara intr-o singura platforma de incredere.
+                Găsește joburi, cumpără și vinde resurse, și rămâi conectat cu comunitatea ta universitară pe o singură platformă.
               </p>
               <div className="animate-fade-in-up" style={{ animationDelay: '0.16s' }}>
                 <HomeHeroActions />
@@ -194,17 +186,17 @@ export default async function Home() {
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f]">Live Campus Feed</h2>
                 <p className="text-lg text-gray-600">
-                  Exploreaza!
+                  Vezi ce se întâmplă acum în comunitatea ta!
                 </p>
               </div>
               <div className="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto">
                 <Link href="/jobs">
                   <Button variant="outline" className="border-[#1e3a5f] text-[#1e3a5f] hover:bg-[#1e3a5f] hover:text-white">
-                    View all jobs
+                    Vezi toate joburile
                   </Button>
                 </Link>
                 <Link href="/marketplace">
-                  <Button className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e]">Open marketplace</Button>
+                  <Button className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e]">Deschide Marketplace</Button>
                 </Link>
               </div>
             </div>
@@ -212,10 +204,9 @@ export default async function Home() {
             <div className="grid md:grid-cols-3 gap-6">
               <Link href="/jobs" className="block h-full">
                 <Card className="group relative overflow-hidden border-2 border-gray-100 hover:border-[#d4af37] transition-all duration-300 shadow-sm hover:shadow-2xl bg-white/90 backdrop-blur transform hover:-translate-y-1">
-                  <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#d4af37]/10 via-white/40 to-[#1e3a5f]/10" />
                   <CardContent className="relative p-6 space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-bold text-[#1e3a5f]">Latest Jobs</h3>
+                      <h3 className="text-xl font-bold text-[#1e3a5f]">Joburi Recente</h3>
                       <Briefcase className="w-5 h-5 text-[#d4af37]" />
                     </div>
                     <div className="space-y-4">
@@ -224,13 +215,12 @@ export default async function Home() {
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               <p className="font-semibold text-[#1e3a5f]">{job.title}</p>
-                              <p className="text-sm text-gray-600">{job.location}</p>
+                              <p className="text-sm text-gray-600">{job.location === 'On campus' ? 'În campus' : job.location}</p>
                             </div>
                             <span className="text-sm font-semibold text-[#d4af37]">
-                              {currency.format(Number(job.pay_rate))}/{job.pay_type === 'hourly' ? 'hr' : 'job'}
+                              {currency.format(Number(job.pay_rate))}/{job.pay_type === 'hourly' ? 'h' : 'proiect'}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-600 mt-2 max-h-12 overflow-hidden text-ellipsis">{job.description}</p>
                         </div>
                       ))}
                     </div>
@@ -240,7 +230,6 @@ export default async function Home() {
 
               <Link href="/marketplace" className="block h-full">
                 <Card className="group relative overflow-hidden border-2 border-gray-100 hover:border-[#d4af37] transition-all duration-300 shadow-sm hover:shadow-2xl bg-white/90 backdrop-blur transform hover:-translate-y-1">
-                  <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#d4af37]/10 via-white/40 to-[#1e3a5f]/10" />
                   <CardContent className="relative p-6 space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="text-xl font-bold text-[#1e3a5f]">Marketplace</h3>
@@ -252,11 +241,12 @@ export default async function Home() {
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               <p className="font-semibold text-[#1e3a5f]">{item.title}</p>
-                              <p className="text-sm text-gray-600 capitalize">{item.condition.replace('_', ' ')}</p>
+                              <p className="text-sm text-gray-600 capitalize">
+                                {item.condition === 'good' ? 'Stare bună' : 'Ca nou'}
+                              </p>
                             </div>
                             <span className="text-sm font-semibold text-[#d4af37]">{currency.format(Number(item.price))}</span>
                           </div>
-                          <p className="text-sm text-gray-600 mt-2 max-h-12 overflow-hidden text-ellipsis">{item.description}</p>
                         </div>
                       ))}
                     </div>
@@ -266,7 +256,6 @@ export default async function Home() {
 
               <Link href="/forum" className="block h-full">
                 <Card className="group relative overflow-hidden border-2 border-gray-100 hover:border-[#d4af37] transition-all duration-300 shadow-sm hover:shadow-2xl bg-white/90 backdrop-blur transform hover:-translate-y-1">
-                  <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#d4af37]/10 via-white/40 to-[#1e3a5f]/10" />
                   <CardContent className="relative p-6 space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="text-xl font-bold text-[#1e3a5f]">Forum</h3>
@@ -274,16 +263,12 @@ export default async function Home() {
                     </div>
                     <div className="space-y-4">
                       {posts.map((post) => (
-                        <div
-                          key={post.id}
-                          className="border border-gray-100 rounded-lg p-3 bg-gray-50/70 max-h-32 overflow-hidden"
-                        >
+                        <div key={post.id} className="border border-gray-100 rounded-lg p-3 bg-gray-50/70">
                           <div className="flex items-start justify-between gap-2">
                             <p className="font-semibold text-[#1e3a5f]">{post.title}</p>
                             <span className="text-xs font-semibold text-[#d4af37] uppercase">{post.category}</span>
                           </div>
-                          <p className="text-sm text-gray-600 mt-2 line-clamp-2">{post.content}</p>
-                          <p className="text-xs text-gray-500 mt-2">{post.views ?? 0} views</p>
+                          <p className="text-xs text-gray-500 mt-2">{post.views ?? 0} vizualizări</p>
                         </div>
                       ))}
                     </div>
@@ -298,58 +283,55 @@ export default async function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] mb-4">
-                Everything You Need
+                Tot ce ai nevoie, într-un singur loc
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Campus Helper brings together jobs, marketplace, and community in one trusted platform.
+                Campus Helper reunește joburile, marketplace-ul și comunitatea pe o singură platformă de încredere.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
               <Card className="group relative overflow-hidden border-2 hover:border-[#d4af37] transition-all duration-300 hover:shadow-2xl bg-white/90 backdrop-blur transform hover:-translate-y-1">
-                <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#d4af37]/10 via-white/40 to-[#1e3a5f]/10" />
                 <CardContent className="relative p-6">
                   <div className="w-12 h-12 bg-[#d4af37] rounded-lg flex items-center justify-center mb-4">
                     <Briefcase className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#1e3a5f] mb-3">Student Jobs</h3>
+                  <h3 className="text-xl font-bold text-[#1e3a5f] mb-3">Joburi Studențești</h3>
                   <p className="text-gray-600 mb-4">
-                    Find flexible part-time work that fits your schedule. From tutoring to campus tasks, discover opportunities made for students.
+                    Găsește joburi part-time flexibile care se potrivesc programului tău. De la meditații la sarcini administrative în campus.
                   </p>
                   <Link href="/jobs" className="text-[#d4af37] font-semibold hover:underline">
-                    Browse Jobs →
+                    Explorează Joburi →
                   </Link>
                 </CardContent>
               </Card>
 
               <Card className="group relative overflow-hidden border-2 hover:border-[#d4af37] transition-all duration-300 hover:shadow-2xl bg-white/90 backdrop-blur transform hover:-translate-y-1">
-                <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#d4af37]/10 via-white/40 to-[#1e3a5f]/10" />
                 <CardContent className="relative p-6">
                   <div className="w-12 h-12 bg-[#d4af37] rounded-lg flex items-center justify-center mb-4">
                     <ShoppingBag className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-[#1e3a5f] mb-3">Marketplace</h3>
                   <p className="text-gray-600 mb-4">
-                    Buy and sell textbooks, notes, past exams, and equipment. Save money and help fellow students.
+                    Cumpără și vinde manuale, cursuri, examene trecute și echipamente. Economisește bani și ajută-ți colegii.
                   </p>
                   <Link href="/marketplace" className="text-[#d4af37] font-semibold hover:underline">
-                    Shop Now →
+                    Cumpără Acum →
                   </Link>
                 </CardContent>
               </Card>
 
               <Card className="group relative overflow-hidden border-2 hover:border-[#d4af37] transition-all duration-300 hover:shadow-2xl bg-white/90 backdrop-blur transform hover:-translate-y-1">
-                <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#d4af37]/10 via-white/40 to-[#1e3a5f]/10" />
                 <CardContent className="relative p-6">
                   <div className="w-12 h-12 bg-[#d4af37] rounded-lg flex items-center justify-center mb-4">
                     <MessageSquare className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#1e3a5f] mb-3">Community Forum</h3>
+                  <h3 className="text-xl font-bold text-[#1e3a5f] mb-3">Forum Comunitar</h3>
                   <p className="text-gray-600 mb-4">
-                    Share updates, ask questions, and stay connected with what&apos;s happening on campus.
+                    Împărtășește noutăți, pune întrebări și rămâi la curent cu tot ce se întâmplă în mediul universitar.
                   </p>
                   <Link href="/forum" className="text-[#d4af37] font-semibold hover:underline">
-                    Join Discussion →
+                    Alătură-te discuției →
                   </Link>
                 </CardContent>
               </Card>
@@ -361,7 +343,7 @@ export default async function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] mb-4">
-                Why Students Trust Us
+                De ce au studenții încredere în noi
               </h2>
             </div>
 
@@ -370,9 +352,9 @@ export default async function Home() {
                 <div className="w-16 h-16 bg-[#1e3a5f] rounded-full flex items-center justify-center mx-auto mb-4 animate-float">
                   <Shield className="w-8 h-8 text-[#d4af37]" />
                 </div>
-                <h3 className="text-xl font-bold text-[#1e3a5f] mb-2">Verified Users</h3>
+                <h3 className="text-xl font-bold text-[#1e3a5f] mb-2">Utilizatori Verificați</h3>
                 <p className="text-gray-600">
-                  University email verification ensures you&apos;re connecting with real students.
+                  Verificarea cu email-ul instituțional asigură o comunitate formată doar din studenți reali.
                 </p>
               </div>
 
@@ -380,9 +362,9 @@ export default async function Home() {
                 <div className="w-16 h-16 bg-[#1e3a5f] rounded-full flex items-center justify-center mx-auto mb-4 animate-float" style={{ animationDelay: '0.1s' }}>
                   <Star className="w-8 h-8 text-[#d4af37]" />
                 </div>
-                <h3 className="text-xl font-bold text-[#1e3a5f] mb-2">Rating System</h3>
+                <h3 className="text-xl font-bold text-[#1e3a5f] mb-2">Sistem de Rating</h3>
                 <p className="text-gray-600">
-                  Build your reputation and trust through ratings and reviews.
+                  Construiește-ți reputația și câștigă încrederea celorlalți prin recenzii pozitive.
                 </p>
               </div>
 
@@ -390,15 +372,14 @@ export default async function Home() {
                 <div className="w-16 h-16 bg-[#1e3a5f] rounded-full flex items-center justify-center mx-auto mb-4 animate-float" style={{ animationDelay: '0.2s' }}>
                   <TrendingUp className="w-8 h-8 text-[#d4af37]" />
                 </div>
-                <h3 className="text-xl font-bold text-[#1e3a5f] mb-2">Growing Community</h3>
+                <h3 className="text-xl font-bold text-[#1e3a5f] mb-2">Comunitate în Creștere</h3>
                 <p className="text-gray-600">
-                  Join thousands of students already using Campus Helper.
+                  Alătură-te miilor de studenți care folosesc deja Campus Helper zilnic.
                 </p>
               </div>
             </div>
           </div>
         </section>
-
       </main>
 
       <Footer />
