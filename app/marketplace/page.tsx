@@ -17,11 +17,11 @@ import { formatCurrencyRON } from '@/lib/formatters';
 
 const categories = [
   { value: 'all', label: 'Toate' },
-  { value: 'books', label: 'Cărți' },
-  { value: 'notes', label: 'Notițe' },
-  { value: 'exams', label: 'Examene' },
-  { value: 'equipment', label: 'Echipament' },
-  { value: 'other', label: 'Altele' },
+  { value: 'carti', label: 'Cărți' },
+  { value: 'notite', label: 'Notițe' },
+  { value: 'examene', label: 'Examene' },
+  { value: 'echipament', label: 'Echipament' },
+  { value: 'altele', label: 'Altele' },
 ];
 
 type DisplayItem = MarketplaceItem & {
@@ -39,9 +39,9 @@ const sampleItems: DisplayItem[] = [
     user_id: 'demo',
     title: 'Manual de Introducere în Psihologie',
     description: 'Manual PSY 101 în stare excelentă. Subliniat minim.',
-    category: 'books',
+    category: 'carti',
     price: 45,
-    condition: 'like_new',
+    condition: 'ca_nou',
     status: 'available',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -54,9 +54,9 @@ const sampleItems: DisplayItem[] = [
     user_id: 'demo',
     title: 'Notițe complete pentru Analiză II',
     description: 'Notițe complete pe capitole. Include probleme și soluții.',
-    category: 'notes',
+    category: 'notite',
     price: 20,
-    condition: 'good',
+    condition: 'bun',
     status: 'available',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -69,9 +69,9 @@ const sampleItems: DisplayItem[] = [
     user_id: 'demo',
     title: 'Set de echipament laborator biologie',
     description: 'Kit complet de disecție cu husă. Folosit o singură dată, ca nou.',
-    category: 'equipment',
+    category: 'echipament',
     price: 35,
-    condition: 'like_new',
+    condition: 'ca_nou',
     status: 'available',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -84,9 +84,9 @@ const sampleItems: DisplayItem[] = [
     user_id: 'demo',
     title: 'Colecție examene anterioare - CS 201',
     description: 'Ultimii 3 ani de examene parțiale și finale cu rezolvări.',
-    category: 'exams',
+    category: 'examene',
     price: 15,
-    condition: 'good',
+    condition: 'bun',
     status: 'available',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -99,9 +99,9 @@ const sampleItems: DisplayItem[] = [
     user_id: 'demo',
     title: 'Manual de Chimie Organică',
     description: 'Ediție recentă cu cod de acces nefolosit. Stare foarte bună.',
-    category: 'books',
+    category: 'carti',
     price: 80,
-    condition: 'new',
+    condition: 'nou',
     status: 'available',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -114,9 +114,9 @@ const sampleItems: DisplayItem[] = [
     user_id: 'demo',
     title: 'Calculator grafic TI-84',
     description: 'Funcționează perfect, include husă și manual.',
-    category: 'equipment',
+    category: 'echipament',
     price: 60,
-    condition: 'good',
+    condition: 'bun',
     status: 'available',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -127,17 +127,17 @@ const sampleItems: DisplayItem[] = [
 ];
 
 const categoryIcons = {
-  books: BookOpen,
-  notes: FileText,
-  exams: FileText,
-  equipment: Laptop,
-  other: Microscope,
+  carti: BookOpen,
+  notite: FileText,
+  examene: FileText,
+  echipament: Laptop,
+  altele: Microscope,
 };
 const conditionLabels: Record<string, string> = {
-  new: 'nou',
-  like_new: 'ca nou',
-  good: 'bun',
-  fair: 'acceptabil',
+  nou: 'nou',
+  ca_nou: 'ca nou',
+  bun: 'bun',
+  decent: 'acceptabil',
 };
 
 export default function MarketplacePage() {
@@ -214,10 +214,10 @@ export default function MarketplacePage() {
 
   const getConditionColor = (condition: string) => {
     switch (condition) {
-      case 'new': return 'bg-green-100 text-green-800';
-      case 'like_new': return 'bg-blue-100 text-blue-800';
-      case 'good': return 'bg-yellow-100 text-yellow-800';
-      case 'fair': return 'bg-orange-100 text-orange-800';
+      case 'nou': return 'bg-green-100 text-green-800';
+      case 'ca_nou': return 'bg-blue-100 text-blue-800';
+      case 'bun': return 'bg-yellow-100 text-yellow-800';
+      case 'decent': return 'bg-orange-100 text-orange-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -294,7 +294,7 @@ export default function MarketplacePage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item, index) => {
-              const categoryKey = (item.category || 'other') as keyof typeof categoryIcons;
+              const categoryKey = (item.category || 'altele') as keyof typeof categoryIcons;
               const IconComponent = categoryIcons[categoryKey] || Microscope;
               return (
                 <Link href={`/marketplace/detail?id=${item.id}`} key={item.id}>

@@ -14,10 +14,13 @@ export function formatCurrencyRON(value: number) {
 export function formatPayTypeSuffix(payType?: string) {
   switch (payType) {
     case 'hourly':
+    case 'cu ora':
       return '/oră';
     case 'fixed':
+    case 'constant':
       return '/proiect';
     case 'negotiable':
+    case 'negociabil':
       return '/negociabil';
     default:
       return '';

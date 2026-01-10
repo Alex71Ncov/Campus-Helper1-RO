@@ -17,18 +17,18 @@ import type { Session } from '@supabase/supabase-js';
 import { getSafeSession } from '@/lib/get-safe-session';
 
 const categories = [
-  { label: 'Cărți', value: 'books' },
-  { label: 'Notițe', value: 'notes' },
-  { label: 'Examene', value: 'exams' },
-  { label: 'Echipament', value: 'equipment' },
-  { label: 'Altele', value: 'other' },
+  { label: 'Cărți', value: 'carti' },
+  { label: 'Notițe', value: 'notite' },
+  { label: 'Examene', value: 'examene' },
+  { label: 'Echipament', value: 'echipament' },
+  { label: 'Altele', value: 'altele' },
 ];
 
 const conditions = [
-  { label: 'Nou', value: 'new' },
-  { label: 'Ca nou', value: 'like_new' },
-  { label: 'Bun', value: 'good' },
-  { label: 'Acceptabil', value: 'fair' },
+  { label: 'Nou', value: 'nou' },
+  { label: 'Ca nou', value: 'ca_nou' },
+  { label: 'Bun', value: 'bun' },
+  { label: 'Acceptabil', value: 'decent' },
 ];
 
 export default function CreateMarketplaceItemPage() {

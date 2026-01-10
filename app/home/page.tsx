@@ -112,7 +112,7 @@ async function loadSupabaseHighlights(): Promise<SupabaseHighlights> {
       client
         .from('jobs')
         .select('id, user_id, title, description, category, pay_rate, pay_type, location, status, created_at, updated_at')
-        .eq('status', 'open')
+        .eq('status', 'deschis')
         .order('created_at', { ascending: false })
         .limit(3),
       client

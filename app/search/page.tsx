@@ -26,10 +26,10 @@ type SearchResults = {
 
 const EMPTY_RESULTS: SearchResults = { jobs: [], items: [], posts: [] };
 const conditionLabels: Record<string, string> = {
-  new: 'nou',
-  like_new: 'ca nou',
-  good: 'bun',
-  fair: 'acceptabil',
+  nou: 'nou',
+  ca_nou: 'ca nou',
+  bun: 'bun',
+  decent: 'acceptabil',
 };
 const forumCategoryLabels: Record<string, string> = {
   general: 'General',

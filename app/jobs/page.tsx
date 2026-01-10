@@ -41,9 +41,9 @@ const sampleJobs: DisplayJob[] = [
     description: 'Căutăm un meditator răbdător pentru Analiză II. 2-3 ședințe pe săptămână.',
     category: 'Tutoring',
     pay_rate: 25,
-    pay_type: 'hourly',
+    pay_type: 'cu ora',
     location: 'Bibliotecă sau online',
-    status: 'open',
+    status: 'deschis',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
     user_name: 'Sarah Chen',
@@ -57,9 +57,9 @@ const sampleJobs: DisplayJob[] = [
     description: 'Ajutor la colectarea și analiza datelor pentru un studiu de psihologie cognitivă. 10 ore/săptămână.',
     category: 'Research',
     pay_rate: 18,
-    pay_type: 'hourly',
+    pay_type: 'cu ora',
     location: 'Clădirea de Psihologie',
-    status: 'open',
+    status: 'deschis',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
     user_name: 'Dr. Martinez',
@@ -73,9 +73,9 @@ const sampleJobs: DisplayJob[] = [
     description: 'Avem nevoie de 3 persoane pentru montarea meselor și scaunelor. Job rapid, 2 ore.',
     category: 'Events',
     pay_rate: 100,
-    pay_type: 'fixed',
+    pay_type: 'constant',
     location: 'Centrul Studențesc',
-    status: 'open',
+    status: 'deschis',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
     user_name: 'Evenimente Campus',
@@ -89,9 +89,9 @@ const sampleJobs: DisplayJob[] = [
     description: 'Construirea unui site de portofoliu simplu. Experiența cu React este un plus.',
     category: 'Tech',
     pay_rate: 500,
-    pay_type: 'fixed',
+    pay_type: 'constant',
     location: 'La distanță',
-    status: 'open',
+    status: 'deschis',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
     user_name: 'Michael Brown',
@@ -273,7 +273,7 @@ export default function JobsPage() {
 
                       <div className="flex items-center text-gray-600">
                         <Clock className="w-4 h-4 mr-1 text-[#d4af37]" />
-                        {(job.status || 'open') === 'open' ? 'Deschis' : 'Închis'}
+                        {(job.status || 'deschis') === 'deschis' ? 'Deschis' : 'Închis'}
                       </div>
                     </div>
 

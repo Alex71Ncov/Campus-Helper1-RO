@@ -24,11 +24,11 @@ const categories = [
   { value: 'Tech', label: 'Tehnologie' },
   { value: 'Other', label: 'Altele' },
 ];
-const payTypes = ['hourly', 'fixed', 'negotiable'] as const;
+const payTypes = ['cu ora', 'constant', 'negociabil'] as const;
 const payTypeLabels: Record<(typeof payTypes)[number], string> = {
-  hourly: 'cu oră',
-  fixed: 'sumă fixă',
-  negotiable: 'negociabil',
+  'cu ora': 'cu oră',
+  constant: 'sumă fixă',
+  negociabil: 'negociabil',
 };
 
 export default function CreateJobPage() {
@@ -41,7 +41,7 @@ export default function CreateJobPage() {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState(categories[0].value);
   const [payRate, setPayRate] = useState('');
-  const [payType, setPayType] = useState<(typeof payTypes)[number]>('hourly');
+  const [payType, setPayType] = useState<(typeof payTypes)[number]>('cu ora');
   const [location, setLocation] = useState('');
 
   const [error, setError] = useState(() =>
@@ -117,7 +117,7 @@ export default function CreateJobPage() {
       pay_rate: parsedPayRate,
       pay_type: payType,
       location: location.trim(),
-      status: 'open',
+      status: 'deschis',
     });
 
     if (insertError) {

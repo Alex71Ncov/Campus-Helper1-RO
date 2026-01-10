@@ -171,7 +171,7 @@ export default function ProfilePage() {
     .slice(0, 2)
     .toUpperCase();
   const completedEarnings = jobs
-    .filter((job) => (job.status || '').toLowerCase() === 'completed')
+    .filter((job) => (job.status || '').toLowerCase() === 'complet')
     .reduce((sum, job) => sum + Number(job.pay_rate || 0), 0);
   const activeListings = listings.filter((listing) => (listing.status || '').toLowerCase() === 'available').length;
 
@@ -435,22 +435,20 @@ export default function ProfilePage() {
                                 <h3 className="text-lg font-bold text-[#1e3a5f] mb-2">{job.title}</h3>
                                 <div className="flex items-center gap-4 text-sm text-gray-600">
                                   {(() => {
-                                    const status = job.status || 'open';
+                                    const status = job.status || 'deschis';
                                     const statusLabel =
-                                      status === 'completed'
+                                      status === 'complet'
                                         ? 'finalizat'
-                                        : status === 'in_progress'
+                                        : status === 'in_progres'
                                           ? 'în progres'
-                                          : status === 'cancelled'
+                                          : status === 'anulat'
                                             ? 'anulat'
-                                            : status === 'open'
-                                              ? 'deschis'
-                                              : status.replace('_', ' ');
+                                            : 'deschis';
                                     return (
                                       <Badge className={
-                                        status === 'completed' ? 'bg-green-100 text-green-800' :
-                                        status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                                        status === 'cancelled' ? 'bg-gray-200 text-gray-800' :
+                                        status === 'complet' ? 'bg-green-100 text-green-800' :
+                                        status === 'in_progres' ? 'bg-blue-100 text-blue-800' :
+                                        status === 'anulat' ? 'bg-gray-200 text-gray-800' :
                                         'bg-gray-100 text-gray-800'
                                       }>
                                         {statusLabel}

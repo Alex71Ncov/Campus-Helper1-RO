@@ -30,9 +30,9 @@ const fallbackItem: MarketplaceItem = {
   user_id: 'demo',
   title: 'Anunț demonstrativ',
   description: 'Autentifică-te pentru a vedea detaliile complete.',
-  category: 'books',
+  category: 'carti',
   price: 50,
-  condition: 'good',
+  condition: 'bun',
   images: [],
   status: 'available',
   created_at: '',
@@ -175,13 +175,13 @@ function MarketplaceDetailContent() {
     value ? new Date(value).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
 
   const conditionLabel =
-    item?.condition === 'new'
+    item?.condition === 'nou'
       ? 'nou'
-      : item?.condition === 'like_new'
+      : item?.condition === 'ca_nou'
         ? 'ca nou'
-        : item?.condition === 'good'
+        : item?.condition === 'bun'
           ? 'bun'
-          : item?.condition === 'fair'
+          : item?.condition === 'decent'
             ? 'acceptabil'
             : (item?.condition || '').replace('_', ' ');
   const statusLabel =
@@ -193,15 +193,15 @@ function MarketplaceDetailContent() {
           ? 'disponibil'
           : item?.status || 'disponibil';
   const categoryLabel =
-    item?.category === 'books'
+    item?.category === 'carti'
       ? 'Cărți'
-      : item?.category === 'notes'
+      : item?.category === 'notite'
         ? 'Notițe'
-        : item?.category === 'exams'
+        : item?.category === 'examene'
           ? 'Examene'
-          : item?.category === 'equipment'
+          : item?.category === 'echipament'
             ? 'Echipament'
-            : item?.category === 'other'
+            : item?.category === 'altele'
               ? 'Altele'
               : item?.category || 'categorie';
 

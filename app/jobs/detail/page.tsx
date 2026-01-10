@@ -32,9 +32,9 @@ const fallbackJob: Job = {
   description: 'Autentifică-te pentru a vedea detaliile complete.',
   category: 'Campus',
   pay_rate: 20,
-  pay_type: 'hourly',
+  pay_type: 'cu ora',
   location: 'În campus',
-  status: 'open',
+  status: 'deschis',
   created_at: '',
   updated_at: '',
 };
@@ -174,13 +174,15 @@ function JobDetailContent() {
   const formatDate = (value?: string | null) =>
     value ? new Date(value).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
 
-  const status = (job?.status || 'open').replace('_', ' ');
+  const statusKey = job?.status || 'deschis';
   const statusLabel =
-    status.includes('completed') ? 'finalizat' :
-    status.includes('progress') ? 'în progres' :
-    status.includes('cancelled') ? 'anulat' :
-    status.includes('open') ? 'deschis' :
-    status;
+    statusKey === 'complet'
+      ? 'finalizat'
+      : statusKey === 'in_progres'
+        ? 'în progres'
+        : statusKey === 'anulat'
+          ? 'anulat'
+          : 'deschis';
 
   const handleContact = async () => {
     setContactError('');
