@@ -24,6 +24,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { getSafeSession } from '@/lib/get-safe-session';
+import { formatCurrencyRON, formatPayRate } from '@/lib/formatters';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function ProfilePage() {
   const supabaseConfigured = Boolean(supabase);
   const [loading, setLoading] = useState(() => supabaseConfigured);
   const [error, setError] = useState(() =>
-    supabaseConfigured ? '' : 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.'
+    supabaseConfigured ? '' : 'Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.'
   );
   const [reportOpen, setReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState('spam');
@@ -63,7 +64,7 @@ export default function ProfilePage() {
       }
 
       if (!session?.user) {
-        setError('Please sign in to view your profile.');
+        setError('Te rugăm să te autentifici pentru a vedea profilul.');
         setLoading(false);
         return;
       }
@@ -111,7 +112,7 @@ export default function ProfilePage() {
       ]);
 
       if (profileRes.error) {
-        setError(profileRes.error.message || 'Could not load your profile.');
+        setError(profileRes.error.message || 'Nu am putut încărca profilul.');
       } else {
         setProfile(profileRes.data);
       }
@@ -150,17 +151,17 @@ export default function ProfilePage() {
     };
   }, []);
 
-  const displayName = profile?.full_name || 'Your profile';
-  const email = profile?.email || 'Add your email';
-  const university = profile?.university || 'Add your university';
-  const major = profile?.major || 'Add your major';
-  const year = profile?.year || 'Add your year';
+  const displayName = profile?.full_name || 'Profilul tău';
+  const email = profile?.email || 'Adaugă emailul';
+  const university = profile?.university || 'Adaugă universitatea';
+  const major = profile?.major || 'Adaugă specializarea';
+  const year = profile?.year || 'Adaugă anul';
   const reputation = profile?.rating !== undefined && profile?.rating !== null ? Number(profile.rating) : 0;
   const totalRatings = profile?.total_ratings ?? 0;
   const memberSince = profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    ? new Date(profile.created_at).toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' })
     : '—';
-  const bio = profile?.bio || 'Add a short bio to introduce yourself.';
+  const bio = profile?.bio || 'Adaugă o scurtă descriere despre tine.';
   const isAdmin = profile?.role === 'admin';
   const initials = (profile?.full_name || profile?.email || 'CH')
     .split(' ')
@@ -204,7 +205,7 @@ export default function ProfilePage() {
   const handleSubmitReport = (event: React.FormEvent) => {
     event.preventDefault();
     if (!profile) return;
-    setReportMessage('Report submitted. Thanks for letting us know.');
+    setReportMessage('Raport trimis. Mulțumim că ne-ai anunțat.');
     setReportDetails('');
     setReportOpen(false);
   };
@@ -224,17 +225,17 @@ export default function ProfilePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-[#1e3a5f]">
                   <AlertTriangle className="w-5 h-5" />
-                  Profile unavailable
+                  Profil indisponibil
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-gray-700">{error}</p>
                 <div className="flex gap-3">
                   <Button onClick={() => window.location.reload()} variant="outline" className="border-[#1e3a5f] text-[#1e3a5f] hover:bg-[#1e3a5f] hover:text-white">
-                    Retry
+                    Încearcă din nou
                   </Button>
                   <Button asChild className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                    <Link href="/sign-in">Go to sign in</Link>
+                    <Link href="/sign-in">Mergi la autentificare</Link>
                   </Button>
                 </div>
               </CardContent>
@@ -270,10 +271,10 @@ export default function ProfilePage() {
                 <div className="flex items-center gap-2">
                   <div className="flex items-center bg-[#d4af37] text-[#1e3a5f] px-3 py-1 rounded-full font-semibold">
                     <Star className="w-4 h-4 mr-1 fill-current" />
-                    {reputation} ({totalRatings} reviews)
+                    {reputation} ({totalRatings} recenzii)
                   </div>
                   <Badge className="bg-white/20 text-white">
-                    Member since {memberSince}
+                    Membru din {memberSince}
                   </Badge>
                   {isAdmin && (
                     <Badge className="bg-green-100 text-green-800">
@@ -289,7 +290,7 @@ export default function ProfilePage() {
                       onClick={() => router.push('/profile/edit')}
                     >
                       <Edit className="w-4 h-4 mr-2" />
-                      Edit Profile
+                      Editează profilul
                     </Button>
                     <Dialog open={reportOpen} onOpenChange={setReportOpen}>
                       <Button
@@ -298,16 +299,16 @@ export default function ProfilePage() {
                         onClick={handleReportUser}
                       >
                         <Flag className="w-4 h-4 mr-2" />
-                        Report
+                        Raportează
                       </Button>
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>Report user</DialogTitle>
-                          <DialogDescription>Tell us what is wrong with this profile.</DialogDescription>
+                          <DialogTitle>Raportează utilizator</DialogTitle>
+                          <DialogDescription>Spune-ne ce este în neregulă cu acest profil.</DialogDescription>
                         </DialogHeader>
                         <form className="space-y-3" onSubmit={handleSubmitReport}>
                           <div className="space-y-1">
-                            <Label htmlFor="report-reason">Reason</Label>
+                            <Label htmlFor="report-reason">Motiv</Label>
                             <select
                               id="report-reason"
                               value={reportReason}
@@ -315,17 +316,17 @@ export default function ProfilePage() {
                               className="w-full border rounded-md px-3 py-2 text-sm"
                             >
                               <option value="spam">Spam</option>
-                              <option value="scam">Scam / Fraud</option>
-                              <option value="insult">Harassment / Insult</option>
-                              <option value="inaccurate">Inaccurate or misleading</option>
-                              <option value="other">Other</option>
+                              <option value="scam">Înșelătorie / fraudă</option>
+                              <option value="insult">Hărțuire / insultă</option>
+                              <option value="inaccurate">Inexact sau înșelător</option>
+                              <option value="other">Altul</option>
                             </select>
                           </div>
                           <div className="space-y-1">
-                            <Label htmlFor="report-details">Details (optional)</Label>
+                            <Label htmlFor="report-details">Detalii (opțional)</Label>
                             <Textarea
                               id="report-details"
-                              placeholder="Add any context that helps us review."
+                              placeholder="Adaugă contextul care ne ajută la verificare."
                               value={reportDetails}
                               onChange={(e) => setReportDetails(e.target.value)}
                               rows={3}
@@ -333,7 +334,7 @@ export default function ProfilePage() {
                           </div>
                           <DialogFooter>
                             <Button type="submit" className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                              Submit report
+                              Trimite raportul
                             </Button>
                           </DialogFooter>
                           {reportMessage && <p className="text-sm text-green-700">{reportMessage}</p>}
@@ -343,7 +344,7 @@ export default function ProfilePage() {
                     {isAdmin && (
                       <Link href="/admin/reports">
                         <Button variant="outline" className="border-[#d4af37] text-[#1e3a5f] hover:bg-[#d4af37] hover:text-[#1e3a5f]">
-                          Admin Dashboard
+                          Panou admin
                         </Button>
                       </Link>
                     )}
@@ -356,23 +357,23 @@ export default function ProfilePage() {
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="bg-white border mb-6">
                   <TabsTrigger value="overview" className="data-[state=active]:bg-[#1e3a5f] data-[state=active]:text-white">
-                    Overview
+                    Prezentare
                   </TabsTrigger>
                   <TabsTrigger value="jobs" className="data-[state=active]:bg-[#1e3a5f] data-[state=active]:text-white">
                     <Briefcase className="w-4 h-4 mr-2" />
-                    My Jobs
+                    Joburile mele
                   </TabsTrigger>
                   <TabsTrigger value="listings" className="data-[state=active]:bg-[#1e3a5f] data-[state=active]:text-white">
                     <ShoppingBag className="w-4 h-4 mr-2" />
-                    My Listings
+                    Anunțurile mele
                   </TabsTrigger>
                   <TabsTrigger value="posts" className="data-[state=active]:bg-[#1e3a5f] data-[state=active]:text-white">
                     <MessageSquare className="w-4 h-4 mr-2" />
-                    My Posts
+                    Postările mele
                   </TabsTrigger>
                   <TabsTrigger value="reviews" className="data-[state=active]:bg-[#1e3a5f] data-[state=active]:text-white">
                     <Star className="w-4 h-4 mr-2" />
-                    Reviews
+                    Recenzii
                   </TabsTrigger>
                 </TabsList>
 
@@ -380,32 +381,32 @@ export default function ProfilePage() {
                   <div className="grid md:grid-cols-3 gap-6 mb-6">
                 <Card className="border-2">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-medium text-gray-600">Total Earnings</CardTitle>
+                  <CardTitle className="text-sm font-medium text-gray-600">Câștiguri totale</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-3xl font-bold text-[#1e3a5f]">${completedEarnings}</div>
-                    <p className="text-sm text-gray-500 mt-1">From completed jobs</p>
+                    <div className="text-3xl font-bold text-[#1e3a5f]">{formatCurrencyRON(completedEarnings)}</div>
+                    <p className="text-sm text-gray-500 mt-1">Din joburi finalizate</p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-2">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-medium text-gray-600">Active Listings</CardTitle>
+                    <CardTitle className="text-sm font-medium text-gray-600">Anunțuri active</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-[#1e3a5f]">{activeListings}</div>
-                    <p className="text-sm text-gray-500 mt-1">Items for sale</p>
+                    <p className="text-sm text-gray-500 mt-1">Articole la vânzare</p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-2">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-medium text-gray-600">Reputation</CardTitle>
+                    <CardTitle className="text-sm font-medium text-gray-600">Reputație</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-[#1e3a5f]">{reputation.toFixed(1)}</div>
                     <p className="text-sm text-gray-500 mt-1">
-                      Average rating {totalRatings ? `(${totalRatings} reviews)` : ''}
+                      Rating mediu {totalRatings ? `(${totalRatings} recenzii)` : ''}
                     </p>
                   </CardContent>
                 </Card>
@@ -413,7 +414,7 @@ export default function ProfilePage() {
 
                   <Card className="border-2">
                     <CardHeader>
-                      <CardTitle className="text-[#1e3a5f]">About</CardTitle>
+                      <CardTitle className="text-[#1e3a5f]">Despre</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-700">{bio}</p>
@@ -423,7 +424,7 @@ export default function ProfilePage() {
 
                 <TabsContent value="jobs">
                   {jobs.length === 0 ? (
-                    <div className="text-gray-600 text-sm">You have not posted any jobs yet.</div>
+                    <div className="text-gray-600 text-sm">Nu ai publicat încă joburi.</div>
                   ) : (
                     <div className="grid gap-4">
                       {jobs.map((job) => (
@@ -435,6 +436,16 @@ export default function ProfilePage() {
                                 <div className="flex items-center gap-4 text-sm text-gray-600">
                                   {(() => {
                                     const status = job.status || 'open';
+                                    const statusLabel =
+                                      status === 'completed'
+                                        ? 'finalizat'
+                                        : status === 'in_progress'
+                                          ? 'în progres'
+                                          : status === 'cancelled'
+                                            ? 'anulat'
+                                            : status === 'open'
+                                              ? 'deschis'
+                                              : status.replace('_', ' ');
                                     return (
                                       <Badge className={
                                         status === 'completed' ? 'bg-green-100 text-green-800' :
@@ -442,15 +453,15 @@ export default function ProfilePage() {
                                         status === 'cancelled' ? 'bg-gray-200 text-gray-800' :
                                         'bg-gray-100 text-gray-800'
                                       }>
-                                        {status.replace('_', ' ')}
+                                        {statusLabel}
                                       </Badge>
                                     );
                                   })()}
                                   <span className="text-[#1e3a5f] font-semibold">
-                                    ${job.pay_rate} {job.pay_type === 'hourly' ? '/hr' : job.pay_type === 'fixed' ? 'total' : 'negotiable'}
+                                    {formatPayRate(Number(job.pay_rate), job.pay_type)}
                                   </span>
                                   <span className="text-gray-500">{job.location}</span>
-                                  {job.updated_at && <span className="text-gray-400">Updated {formatDate(job.updated_at)}</span>}
+                                  {job.updated_at && <span className="text-gray-400">Actualizat {formatDate(job.updated_at)}</span>}
                                 </div>
                               </div>
                               <Button
@@ -459,7 +470,7 @@ export default function ProfilePage() {
                                 onClick={() => handleDeleteJob(job.id)}
                               >
                                 <Trash2 className="w-4 h-4 mr-2" />
-                                Remove
+                                Elimină
                               </Button>
                             </div>
                           </CardContent>
@@ -471,7 +482,7 @@ export default function ProfilePage() {
 
                 <TabsContent value="listings">
                   {listings.length === 0 ? (
-                    <div className="text-gray-600 text-sm">You have not listed any items yet.</div>
+                    <div className="text-gray-600 text-sm">Nu ai publicat încă anunțuri.</div>
                   ) : (
                     <div className="grid gap-4">
                       {listings.map((listing) => (
@@ -483,18 +494,28 @@ export default function ProfilePage() {
                                 <div className="flex items-center gap-4">
                                   {(() => {
                                     const status = listing.status || 'available';
+                                    const statusLabel =
+                                      status === 'sold'
+                                        ? 'vândut'
+                                        : status === 'reserved'
+                                          ? 'rezervat'
+                                          : status === 'available'
+                                            ? 'disponibil'
+                                            : status;
                                     return (
                                       <Badge className={
                                         status === 'sold' ? 'bg-gray-100 text-gray-800' :
                                         status === 'reserved' ? 'bg-blue-100 text-blue-800' :
                                         'bg-green-100 text-green-800'
                                       }>
-                                        {status}
+                                        {statusLabel}
                                       </Badge>
                                     );
                                   })()}
-                                  <span className="text-lg font-semibold text-[#1e3a5f]">${listing.price}</span>
-                                  {listing.created_at && <span className="text-sm text-gray-500">Listed {formatDate(listing.created_at)}</span>}
+                                  <span className="text-lg font-semibold text-[#1e3a5f]">
+                                    {formatCurrencyRON(Number(listing.price))}
+                                  </span>
+                                  {listing.created_at && <span className="text-sm text-gray-500">Listat {formatDate(listing.created_at)}</span>}
                                 </div>
                               </div>
                               <Button
@@ -503,7 +524,7 @@ export default function ProfilePage() {
                                 onClick={() => handleDeleteListing(listing.id)}
                               >
                                 <Trash2 className="w-4 h-4 mr-2" />
-                                Remove
+                                Elimină
                               </Button>
                             </div>
                           </CardContent>
@@ -515,7 +536,7 @@ export default function ProfilePage() {
 
                 <TabsContent value="reviews">
                   {reviews.length === 0 ? (
-                    <div className="text-gray-600 text-sm">No reviews yet.</div>
+                    <div className="text-gray-600 text-sm">Nu există recenzii încă.</div>
                   ) : (
                     <div className="grid gap-4">
                       {reviews.map((review) => (
@@ -533,10 +554,10 @@ export default function ProfilePage() {
                                     ))}
                                   </div>
                                   <span className="font-semibold text-[#1e3a5f]">
-                                    {review.rater_user_id ? `From ${review.rater_user_id.slice(0, 8)}...` : 'From a peer'}
+                                    {review.rater_user_id ? `De la ${review.rater_user_id.slice(0, 8)}...` : 'De la un coleg'}
                                   </span>
                                 </div>
-                                <p className="text-gray-700">{review.comment || 'No comment provided.'}</p>
+                                <p className="text-gray-700">{review.comment || 'Fără comentariu.'}</p>
                               </div>
                               <span className="text-sm text-gray-500">{formatDate(review.created_at)}</span>
                             </div>
@@ -549,7 +570,7 @@ export default function ProfilePage() {
 
                 <TabsContent value="posts">
                   {posts.length === 0 ? (
-                    <div className="text-gray-600 text-sm">You have not created any posts yet.</div>
+                    <div className="text-gray-600 text-sm">Nu ai creat încă postări.</div>
                   ) : (
                     <div className="grid gap-4">
                       {posts.map((post) => (
@@ -561,7 +582,7 @@ export default function ProfilePage() {
                                 <p className="text-sm text-gray-600 capitalize">{post.category}</p>
                               </div>
                               {post.created_at && (
-                                <span className="text-sm text-gray-500">Posted {formatDate(post.created_at)}</span>
+                                <span className="text-sm text-gray-500">Publicat {formatDate(post.created_at)}</span>
                               )}
                             </div>
                             <p className="text-gray-700 text-sm line-clamp-2">{post.content}</p>
@@ -584,7 +605,7 @@ export default function ProfilePage() {
                                 }}
                               >
                                 <Trash2 className="w-4 h-4 mr-2" />
-                                Remove
+                                Elimină
                               </Button>
                             </div>
                           </CardContent>
@@ -603,5 +624,5 @@ export default function ProfilePage() {
     </div>
   );
 }
-  const formatDate = (value?: string | null) =>
-    value ? new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+const formatDate = (value?: string | null) =>
+  value ? new Date(value).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';

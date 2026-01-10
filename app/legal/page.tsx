@@ -6,14 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 
 const policies = [
   {
-    title: 'Terms of Service',
-    description: 'Understand the rules for using Campus Helper, posting jobs, and buying or selling items.',
+    title: 'Termeni și condiții',
+    description: 'Află regulile pentru utilizarea Campus Helper, publicarea de joburi și tranzacții.',
     href: '/legal/terms',
     icon: FileText,
   },
   {
-    title: 'Privacy Policy',
-    description: 'See how we handle your data, from account details to messages and notifications.',
+    title: 'Politica de confidențialitate',
+    description: 'Vezi cum gestionăm datele tale, de la cont la mesaje și notificări.',
     href: '/legal/privacy',
     icon: ShieldCheck,
   },
@@ -37,9 +37,9 @@ export default function LegalPage() {
           </div>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Legal</p>
-            <h1 className="text-4xl font-bold mb-3">Policies that keep Campus Helper safe</h1>
+            <h1 className="text-4xl font-bold mb-3">Politici care mențin Campus Helper sigur</h1>
             <p className="text-lg text-gray-200 max-w-3xl">
-              Review the terms and privacy details that guide how the platform works for everyone in the campus community.
+              Revizuiește termenii și detaliile de confidențialitate care ghidează funcționarea platformei pentru comunitatea ta.
             </p>
           </div>
         </section>
@@ -63,7 +63,7 @@ export default function LegalPage() {
                   </CardHeader>
                   <CardContent className="pt-0">
                     <Link href={policy.href} className="inline-flex items-center text-[#1e3a5f] font-semibold hover:text-[#d4af37]">
-                      <span>Read {policy.title}</span>
+                      <span>Citește {policy.title}</span>
                       <span className="ml-2">→</span>
                     </Link>
                   </CardContent>
@@ -73,10 +73,10 @@ export default function LegalPage() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-3 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <h2 className="text-2xl font-semibold text-[#1e3a5f]">Questions about our policies?</h2>
+            <h2 className="text-2xl font-semibold text-[#1e3a5f]">Ai întrebări despre politici?</h2>
             <p className="text-gray-700">
-              Reach out through <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">Contact</Link> and include the section
-              you are asking about so we can respond with clarity or make updates where needed.
+              Scrie-ne în <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">Contact</Link> și menționează secțiunea
+              despre care întrebi, ca să îți putem răspunde clar sau să facem actualizări când e nevoie.
             </p>
           </div>
         </section>

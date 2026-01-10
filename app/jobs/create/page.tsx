@@ -16,8 +16,20 @@ import { ensureProfileExists } from '@/lib/profile';
 import type { Session } from '@supabase/supabase-js';
 import { getSafeSession } from '@/lib/get-safe-session';
 
-const categories = ['Tutoring', 'Research', 'Campus Tasks', 'Events', 'Tech', 'Other'];
+const categories = [
+  { value: 'Tutoring', label: 'Meditații' },
+  { value: 'Research', label: 'Cercetare' },
+  { value: 'Campus Tasks', label: 'Sarcini în campus' },
+  { value: 'Events', label: 'Evenimente' },
+  { value: 'Tech', label: 'Tehnologie' },
+  { value: 'Other', label: 'Altele' },
+];
 const payTypes = ['hourly', 'fixed', 'negotiable'] as const;
+const payTypeLabels: Record<(typeof payTypes)[number], string> = {
+  hourly: 'cu oră',
+  fixed: 'sumă fixă',
+  negotiable: 'negociabil',
+};
 
 export default function CreateJobPage() {
   const router = useRouter();
@@ -27,13 +39,13 @@ export default function CreateJobPage() {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState(categories[0].value);
   const [payRate, setPayRate] = useState('');
   const [payType, setPayType] = useState<(typeof payTypes)[number]>('hourly');
   const [location, setLocation] = useState('');
 
   const [error, setError] = useState(() =>
-    supabaseConfigured ? '' : 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.'
+    supabaseConfigured ? '' : 'Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.'
   );
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +62,7 @@ export default function CreateJobPage() {
         return;
       }
       if (!session?.user) {
-        setError('Please sign in to post a job.');
+        setError('Te rugăm să te autentifici pentru a publica un job.');
         router.push('/sign-in');
         setCheckingSession(false);
         return;
@@ -75,23 +87,23 @@ export default function CreateJobPage() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!session?.user) {
-      setError('Please sign in to post a job.');
+      setError('Te rugăm să te autentifici pentru a publica un job.');
       return;
     }
 
     if (!title.trim() || !description.trim() || !location.trim() || !payRate.trim()) {
-      setError('Please complete all required fields.');
+      setError('Completează toate câmpurile obligatorii.');
       return;
     }
 
     const parsedPayRate = Number(payRate);
     if (Number.isNaN(parsedPayRate) || parsedPayRate <= 0) {
-      setError('Enter a valid pay rate greater than 0.');
+      setError('Introdu o sumă validă mai mare ca 0.');
       return;
     }
 
@@ -111,7 +123,7 @@ export default function CreateJobPage() {
     if (insertError) {
       setError(insertError.message);
     } else {
-      setMessage('Job posted! Redirecting...');
+      setMessage('Job publicat! Redirecționăm...');
       router.push('/jobs');
     }
 
@@ -135,8 +147,8 @@ export default function CreateJobPage() {
                 <Briefcase className="w-6 h-6 text-[#f4d03f]" />
               </div>
               <div>
-                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Create</p>
-                <h1 className="text-3xl font-bold">Post a Job</h1>
+                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Creează</p>
+                <h1 className="text-3xl font-bold">Publică un job</h1>
               </div>
             </div>
           </div>
@@ -145,14 +157,14 @@ export default function CreateJobPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl text-[#1e3a5f]">Job details</CardTitle>
-              <CardDescription>Share what you need help with so students can apply.</CardDescription>
+              <CardTitle className="text-xl text-[#1e3a5f]">Detalii job</CardTitle>
+              <CardDescription>Spune cu ce ai nevoie de ajutor pentru ca studenții să aplice.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {checkingSession && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Checking your session...
+                  Se verifică sesiunea...
                 </div>
               )}
               {error && (
@@ -169,10 +181,10 @@ export default function CreateJobPage() {
 
               <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="title">Titlu</Label>
                   <Input
                     id="title"
-                    placeholder="Math Tutor for Calculus II"
+                    placeholder="Meditator pentru Analiză II"
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
                     disabled={isSubmitting}
@@ -181,10 +193,10 @@ export default function CreateJobPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description">Descriere</Label>
                   <Textarea
                     id="description"
-                    placeholder="Describe the work, expectations, and timing."
+                    placeholder="Descrie munca, așteptările și intervalul orar."
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                     rows={5}
@@ -195,15 +207,15 @@ export default function CreateJobPage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="category">Category</Label>
+                    <Label htmlFor="category">Categorie</Label>
                     <Select value={category} onValueChange={(value) => setCategory(value)}>
                       <SelectTrigger id="category">
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder="Selectează o categorie" />
                       </SelectTrigger>
                       <SelectContent>
                         {categories.map((cat) => (
-                          <SelectItem key={cat} value={cat}>
-                            {cat}
+                          <SelectItem key={cat.value} value={cat.value}>
+                            {cat.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -211,10 +223,10 @@ export default function CreateJobPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="location">Location</Label>
+                    <Label htmlFor="location">Locație</Label>
                     <Input
                       id="location"
-                      placeholder="Library or Online"
+                      placeholder="Bibliotecă sau online"
                       value={location}
                       onChange={(event) => setLocation(event.target.value)}
                       disabled={isSubmitting}
@@ -225,7 +237,7 @@ export default function CreateJobPage() {
 
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="pay-rate">Pay rate</Label>
+                    <Label htmlFor="pay-rate">Plată</Label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input
@@ -244,15 +256,15 @@ export default function CreateJobPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="pay-type">Pay type</Label>
+                    <Label htmlFor="pay-type">Tip plată</Label>
                     <Select value={payType} onValueChange={(value) => setPayType(value as (typeof payTypes)[number])}>
                       <SelectTrigger id="pay-type">
-                        <SelectValue placeholder="Pay type" />
+                        <SelectValue placeholder="Tip plată" />
                       </SelectTrigger>
                       <SelectContent>
                         {payTypes.map((type) => (
                           <SelectItem key={type} value={type}>
-                            {type}
+                            {payTypeLabels[type]}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -263,17 +275,17 @@ export default function CreateJobPage() {
                     <Label htmlFor="status">Status</Label>
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                       <Clock className="w-4 h-4 text-[#d4af37]" />
-                      Open
+                      Deschis
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <Button type="submit" disabled={isSubmitting || checkingSession} className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                    {isSubmitting ? 'Posting...' : 'Post job'}
+                    {isSubmitting ? 'Se publică...' : 'Publică jobul'}
                   </Button>
                   <Button type="button" variant="outline" onClick={() => router.push('/jobs')}>
-                    Cancel
+                    Anulează
                   </Button>
                 </div>
               </form>

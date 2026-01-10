@@ -24,8 +24,8 @@ import { getSafeSession } from '@/lib/get-safe-session';
 const fallbackPost: ForumPost = {
   id: 'demo',
   user_id: 'demo',
-  title: 'Sample post',
-  content: 'Sign in to view full discussion.',
+  title: 'Postare demonstrativă',
+  content: 'Autentifică-te pentru a vedea discuția completă.',
   category: 'general',
   views: 0,
   created_at: '',
@@ -86,7 +86,7 @@ function ForumDetailPageContent() {
   const [post, setPost] = useState<ForumPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [author, setAuthor] = useState('Campus Helper user');
+  const [author, setAuthor] = useState('Utilizator Campus Helper');
   const [authorId, setAuthorId] = useState<string | null>(null);
   const [comments, setComments] = useState<ThreadedComment[]>([]);
   const [commentLookup, setCommentLookup] = useState<Record<string, FlatComment>>({});
@@ -107,7 +107,7 @@ function ForumDetailPageContent() {
   const handleReportSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!post?.id) return;
-    setReportMessage('Report submitted. Thanks for letting us know.');
+    setReportMessage('Raport trimis. Mulțumim că ne-ai anunțat.');
     setReportDetails('');
     setReportOpen(false);
   };
@@ -143,7 +143,7 @@ function ForumDetailPageContent() {
         created_at: c.created_at,
         user_id: c.user_id,
         parent_id: (c as any).parent_id || null,
-        author: (c as any).profiles?.full_name || (c as any).profiles?.email || 'Campus Helper user',
+        author: (c as any).profiles?.full_name || (c as any).profiles?.email || 'Utilizator Campus Helper',
       })) || [];
 
     setCommentLookup(
@@ -195,7 +195,7 @@ function ForumDetailPageContent() {
       } else {
         setPost(data);
         const profile = (data as any).profiles;
-        setAuthor(profile?.full_name || profile?.email || 'Campus Helper user');
+        setAuthor(profile?.full_name || profile?.email || 'Utilizator Campus Helper');
         setAuthorId(data.user_id || null);
         const currentViews = data.views ?? 0;
         setViews(currentViews);
@@ -218,7 +218,19 @@ function ForumDetailPageContent() {
   }, [id]);
 
   const formatDate = (value?: string | null) =>
-    value ? new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+    value ? new Date(value).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+  const categoryLabel =
+    post?.category === 'general'
+      ? 'General'
+      : post?.category === 'academic'
+        ? 'Academic'
+        : post?.category === 'events'
+          ? 'Evenimente'
+          : post?.category === 'housing'
+            ? 'Cazare'
+            : post?.category === 'other'
+              ? 'Altele'
+              : post?.category || 'categorie';
 
   const replyingToAuthor = replyingToCommentId ? commentLookup[replyingToCommentId]?.author : null;
 
@@ -227,22 +239,22 @@ function ForumDetailPageContent() {
     setReplyNotice('');
     const client = supabase;
     if (!client) {
-      setReplyError('Supabase is not configured.');
+      setReplyError('Supabase nu este configurat.');
       return;
     }
     if (!post?.id) {
-      setReplyError('No post to reply to.');
+      setReplyError('Nu există postare pentru răspuns.');
       return;
     }
     if (!reply.trim()) {
-      setReplyError('Enter a reply.');
+      setReplyError('Scrie un răspuns.');
       return;
     }
     setReplying(true);
     const { session } = await getSafeSession();
     const userId = session?.user?.id;
     if (!userId) {
-      setReplyError('Please sign in to reply.');
+      setReplyError('Te rugăm să te autentifici pentru a răspunde.');
       setReplying(false);
       return;
     }
@@ -259,7 +271,7 @@ function ForumDetailPageContent() {
       delete payload.parent_id;
       ({ error: insertError } = await client.from('forum_comments').insert(payload));
       if (!insertError) {
-        setReplyNotice('Threaded replies need the latest migration; comment added at the top level.');
+        setReplyNotice('Răspunsurile în thread necesită ultima migrare; comentariul a fost adăugat la nivelul principal.');
       }
     }
     if (insertError) {
@@ -293,7 +305,7 @@ function ForumDetailPageContent() {
                 }}
                 className="text-xs text-[#1e3a5f] hover:underline"
               >
-                Reply
+                Răspunde
               </button>
               <button
                 type="button"
@@ -303,7 +315,7 @@ function ForumDetailPageContent() {
                   const { session } = await getSafeSession();
                   const reporterId = session?.user?.id;
                   if (!reporterId) {
-                    setCommentReportMessage('Sign in to report comments.');
+                    setCommentReportMessage('Autentifică-te pentru a raporta comentarii.');
                     return;
                   }
                   const { error: insertError } = await supabase.from('reports').insert({
@@ -319,12 +331,12 @@ function ForumDetailPageContent() {
                   if (insertError) {
                     setCommentReportMessage(insertError.message);
                   } else {
-                    setCommentReportMessage('Comment reported.');
+                    setCommentReportMessage('Comentariu raportat.');
                   }
                 }}
                 className="text-xs text-red-600 hover:underline"
               >
-                Report
+                Raportează
               </button>
             </div>
           </div>
@@ -344,7 +356,7 @@ function ForumDetailPageContent() {
           <div className="flex items-center gap-3 mb-4">
             <Button variant="ghost" className="text-[#1e3a5f] hover:text-[#d4af37]" onClick={() => router.back()}>
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              Înapoi
             </Button>
           </div>
 
@@ -352,10 +364,10 @@ function ForumDetailPageContent() {
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <CardTitle className="text-2xl text-[#1e3a5f]">{post?.title || 'Discussion'}</CardTitle>
-                  <CardDescription className="text-gray-600 capitalize">{post?.category || 'category'}</CardDescription>
+                  <CardTitle className="text-2xl text-[#1e3a5f]">{post?.title || 'Discuție'}</CardTitle>
+                  <CardDescription className="text-gray-600 capitalize">{categoryLabel}</CardDescription>
                   <p className="text-sm text-gray-500 mt-1">
-                    Posted by{' '}
+                    Publicat de{' '}
                     {authorId ? (
                       <Link href={`/profile/view?id=${authorId}`} className="underline hover:text-[#d4af37]">
                         {author}
@@ -375,19 +387,19 @@ function ForumDetailPageContent() {
                       onClick={() => setReportOpen(true)}
                     >
                       <Flag className="w-4 h-4 mr-1" />
-                      Report
+                      Raportează
                     </Button>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Report post</DialogTitle>
+                        <DialogTitle>Raportează postarea</DialogTitle>
                         <DialogDescription>
-                          Tell us what is wrong with this post.
+                          Spune-ne ce este în neregulă cu această postare.
                         </DialogDescription>
                       </DialogHeader>
                       <form className="space-y-3" onSubmit={handleReportSubmit}>
                         <div className="space-y-1">
                           <label htmlFor="report-reason" className="text-sm font-medium text-gray-700">
-                            Reason
+                            Motiv
                           </label>
                           <select
                             id="report-reason"
@@ -396,19 +408,19 @@ function ForumDetailPageContent() {
                             className="w-full border rounded-md px-3 py-2 text-sm"
                           >
                             <option value="spam">Spam</option>
-                            <option value="scam">Scam / Fraud</option>
-                            <option value="insult">Harassment / Insult</option>
-                            <option value="inaccurate">Inaccurate or misleading</option>
-                            <option value="other">Other</option>
+                            <option value="scam">Înșelătorie / fraudă</option>
+                            <option value="insult">Hărțuire / insultă</option>
+                            <option value="inaccurate">Inexact sau înșelător</option>
+                            <option value="other">Altul</option>
                           </select>
                         </div>
                         <div className="space-y-1">
                           <label htmlFor="report-details" className="text-sm font-medium text-gray-700">
-                            Details (optional)
+                            Detalii (opțional)
                           </label>
                           <Textarea
                             id="report-details"
-                            placeholder="Add any context that helps us review."
+                            placeholder="Adaugă contextul care ne ajută la verificare."
                             value={reportDetails}
                             onChange={(e) => setReportDetails(e.target.value)}
                             rows={3}
@@ -416,7 +428,7 @@ function ForumDetailPageContent() {
                         </div>
                         <DialogFooter>
                           <Button type="submit" className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                            Submit report
+                            Trimite raportul
                           </Button>
                         </DialogFooter>
                         {reportMessage && (
@@ -432,7 +444,7 @@ function ForumDetailPageContent() {
               {loading && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Loading post...
+                  Se încarcă postarea...
                 </div>
               )}
               {error && (
@@ -445,24 +457,24 @@ function ForumDetailPageContent() {
               <div className="flex items-center gap-4 text-sm text-gray-700">
                 <div className="flex items-center">
                   <Eye className="w-4 h-4 mr-1 text-[#d4af37]" />
-                  {views ?? post?.views ?? 0} views
+                  {views ?? post?.views ?? 0} vizualizări
                 </div>
                 <div className="flex items-center">
                   <MessageSquare className="w-4 h-4 mr-1 text-[#d4af37]" />
-                  Updated {formatDate(post?.updated_at || post?.created_at)}
+                  Actualizat {formatDate(post?.updated_at || post?.created_at)}
                 </div>
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-[#1e3a5f] mb-2">Content</h2>
+                <h2 className="text-lg font-semibold text-[#1e3a5f] mb-2">Conținut</h2>
                 <p className="text-gray-700 whitespace-pre-line">{post?.content}</p>
               </div>
 
               <Card className="border border-gray-200 bg-white">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-[#1e3a5f] text-lg">Replies</CardTitle>
+                  <CardTitle className="text-[#1e3a5f] text-lg">Răspunsuri</CardTitle>
                   <CardDescription className="text-gray-600">
-                    Join the discussion with your classmates.
+                    Alătură-te discuției cu colegii tăi.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -479,38 +491,38 @@ function ForumDetailPageContent() {
                   <div className="space-y-2">
                     {replyingToCommentId && (
                       <div className="flex items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-700">
-                        <span>Replying to {replyingToAuthor || 'comment'}</span>
+                        <span>Răspunzi la {replyingToAuthor || 'comentariu'}</span>
                         <button
                           type="button"
                           onClick={() => setReplyingToCommentId(null)}
                           className="text-[#1e3a5f] hover:underline"
                         >
-                          Cancel
+                          Anulează
                         </button>
                       </div>
                     )}
                     <Textarea
-                      placeholder="Share your thoughts..."
+                      placeholder="Scrie-ți gândurile..."
                       value={reply}
                       onChange={(e) => setReply(e.target.value)}
                       rows={3}
                       disabled={replying}
                     />
                     <div className="flex items-center justify-between">
-                      <p className="text-xs text-gray-500">Replies show in chronological threads.</p>
+                      <p className="text-xs text-gray-500">Răspunsurile sunt afișate cronologic.</p>
                       <Button
                         className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]"
                         disabled={replying}
                         onClick={handleReply}
                       >
-                        {replying ? 'Posting...' : replyingToCommentId ? 'Post reply' : 'Post comment'}
+                        {replying ? 'Se postează...' : replyingToCommentId ? 'Publică răspunsul' : 'Publică comentariul'}
                       </Button>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     {comments.length === 0 ? (
-                      <p className="text-sm text-gray-600">No replies yet. Be the first to respond.</p>
+                      <p className="text-sm text-gray-600">Încă nu există răspunsuri. Fii primul care răspunde.</p>
                     ) : (
                       comments.map((comment) => renderCommentThread(comment))
                     )}
@@ -538,7 +550,7 @@ function ForumSuspenseFallback() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Loading discussion...
+            Se încarcă discuția...
           </div>
         </div>
       </main>

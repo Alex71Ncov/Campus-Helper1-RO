@@ -17,18 +17,18 @@ import type { Session } from '@supabase/supabase-js';
 import { getSafeSession } from '@/lib/get-safe-session';
 
 const categories = [
-  { label: 'Books', value: 'books' },
-  { label: 'Notes', value: 'notes' },
-  { label: 'Exams', value: 'exams' },
-  { label: 'Equipment', value: 'equipment' },
-  { label: 'Other', value: 'other' },
+  { label: 'Cărți', value: 'books' },
+  { label: 'Notițe', value: 'notes' },
+  { label: 'Examene', value: 'exams' },
+  { label: 'Echipament', value: 'equipment' },
+  { label: 'Altele', value: 'other' },
 ];
 
 const conditions = [
-  { label: 'New', value: 'new' },
-  { label: 'Like new', value: 'like_new' },
-  { label: 'Good', value: 'good' },
-  { label: 'Fair', value: 'fair' },
+  { label: 'Nou', value: 'new' },
+  { label: 'Ca nou', value: 'like_new' },
+  { label: 'Bun', value: 'good' },
+  { label: 'Acceptabil', value: 'fair' },
 ];
 
 export default function CreateMarketplaceItemPage() {
@@ -44,7 +44,7 @@ export default function CreateMarketplaceItemPage() {
   const [condition, setCondition] = useState(conditions[1].value);
 
   const [error, setError] = useState(() =>
-    supabaseConfigured ? '' : 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.'
+    supabaseConfigured ? '' : 'Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.'
   );
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,7 +61,7 @@ export default function CreateMarketplaceItemPage() {
         return;
       }
       if (!session?.user) {
-        setError('Please sign in to list an item.');
+        setError('Te rugăm să te autentifici pentru a lista un anunț.');
         router.push('/sign-in');
         setCheckingSession(false);
         return;
@@ -86,23 +86,23 @@ export default function CreateMarketplaceItemPage() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!session?.user) {
-      setError('Please sign in to list an item.');
+      setError('Te rugăm să te autentifici pentru a lista un anunț.');
       return;
     }
 
     if (!title.trim() || !description.trim() || !price.trim()) {
-      setError('Please complete all required fields.');
+      setError('Completează toate câmpurile obligatorii.');
       return;
     }
 
     const parsedPrice = Number(price);
     if (Number.isNaN(parsedPrice) || parsedPrice <= 0) {
-      setError('Enter a valid price greater than 0.');
+      setError('Introdu un preț valid mai mare ca 0.');
       return;
     }
 
@@ -121,7 +121,7 @@ export default function CreateMarketplaceItemPage() {
     if (insertError) {
       setError(insertError.message);
     } else {
-      setMessage('Item listed! Redirecting...');
+      setMessage('Anunț publicat! Redirecționăm...');
       router.push('/marketplace');
     }
 
@@ -145,8 +145,8 @@ export default function CreateMarketplaceItemPage() {
                 <ShoppingBag className="w-6 h-6 text-[#f4d03f]" />
               </div>
               <div>
-                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Create</p>
-                <h1 className="text-3xl font-bold">List an Item</h1>
+                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Creează</p>
+                <h1 className="text-3xl font-bold">Listează un anunț</h1>
               </div>
             </div>
           </div>
@@ -155,14 +155,14 @@ export default function CreateMarketplaceItemPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl text-[#1e3a5f]">Item details</CardTitle>
-              <CardDescription>Describe what you are selling so classmates can buy quickly.</CardDescription>
+              <CardTitle className="text-xl text-[#1e3a5f]">Detalii anunț</CardTitle>
+              <CardDescription>Descrie ce vinzi pentru ca colegii să poată cumpăra rapid.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {checkingSession && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Checking your session...
+                  Se verifică sesiunea...
                 </div>
               )}
               {error && (
@@ -179,7 +179,7 @@ export default function CreateMarketplaceItemPage() {
 
               <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="title">Titlu</Label>
                   <Input
                     id="title"
                     placeholder="MacBook Air M1"
@@ -191,10 +191,10 @@ export default function CreateMarketplaceItemPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description">Descriere</Label>
                   <Textarea
                     id="description"
-                    placeholder="Describe the item, condition, and what's included."
+                    placeholder="Descrie articolul, starea și ce este inclus."
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                     rows={5}
@@ -205,10 +205,10 @@ export default function CreateMarketplaceItemPage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="category">Category</Label>
+                    <Label htmlFor="category">Categorie</Label>
                     <Select value={category} onValueChange={(value) => setCategory(value)}>
                       <SelectTrigger id="category">
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder="Selectează o categorie" />
                       </SelectTrigger>
                       <SelectContent>
                         {categories.map((cat) => (
@@ -221,10 +221,10 @@ export default function CreateMarketplaceItemPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="condition">Condition</Label>
+                    <Label htmlFor="condition">Stare</Label>
                     <Select value={condition} onValueChange={(value) => setCondition(value)}>
                       <SelectTrigger id="condition">
-                        <SelectValue placeholder="Condition" />
+                        <SelectValue placeholder="Stare" />
                       </SelectTrigger>
                       <SelectContent>
                         {conditions.map((cond) => (
@@ -238,7 +238,7 @@ export default function CreateMarketplaceItemPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price</Label>
+                  <Label htmlFor="price">Preț</Label>
                   <div className="relative">
                     <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
@@ -258,10 +258,10 @@ export default function CreateMarketplaceItemPage() {
 
                 <div className="flex items-center gap-3">
                   <Button type="submit" disabled={isSubmitting || checkingSession} className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                    {isSubmitting ? 'Listing...' : 'List item'}
+                    {isSubmitting ? 'Se publică...' : 'Publică anunțul'}
                   </Button>
                   <Button type="button" variant="outline" onClick={() => router.push('/marketplace')}>
-                    Cancel
+                    Anulează
                   </Button>
                 </div>
               </form>

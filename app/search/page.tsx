@@ -25,6 +25,19 @@ type SearchResults = {
 };
 
 const EMPTY_RESULTS: SearchResults = { jobs: [], items: [], posts: [] };
+const conditionLabels: Record<string, string> = {
+  new: 'nou',
+  like_new: 'ca nou',
+  good: 'bun',
+  fair: 'acceptabil',
+};
+const forumCategoryLabels: Record<string, string> = {
+  general: 'General',
+  academic: 'Academic',
+  events: 'Evenimente',
+  housing: 'Cazare',
+  other: 'Altele',
+};
 
 function highlight(text: string, query: string) {
   if (!query) return text;
@@ -88,11 +101,11 @@ export default function SearchPage() {
           headers,
         });
         if (!res.ok) {
-          throw new Error('Search failed');
+          throw new Error('Căutarea a eșuat');
         }
         const data = await res.json();
         if (data.error) {
-          setError(typeof data.error === 'string' ? data.error : 'Unable to search right now.');
+          setError(typeof data.error === 'string' ? data.error : 'Nu se poate căuta acum.');
           setResults(EMPTY_RESULTS);
           return;
         }
@@ -103,7 +116,7 @@ export default function SearchPage() {
       } catch (err: any) {
         if (err.name === 'AbortError') return;
         console.error('Search request failed', err);
-        setError('Unable to search right now. Please try again.');
+        setError('Nu se poate căuta acum. Încearcă din nou.');
         setResults(EMPTY_RESULTS);
       } finally {
         setLoading(false);
@@ -133,16 +146,16 @@ export default function SearchPage() {
               onClick={handleBack}
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              Înapoi
             </Button>
             <div className="inline-flex items-center gap-2 rounded-full bg-purple-100 text-purple-700 px-3 py-1 text-sm font-semibold">
               <Search className="w-4 h-4" />
-              Global Search
+              Căutare globală
             </div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[#1e3a5f]">Find anything on Campus Helper</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-[#1e3a5f]">Găsește orice pe Campus Helper</h1>
           <p className="text-lg text-gray-600">
-            Search across jobs, marketplace listings, and forum posts from one place.
+            Caută în joburi, marketplace și forum dintr-un singur loc.
           </p>
         </header>
 
@@ -152,7 +165,7 @@ export default function SearchPage() {
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search jobs, materials, or forum posts..."
+              placeholder="Caută joburi, materiale sau postări din forum..."
               className="pl-10 pr-4 py-6 text-lg border-[#d4af37]/60 focus-visible:ring-[#d4af37]"
             />
           </div>
@@ -167,15 +180,15 @@ export default function SearchPage() {
         {loading && (
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Loader2 className="w-4 h-4 animate-spin" />
-            Searching...
+            Se caută...
           </div>
         )}
 
         {!loading && query.trim() && !hasAnyResults && (
           <Card className="border-dashed border-gray-200 bg-white/90">
             <CardContent className="p-6 text-center space-y-3">
-              <p className="text-lg font-semibold text-[#1e3a5f]">No matches found</p>
-              <p className="text-sm text-gray-600">Try a different term or shorten your query.</p>
+              <p className="text-lg font-semibold text-[#1e3a5f]">Nu am găsit rezultate</p>
+              <p className="text-sm text-gray-600">Încearcă un alt termen sau scurtează căutarea.</p>
             </CardContent>
           </Card>
         )}
@@ -185,7 +198,7 @@ export default function SearchPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-[#1e3a5f]">
                 <Briefcase className="w-5 h-5 text-[#d4af37]" />
-                Jobs
+                Joburi
                 <Badge variant="outline" className="ml-2">
                   {results.jobs.length}
                 </Badge>
@@ -207,7 +220,7 @@ export default function SearchPage() {
                   </p>
                 </Link>
               ))}
-              {!results.jobs.length && <p className="text-sm text-gray-500">No job results yet.</p>}
+              {!results.jobs.length && <p className="text-sm text-gray-500">Nu există rezultate la joburi.</p>}
             </CardContent>
           </Card>
 
@@ -215,7 +228,7 @@ export default function SearchPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-[#1e3a5f]">
                 <ShoppingBag className="w-5 h-5 text-[#d4af37]" />
-                Materials
+                Materiale
                 <Badge variant="outline" className="ml-2">
                   {results.items.length}
                 </Badge>
@@ -230,14 +243,16 @@ export default function SearchPage() {
                 >
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-[#1e3a5f]">{highlight(item.title, query)}</p>
-                    <span className="text-xs uppercase text-[#d4af37]">{item.condition}</span>
+                    <span className="text-xs uppercase text-[#d4af37]">
+                      {conditionLabels[item.condition] || item.condition}
+                    </span>
                   </div>
                   <p className="text-sm text-gray-700 line-clamp-2">
                     {highlight(item.description || '', query)}
                   </p>
                 </Link>
               ))}
-              {!results.items.length && <p className="text-sm text-gray-500">No materials found.</p>}
+              {!results.items.length && <p className="text-sm text-gray-500">Nu am găsit materiale.</p>}
             </CardContent>
           </Card>
 
@@ -260,20 +275,22 @@ export default function SearchPage() {
                 >
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-[#1e3a5f]">{highlight(post.title, query)}</p>
-                    <span className="text-xs uppercase text-[#d4af37]">{post.category}</span>
+                    <span className="text-xs uppercase text-[#d4af37]">
+                      {forumCategoryLabels[post.category] || post.category}
+                    </span>
                   </div>
                     <p className="text-sm text-gray-700 line-clamp-2">{highlight(post.content || '', query)}</p>
                 </Link>
               ))}
-              {!results.posts.length && <p className="text-sm text-gray-500">No forum matches yet.</p>}
+              {!results.posts.length && <p className="text-sm text-gray-500">Nu există rezultate în forum.</p>}
             </CardContent>
           </Card>
         </div>
 
         <div className="flex items-center justify-between text-sm text-gray-500">
-          <span>Results grouped by content type.</span>
+          <span>Rezultate grupate după tipul de conținut.</span>
           <Button variant="ghost" size="sm" onClick={() => setQuery('')}>
-            Clear search
+            Golește căutarea
           </Button>
         </div>
       </div>

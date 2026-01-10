@@ -11,10 +11,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 const QUICK_PROMPTS = [
-  'Summarize today’s top campus jobs in one sentence.',
-  'Give me tips for writing a compelling job post students will trust.',
-  'How should I price used textbooks so they sell fast?',
-  'Suggest three safety reminders for meeting a buyer on campus.',
+  'Rezumă cele mai importante joburi din campus astăzi într-o singură propoziție.',
+  'Oferă-mi sfaturi pentru un anunț de job convingător, în care studenții să aibă încredere.',
+  'Cum ar trebui să stabilesc prețul manualelor folosite ca să se vândă repede?',
+  'Sugerează trei recomandări de siguranță pentru întâlnirea cu un cumpărător în campus.',
 ];
 
 function extractText(parts: UIMessage['parts']) {
@@ -63,7 +63,7 @@ export function AiChatPanel() {
               <Sparkles className="w-5 h-5 text-[#d4af37]" />
               Campus Helper AI
             </CardTitle>
-            <p className="text-sm text-gray-600">Powered by the Next.js AI SDK for quick, focused answers.</p>
+            <p className="text-sm text-gray-600">Alimentat de Next.js AI SDK pentru răspunsuri rapide și clare.</p>
           </div>
           <Badge variant="secondary" className="bg-[#f4d03f]/20 text-[#1e3a5f] border-[#f4d03f]/40">
             Beta
@@ -90,8 +90,8 @@ export function AiChatPanel() {
             <div className="p-4 space-y-3" ref={scrollRef}>
               {!hasMessages && (
                 <div className="rounded-xl bg-white p-4 text-sm text-gray-700 shadow-sm border border-dashed border-gray-200">
-                  Ask anything about campus jobs, listings, or forum posts. Your questions stay on this device; the bot
-                  cannot see private account data.
+                  Întreabă orice despre joburi, anunțuri sau postări din forum. Întrebările rămân pe acest dispozitiv; botul
+                  nu poate vedea date private din cont.
                 </div>
               )}
 
@@ -121,7 +121,7 @@ export function AiChatPanel() {
                       <div className="mt-1">
                         {isUser ? (
                           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-xs font-semibold uppercase">
-                            You
+                            Tu
                           </div>
                         ) : (
                           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#f4d03f]/25 text-[#1e3a5f]">
@@ -131,7 +131,7 @@ export function AiChatPanel() {
                       </div>
                       <div className="space-y-1">
                         <p className="text-xs font-semibold uppercase tracking-wide opacity-80">
-                          {isUser ? 'You' : 'Campus Helper AI'}
+                          {isUser ? 'Tu' : 'Campus Helper AI'}
                         </p>
                         <p className="whitespace-pre-wrap leading-relaxed">{text || '...'}</p>
                       </div>
@@ -149,19 +149,19 @@ export function AiChatPanel() {
           <Textarea
             value={input}
             onChange={(event) => setInput(event.target.value)}
-            placeholder="Ask about writing a job post, pricing a listing, or moderating a forum thread..."
+            placeholder="Întreabă despre redactarea unui anunț, stabilirea prețului sau moderarea unei discuții..."
             rows={3}
             className="resize-none"
           />
-          {error && <p className="text-sm text-red-600">Something went wrong: {error.message}</p>}
+          {error && <p className="text-sm text-red-600">A apărut o eroare: {error.message}</p>}
           <div className="flex items-center justify-between gap-3">
             {isLoading ? (
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Thinking...
+                Se gândește...
               </div>
             ) : (
-              <div className="text-xs text-gray-500">Campus-focused answers. Keep prompts concise.</div>
+              <div className="text-xs text-gray-500">Răspunsuri axate pe campus. Menține prompturile concise.</div>
             )}
             <div className="flex items-center gap-2">
               {isLoading && (
@@ -173,7 +173,7 @@ export function AiChatPanel() {
                   disabled={!isLoading}
                 >
                   <StopCircle className="w-4 h-4 mr-2" />
-                  Stop
+                  Oprește
                 </Button>
               )}
               <Button
@@ -182,7 +182,7 @@ export function AiChatPanel() {
                 disabled={!input.trim() || isLoading}
               >
                 <Send className="w-4 h-4 mr-2" />
-                Send
+                Trimite
               </Button>
             </div>
           </div>

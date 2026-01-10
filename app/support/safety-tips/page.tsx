@@ -6,39 +6,39 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 
 const tips = [
   {
-    title: 'Meet in well-lit public places',
-    description: 'Use campus common areas or other public spaces when handing off items or meeting for a job.',
+    title: 'Întâlniți-vă în locuri publice bine iluminate',
+    description: 'Folosește spațiile comune din campus sau locuri publice când predai un obiect sau te întâlnești pentru un job.',
     icon: MapPin,
   },
   {
-    title: 'Keep payments traceable',
-    description: 'Use documented payment methods instead of cash. Keep your receipts or screenshots.',
+    title: 'Păstrează plățile trasabile',
+    description: 'Folosește metode de plată documentate în loc de cash. Păstrează chitanțe sau capturi.',
     icon: CreditCard,
   },
   {
-    title: 'Protect your personal info',
-    description: 'Share only what is necessary. Avoid sending IDs, passwords, or banking details in chat.',
+    title: 'Protejează-ți informațiile personale',
+    description: 'Distribuie doar ce este necesar. Evită să trimiți acte, parole sau detalii bancare în chat.',
     icon: Lock,
   },
   {
-    title: 'Check profiles and reviews',
-    description: 'Look at ratings or prior activity before agreeing to work or buy. Ask clarifying questions first.',
+    title: 'Verifică profilurile și recenziile',
+    description: 'Uită-te la rating și activitatea anterioară înainte să accepți să lucrezi sau să cumperi. Pune întrebări clare la început.',
     icon: Users,
   },
   {
-    title: 'Document agreements',
-    description: 'Summarize the price, scope, and timeline in chat so you both have a written reference.',
+    title: 'Documentează acordurile',
+    description: 'Rezumați prețul, scopul și termenul în chat pentru a avea amândoi o referință scrisă.',
     icon: MessageSquare,
   },
   {
-    title: 'Report suspicious behavior',
-    description: 'If something feels off, report the post or contact support with links and screenshots.',
+    title: 'Raportează comportamentul suspect',
+    description: 'Dacă ceva ți se pare în neregulă, raportează postarea sau contactează suportul cu linkuri și capturi.',
     icon: ShieldCheck,
   },
 ];
 
 export const metadata = {
-  title: 'Safety Tips | Campus Helper',
+  title: 'Sfaturi de siguranță | Campus Helper',
 };
 
 export default function SafetyTipsPage() {
@@ -58,10 +58,10 @@ export default function SafetyTipsPage() {
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,0,0,0.32),transparent_38%),radial-gradient(circle_at_80%_15%,rgba(21,44,74,0.4),transparent_38%),radial-gradient(circle_at_45%_85%,rgba(26,188,156,0.18),transparent_40%)] opacity-80" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Safety</p>
-            <h1 className="text-4xl font-bold mb-3">Stay safe on and off campus</h1>
+            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Siguranță</p>
+            <h1 className="text-4xl font-bold mb-3">Fii în siguranță în și în afara campusului</h1>
             <p className="text-lg text-gray-200 max-w-3xl">
-              Use these quick checks whenever you post, buy, or meet with other students on Campus Helper.
+              Folosește aceste verificări rapide ori de câte ori publici, cumperi sau te întâlnești cu alți studenți pe Campus Helper.
             </p>
           </div>
         </section>
@@ -86,7 +86,7 @@ export default function SafetyTipsPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0 text-sm text-gray-700 leading-relaxed">
-                    Remember to trust your instincts. If a request seems too good to be true or feels rushed, pause and verify details before moving forward.
+                    Ai încredere în instinct. Dacă o cerere pare prea bună sau te grăbește, oprește-te și verifică detaliile înainte să continui.
                   </CardContent>
                 </Card>
               );
@@ -94,12 +94,12 @@ export default function SafetyTipsPage() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <h2 className="text-2xl font-semibold text-[#1e3a5f] mb-3">If something goes wrong</h2>
+            <h2 className="text-2xl font-semibold text-[#1e3a5f] mb-3">Dacă ceva nu merge bine</h2>
             <p className="text-gray-700 mb-3">
-              Save any chat history, receipts, and the link to the post. Share these with campus security if needed and let us know so we can review the account.
+              Salvează istoricul conversației, chitanțele și linkul postării. Dacă e nevoie, oferă-le securității din campus și anunță-ne pentru a verifica contul.
             </p>
             <p className="text-gray-700">
-              Need help right now? Visit our <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">Contact</Link> page and we will follow up as quickly as possible.
+              Ai nevoie de ajutor acum? Intră pe pagina de <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">Contact</Link> și îți răspundem cât de repede posibil.
             </p>
           </div>
         </section>

@@ -4,33 +4,33 @@ import { Footer } from '@/components/footer';
 
 const sections = [
   {
-    title: 'Using Campus Helper',
-    body: 'Campus Helper is designed for students and campus partners. By using the platform you confirm you are able to enter agreements in your region and will follow your institution’s code of conduct.',
+    title: 'Utilizarea Campus Helper',
+    body: 'Campus Helper este creat pentru studenți și parteneri din campus. Prin utilizarea platformei confirmi că poți încheia acorduri în regiunea ta și că vei respecta codul de conduită al instituției.',
   },
   {
-    title: 'Posts and listings',
-    body: 'Keep job posts, marketplace listings, and forum messages accurate and respectful. Do not share misleading pay information, spam content, or illegal materials.',
+    title: 'Postări și anunțuri',
+    body: 'Păstrează anunțurile de joburi, listele din marketplace și mesajele din forum corecte și respectuoase. Nu distribui informații înșelătoare despre plată, spam sau materiale ilegale.',
   },
   {
-    title: 'Payments and responsibilities',
-    body: 'Unless otherwise noted, payments and agreements happen directly between users. Campus Helper is not a party to these agreements and does not guarantee payment or performance. Always document what you agree to.',
+    title: 'Plăți și responsabilități',
+    body: 'Dacă nu se menționează altfel, plățile și acordurile au loc direct între utilizatori. Campus Helper nu este parte în aceste acorduri și nu garantează plata sau performanța. Documentează întotdeauna ceea ce agreați.',
   },
   {
-    title: 'Safety and conduct',
-    body: 'Meet in safe, public places when possible and follow the guidance in our Safety Tips. Harassment, discrimination, or attempts to bypass community safeguards may lead to account limits or removal.',
+    title: 'Siguranță și conduită',
+    body: 'Întâlniți-vă în locuri publice și sigure, când este posibil, și urmați recomandările din Sfaturile de siguranță. Hărțuirea, discriminarea sau încercările de a evita protecțiile comunității pot duce la limitări sau eliminarea contului.',
   },
   {
-    title: 'Content rights',
-    body: 'You retain ownership of the content you share and grant Campus Helper a license to display it on the platform so others can discover your posts and listings.',
+    title: 'Drepturi asupra conținutului',
+    body: 'Rămâi proprietarul conținutului pe care îl publici și acorzi Campus Helper o licență de afișare în platformă pentru ca alții să îți poată descoperi postările și anunțurile.',
   },
   {
-    title: 'Ending or changing the service',
-    body: 'We may update features, pause access, or remove content that violates these terms. We will post updates here when the terms change so you can review what is new.',
+    title: 'Încetarea sau modificarea serviciului',
+    body: 'Putem actualiza funcționalități, întrerupe accesul sau elimina conținut care încalcă acești termeni. Vom publica aici actualizările atunci când termenii se schimbă, ca să poți vedea noutățile.',
   },
 ];
 
 export const metadata = {
-  title: 'Terms of Service | Campus Helper',
+  title: 'Termeni și condiții | Campus Helper',
 };
 
 export default function TermsPage() {
@@ -46,10 +46,10 @@ export default function TermsPage() {
             <div className="absolute right-0 top-6 h-60 w-60 rounded-full bg-gradient-to-br from-white/40 via-transparent to-[#d4af37]/25 blur-3xl opacity-70 animate-float" />
           </div>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Terms of Service</p>
-            <h1 className="text-4xl font-bold mb-3">Rules for using Campus Helper</h1>
+            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Termeni și condiții</p>
+            <h1 className="text-4xl font-bold mb-3">Reguli pentru folosirea Campus Helper</h1>
             <p className="text-lg text-gray-200 max-w-3xl">
-              Please read these terms so you know what is expected when posting jobs, selling materials, or taking part in discussions.
+              Te rugăm să citești acești termeni pentru a ști la ce să te aștepți când publici joburi, vinzi materiale sau participi la discuții.
             </p>
           </div>
         </section>
@@ -71,7 +71,7 @@ export default function TermsPage() {
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <h2 className="text-xl font-semibold text-[#1e3a5f] mb-2">Contact</h2>
             <p className="text-gray-700">
-              If you have questions about these terms, message us through the <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">Contact page</Link>.
+              Dacă ai întrebări despre acești termeni, scrie-ne prin <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">pagina de contact</Link>.
             </p>
           </div>
         </section>

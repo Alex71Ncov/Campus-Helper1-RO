@@ -30,7 +30,7 @@ export default function EditProfilePage() {
   const [bio, setBio] = useState('');
 
   const [error, setError] = useState(() =>
-    supabaseConfigured ? '' : 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.'
+    supabaseConfigured ? '' : 'Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.'
   );
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,7 +51,7 @@ export default function EditProfilePage() {
       }
 
       if (!session?.user) {
-        setError('Please sign in to edit your profile.');
+        setError('Te rugăm să te autentifici pentru a edita profilul.');
         setCheckingSession(false);
         setLoadingProfile(false);
         router.push('/sign-in');
@@ -100,17 +100,17 @@ export default function EditProfilePage() {
 
     const client = supabase;
     if (!client) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!session?.user) {
-      setError('Please sign in to edit your profile.');
+      setError('Te rugăm să te autentifici pentru a edita profilul.');
       return;
     }
 
     if (!fullName.trim() || !university.trim()) {
-      setError('Name and university are required.');
+      setError('Numele și universitatea sunt obligatorii.');
       return;
     }
 
@@ -146,7 +146,7 @@ export default function EditProfilePage() {
       },
     });
 
-    setMessage('Profile updated.');
+    setMessage('Profil actualizat.');
     setIsSubmitting(false);
     router.push('/profile');
   };
@@ -168,8 +168,8 @@ export default function EditProfilePage() {
                 <User className="w-6 h-6 text-[#f4d03f]" />
               </div>
               <div>
-                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Profile</p>
-                <h1 className="text-3xl font-bold">Edit Profile</h1>
+                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Profil</p>
+                <h1 className="text-3xl font-bold">Editează profilul</h1>
               </div>
             </div>
           </div>
@@ -178,14 +178,14 @@ export default function EditProfilePage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl text-[#1e3a5f]">Your details</CardTitle>
-              <CardDescription>Update how classmates see you across jobs, marketplace, and forum.</CardDescription>
+              <CardTitle className="text-xl text-[#1e3a5f]">Detaliile tale</CardTitle>
+              <CardDescription>Actualizează cum te văd colegii în joburi, marketplace și forum.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {(checkingSession || loadingProfile) && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Loading your profile...
+                  Se încarcă profilul...
                 </div>
               )}
               {error && (
@@ -202,7 +202,7 @@ export default function EditProfilePage() {
 
               <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="space-y-2">
-                  <Label htmlFor="full-name">Full name</Label>
+                  <Label htmlFor="full-name">Nume complet</Label>
                   <Input
                     id="full-name"
                     placeholder="Jordan Kim"
@@ -227,10 +227,10 @@ export default function EditProfilePage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="university">University</Label>
+                    <Label htmlFor="university">Universitate</Label>
                     <Input
                       id="university"
-                      placeholder="State University"
+                      placeholder="Universitatea de Stat"
                       value={university}
                       onChange={(event) => setUniversity(event.target.value)}
                       disabled={isSubmitting || loadingProfile}
@@ -238,10 +238,10 @@ export default function EditProfilePage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="major">Major</Label>
+                    <Label htmlFor="major">Specializare</Label>
                     <Input
                       id="major"
-                      placeholder="Computer Science"
+                      placeholder="Informatică"
                       value={major}
                       onChange={(event) => setMajor(event.target.value)}
                       disabled={isSubmitting || loadingProfile}
@@ -251,20 +251,20 @@ export default function EditProfilePage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="year">Year</Label>
+                    <Label htmlFor="year">An</Label>
                     <Input
                       id="year"
-                      placeholder="Junior"
+                      placeholder="Anul III"
                       value={year}
                       onChange={(event) => setYear(event.target.value)}
                       disabled={isSubmitting || loadingProfile}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
+                    <Label htmlFor="bio">Descriere</Label>
                     <Textarea
                       id="bio"
-                      placeholder="Tell classmates about your interests, skills, and what you're looking for."
+                      placeholder="Spune-le colegilor despre interese, abilități și ce cauți."
                       value={bio}
                       onChange={(event) => setBio(event.target.value)}
                       rows={4}
@@ -275,10 +275,10 @@ export default function EditProfilePage() {
 
                 <div className="flex items-center gap-3">
                   <Button type="submit" disabled={isSubmitting || checkingSession || loadingProfile} className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                    {isSubmitting ? 'Saving...' : 'Save changes'}
+                    {isSubmitting ? 'Se salvează...' : 'Salvează schimbările'}
                   </Button>
                   <Button type="button" variant="outline" onClick={() => router.push('/profile')}>
-                    Cancel
+                    Anulează
                   </Button>
                 </div>
               </form>

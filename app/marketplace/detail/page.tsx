@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label';
 import { supabase, type MarketplaceItem } from '@/lib/supabase';
 import type { Rating } from '@/lib/supabase';
 import { getSafeSession } from '@/lib/get-safe-session';
+import { formatCurrencyRON } from '@/lib/formatters';
 import {
   Dialog,
   DialogContent,
@@ -27,8 +28,8 @@ import {
 const fallbackItem: MarketplaceItem = {
   id: 'demo',
   user_id: 'demo',
-  title: 'Sample item',
-  description: 'Sign in to view full listing details.',
+  title: 'Anunț demonstrativ',
+  description: 'Autentifică-te pentru a vedea detaliile complete.',
   category: 'books',
   price: 50,
   condition: 'good',
@@ -54,7 +55,7 @@ function MarketplaceDetailContent() {
   const [item, setItem] = useState<MarketplaceItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [seller, setSeller] = useState('Campus Helper user');
+  const [seller, setSeller] = useState('Utilizator Campus Helper');
   const [sellerId, setSellerId] = useState<string | null>(null);
   const [sellerEmail, setSellerEmail] = useState<string | null>(null);
   const [reviews, setReviews] = useState<Rating[]>([]);
@@ -77,13 +78,13 @@ function MarketplaceDetailContent() {
     setReportMessage('');
     if (!item?.id) return;
     if (!supabase) {
-      setReportError('Supabase is not configured.');
+      setReportError('Supabase nu este configurat.');
       return;
     }
     const { session } = await getSafeSession();
     const reporterId = session?.user?.id;
     if (!reporterId) {
-      setReportError('Please sign in to report.');
+      setReportError('Te rugăm să te autentifici pentru a raporta.');
       return;
     }
     const { error: insertError } = await supabase.from('reports').insert({
@@ -100,7 +101,7 @@ function MarketplaceDetailContent() {
       setReportError(insertError.message);
       return;
     }
-    setReportMessage('Report submitted. Thanks for letting us know.');
+    setReportMessage('Raport trimis. Mulțumim că ne-ai anunțat.');
     setReportDetails('');
     setReportOpen(false);
   };
@@ -142,7 +143,7 @@ function MarketplaceDetailContent() {
       } else {
         setItem(data);
         const profile = (data as any).profiles;
-        setSeller(profile?.full_name || profile?.email || 'Campus Helper user');
+        setSeller(profile?.full_name || profile?.email || 'Utilizator Campus Helper');
         setSellerId(data.user_id || null);
         setSellerEmail(profile?.email || null);
         setRatingSummary({ rating: profile?.rating, total_ratings: profile?.total_ratings });
@@ -171,18 +172,47 @@ function MarketplaceDetailContent() {
   }, [sellerId]);
 
   const formatDate = (value?: string | null) =>
-    value ? new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+    value ? new Date(value).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
 
-  const conditionLabel = (item?.condition || '').replace('_', ' ');
+  const conditionLabel =
+    item?.condition === 'new'
+      ? 'nou'
+      : item?.condition === 'like_new'
+        ? 'ca nou'
+        : item?.condition === 'good'
+          ? 'bun'
+          : item?.condition === 'fair'
+            ? 'acceptabil'
+            : (item?.condition || '').replace('_', ' ');
+  const statusLabel =
+    item?.status === 'sold'
+      ? 'vândut'
+      : item?.status === 'reserved'
+        ? 'rezervat'
+        : item?.status === 'available'
+          ? 'disponibil'
+          : item?.status || 'disponibil';
+  const categoryLabel =
+    item?.category === 'books'
+      ? 'Cărți'
+      : item?.category === 'notes'
+        ? 'Notițe'
+        : item?.category === 'exams'
+          ? 'Examene'
+          : item?.category === 'equipment'
+            ? 'Echipament'
+            : item?.category === 'other'
+              ? 'Altele'
+              : item?.category || 'categorie';
 
   const handleContact = async () => {
     setContactError('');
     if (!supabase) {
-      setContactError('Supabase is not configured.');
+      setContactError('Supabase nu este configurat.');
       return;
     }
     if (!sellerId || !item?.id) {
-      setContactError('Seller unavailable.');
+      setContactError('Vânzător indisponibil.');
       return;
     }
     setContactLoading(true);
@@ -235,7 +265,7 @@ function MarketplaceDetailContent() {
         .single();
 
       if (convError || !newConv?.id) {
-        setContactError(convError?.message || 'Could not start conversation.');
+        setContactError(convError?.message || 'Nu am putut începe conversația.');
         setContactLoading(false);
         return;
       }
@@ -273,7 +303,7 @@ function MarketplaceDetailContent() {
           <div className="flex items-center gap-3 mb-4">
             <Button variant="ghost" className="text-[#1e3a5f] hover:text-[#d4af37]" onClick={() => router.back()}>
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              Înapoi
             </Button>
           </div>
 
@@ -281,10 +311,10 @@ function MarketplaceDetailContent() {
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <CardTitle className="text-2xl text-[#1e3a5f]">{item?.title || 'Listing details'}</CardTitle>
-                  <CardDescription className="text-gray-600 capitalize">{item?.category || 'category'}</CardDescription>
+                  <CardTitle className="text-2xl text-[#1e3a5f]">{item?.title || 'Detalii anunț'}</CardTitle>
+                  <CardDescription className="text-gray-600 capitalize">{categoryLabel}</CardDescription>
                   <p className="text-sm text-gray-500 mt-1">
-                    Seller:{' '}
+                    Vânzător:{' '}
                     {sellerId ? (
                       <Link href={`/profile/view?id=${sellerId}`} className="underline hover:text-[#d4af37]">
                         {seller}
@@ -301,7 +331,7 @@ function MarketplaceDetailContent() {
                         onClick={handleContact}
                         disabled={contactLoading}
                       >
-                        {contactLoading ? 'Starting chat...' : 'Contact seller'}
+                        {contactLoading ? 'Se deschide chatul...' : 'Contactează vânzătorul'}
                       </Button>
                       {contactError && <p className="text-xs text-red-600">{contactError}</p>}
                     </div>
@@ -313,7 +343,7 @@ function MarketplaceDetailContent() {
                     item?.status === 'reserved' ? 'bg-blue-100 text-blue-800' :
                     'bg-[#d4af37] text-[#1e3a5f]'
                   }>
-                    {item?.status || 'available'}
+                    {statusLabel}
                   </Badge>
                   <Dialog open={reportOpen} onOpenChange={setReportOpen}>
                     <Button
@@ -323,18 +353,18 @@ function MarketplaceDetailContent() {
                       onClick={() => setReportOpen(true)}
                     >
                       <Flag className="w-4 h-4 mr-1" />
-                      Report
+                      Raportează
                     </Button>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Report listing</DialogTitle>
+                        <DialogTitle>Raportează anunțul</DialogTitle>
                         <DialogDescription>
-                          Tell us what is wrong with this listing.
+                          Spune-ne ce este în neregulă cu acest anunț.
                         </DialogDescription>
                       </DialogHeader>
                       <form className="space-y-3" onSubmit={handleReportSubmit}>
                         <div className="space-y-1">
-                          <Label htmlFor="report-reason">Reason</Label>
+                          <Label htmlFor="report-reason">Motiv</Label>
                           <select
                             id="report-reason"
                             value={reportReason}
@@ -342,17 +372,17 @@ function MarketplaceDetailContent() {
                             className="w-full border rounded-md px-3 py-2 text-sm"
                           >
                             <option value="spam">Spam</option>
-                            <option value="scam">Scam / Fraud</option>
-                            <option value="insult">Harassment / Insult</option>
-                            <option value="inaccurate">Inaccurate or misleading</option>
-                            <option value="other">Other</option>
+                            <option value="scam">Înșelătorie / fraudă</option>
+                            <option value="insult">Hărțuire / insultă</option>
+                            <option value="inaccurate">Inexact sau înșelător</option>
+                            <option value="other">Altul</option>
                           </select>
                         </div>
                         <div className="space-y-1">
-                          <Label htmlFor="report-details">Details (optional)</Label>
+                          <Label htmlFor="report-details">Detalii (opțional)</Label>
                           <Textarea
                             id="report-details"
-                            placeholder="Add any context that helps us review."
+                            placeholder="Adaugă contextul care ne ajută la verificare."
                             value={reportDetails}
                             onChange={(e) => setReportDetails(e.target.value)}
                             rows={3}
@@ -360,7 +390,7 @@ function MarketplaceDetailContent() {
                         </div>
                         <DialogFooter>
                           <Button type="submit" className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                            Submit report
+                            Trimite raportul
                           </Button>
                         </DialogFooter>
                         {reportMessage && (
@@ -379,7 +409,7 @@ function MarketplaceDetailContent() {
               {loading && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Loading listing...
+                  Se încarcă anunțul...
                 </div>
               )}
               {error && (
@@ -390,36 +420,36 @@ function MarketplaceDetailContent() {
               )}
 
               <div className="flex items-center gap-4 text-2xl font-bold text-[#1e3a5f]">
-                ${item?.price}
+                {formatCurrencyRON(Number(item?.price || 0))}
                 <Badge className="text-sm capitalize">
-                  {conditionLabel || 'condition'}
+                  {conditionLabel || 'stare'}
                 </Badge>
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-700">
                 <ShoppingBag className="w-4 h-4 text-[#d4af37]" />
-                <span>Status: {item?.status || 'available'}</span>
+                <span>Status: {statusLabel}</span>
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-[#1e3a5f] mb-2">Description</h2>
+                <h2 className="text-lg font-semibold text-[#1e3a5f] mb-2">Descriere</h2>
                 <p className="text-gray-700 whitespace-pre-line">{item?.description}</p>
               </div>
 
               <div className="text-sm text-gray-500">
-                Listed {formatDate(item?.created_at)} • Updated {formatDate(item?.updated_at)}
+                Listat {formatDate(item?.created_at)} • Actualizat {formatDate(item?.updated_at)}
               </div>
 
               <Card className="border border-[#d4af37]/30 bg-gradient-to-br from-white via-white to-[#fff8e1]">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-[#1e3a5f] text-lg">Reviews for {seller}</CardTitle>
+                  <CardTitle className="text-[#1e3a5f] text-lg">Recenzii pentru {seller}</CardTitle>
                   <CardDescription className="text-gray-600">
-                    {ratingSummary.rating ? `${ratingSummary.rating.toFixed(1)} average • ${ratingSummary.total_ratings || 0} ratings` : 'No ratings yet'}
+                    {ratingSummary.rating ? `${ratingSummary.rating.toFixed(1)} medie • ${ratingSummary.total_ratings || 0} recenzii` : 'Încă nu există recenzii'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {reviews.length === 0 ? (
-                    <p className="text-sm text-gray-600">No reviews yet.</p>
+                    <p className="text-sm text-gray-600">Încă nu există recenzii.</p>
                   ) : (
                     reviews.map((review) => (
                       <div key={review.id} className="rounded-lg border border-gray-200 bg-white px-3 py-2">
@@ -429,12 +459,12 @@ function MarketplaceDetailContent() {
                           ))}
                           <span className="text-xs text-gray-500 ml-2">{formatDate(review.created_at)}</span>
                         </div>
-                        <p className="text-sm text-gray-700">{review.comment || 'No comment provided.'}</p>
+                        <p className="text-sm text-gray-700">{review.comment || 'Fără comentariu.'}</p>
                       </div>
                     ))
                   )}
                   <div className="border-t pt-3 space-y-3">
-                    <h3 className="text-sm font-semibold text-[#1e3a5f]">Leave a review</h3>
+                    <h3 className="text-sm font-semibold text-[#1e3a5f]">Lasă o recenzie</h3>
                     {submitError && (
                       <div className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-md">
                         {submitError}
@@ -460,10 +490,10 @@ function MarketplaceDetailContent() {
                         />
                       </div>
                       <div className="space-y-1 md:col-span-2">
-                        <Label htmlFor="comment">Comment</Label>
+                        <Label htmlFor="comment">Comentariu</Label>
                         <Textarea
                           id="comment"
-                          placeholder="Share your experience..."
+                          placeholder="Spune-ne experiența ta..."
                           value={newComment}
                           onChange={(e) => setNewComment(e.target.value)}
                           rows={3}
@@ -478,16 +508,16 @@ function MarketplaceDetailContent() {
                         setSubmitError('');
                         setSubmitMessage('');
                         if (!sellerId) {
-                          setSubmitError('No user to review.');
+                          setSubmitError('Nu există utilizator pentru recenzie.');
                           return;
                         }
                         if (!supabase) {
-                          setSubmitError('Supabase is not configured.');
+                          setSubmitError('Supabase nu este configurat.');
                           return;
                         }
                         const parsedRating = Number(newRating);
                         if (Number.isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5) {
-                          setSubmitError('Rating must be between 1 and 5.');
+                          setSubmitError('Ratingul trebuie să fie între 1 și 5.');
                           return;
                         }
 
@@ -495,7 +525,7 @@ function MarketplaceDetailContent() {
                         const { session } = await getSafeSession();
                         const userId = session?.user?.id;
                         if (!userId) {
-                          setSubmitError('Please sign in to leave a review.');
+                          setSubmitError('Te rugăm să te autentifici pentru a lăsa o recenzie.');
                           setSubmitting(false);
                           return;
                         }
@@ -511,7 +541,7 @@ function MarketplaceDetailContent() {
                         if (insertError) {
                           setSubmitError(insertError.message);
                         } else {
-                          setSubmitMessage('Review submitted!');
+                          setSubmitMessage('Recenzie trimisă!');
                           setReviews((prev) => [
                             {
                               id: crypto.randomUUID(),
@@ -530,7 +560,7 @@ function MarketplaceDetailContent() {
                         setSubmitting(false);
                       }}
                     >
-                      {submitting ? 'Submitting...' : 'Submit review'}
+                      {submitting ? 'Se trimite...' : 'Trimite recenzia'}
                     </Button>
                   </div>
                 </CardContent>
@@ -553,7 +583,7 @@ function MarketplaceSuspenseFallback() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Loading listing...
+            Se încarcă anunțul...
           </div>
         </div>
       </main>

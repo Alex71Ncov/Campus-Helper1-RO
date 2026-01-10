@@ -67,7 +67,7 @@ export function Navigation() {
         .eq('id', session.user.id)
         .single();
 
-      setDisplayName(profile?.full_name || baseEmail || 'Profile');
+      setDisplayName(profile?.full_name || baseEmail || 'Profil');
       if (profile?.role === 'admin') {
         setIsAdmin(true);
       }
@@ -87,7 +87,7 @@ export function Navigation() {
     const { data: listener } = client.auth.onAuthStateChange(async (event) => {
       // Cast to string to handle non-typed Supabase events like TOKEN_REFRESH_FAILED without type errors.
       if ((event as string) === 'TOKEN_REFRESH_FAILED') {
-        toast.error('Your session expired. Please sign in again.');
+        toast.error('Sesiunea ta a expirat. Te rugăm să te autentifici din nou.');
         await client.auth.signOut();
         setIsAuthed(false);
         setDisplayName('');
@@ -150,7 +150,7 @@ export function Navigation() {
             <Link href="/jobs">
               <Button variant="ghost" className="text-white hover:text-[#d4af37] hover:bg-[#2a4a6f]">
                 <Briefcase className="w-4 h-4 mr-2" />
-                Jobs
+                Joburi
               </Button>
             </Link>
             <Link href="/marketplace">
@@ -168,7 +168,7 @@ export function Navigation() {
             <Link href="/search">
               <Button variant="ghost" className="text-white hover:text-[#d4af37] hover:bg-[#2a4a6f]">
                 <Search className="w-4 h-4 mr-2" />
-                Search
+                Căutare
               </Button>
             </Link>
             <Link href="/ai-assistant">
@@ -190,7 +190,7 @@ export function Navigation() {
             {isAuthed ? (
               <>
                 <NotificationsDropdown />
-                <Link href="/messages" aria-label="Messages" className="hidden sm:inline-flex">                  <Button
+                <Link href="/messages" aria-label="Mesaje" className="hidden sm:inline-flex">                  <Button
                     variant="ghost"
                     size="icon"
                     className="h-10 w-10 text-white hover:text-[#d4af37] hover:bg-[#2a4a6f]"
@@ -208,7 +208,7 @@ export function Navigation() {
                         {initials}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="hidden sm:inline">{displayName || 'Profile'}</span>
+                    <span className="hidden sm:inline">{displayName || 'Profil'}</span>
                   </Button>
                 </Link>
                 <Button
@@ -225,12 +225,12 @@ export function Navigation() {
                 <Link href="/profile">
                   <Button variant="ghost" className="text-white hover:text-[#d4af37] hover:bg-[#2a4a6f]">
                     <User className="w-4 h-4 mr-2" />
-                    <span className="hidden sm:inline">Profile</span>
+                    <span className="hidden sm:inline">Profil</span>
                   </Button>
                 </Link>
                 <Link href="/sign-in">
                   <Button className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e] font-semibold">
-                    Sign In
+                    Autentificare
                   </Button>
                 </Link>
               </>
@@ -239,7 +239,7 @@ export function Navigation() {
               variant="ghost"
               size="icon"
               className="h-10 w-10 text-white hover:text-[#d4af37] hover:bg-[#2a4a6f] lg:hidden"
-              aria-label="Toggle menu"
+              aria-label="Comută meniul"
               onClick={() => setMobileOpen((prev) => !prev)}
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -252,7 +252,7 @@ export function Navigation() {
               <Link href="/jobs" onClick={() => setMobileOpen(false)}>
                 <Button variant="ghost" className="w-full justify-center bg-white/10 text-white">
                   <Briefcase className="w-4 h-4 mr-2" />
-                  Jobs
+                  Joburi
                 </Button>
               </Link>
               <Link href="/marketplace" onClick={() => setMobileOpen(false)}>
@@ -270,7 +270,7 @@ export function Navigation() {
               <Link href="/search" onClick={() => setMobileOpen(false)}>
                 <Button variant="ghost" className="w-full justify-center bg-white/10 text-white">
                   <Search className="w-4 h-4 mr-2" />
-                  Search
+                  Căutare
                 </Button>
               </Link>
               <Link href="/ai-assistant" onClick={() => setMobileOpen(false)}>
@@ -283,7 +283,7 @@ export function Navigation() {
                 <Link href="/messages" onClick={() => setMobileOpen(false)}>
                   <Button variant="ghost" className="w-full justify-center bg-white/10 text-white">
                     <MessageSquare className="w-4 h-4 mr-2" />
-                    Messages
+                    Mesaje
                   </Button>
                 </Link>
               )}
@@ -305,11 +305,11 @@ export function Navigation() {
                   disabled={loading}
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <LogOut className="w-4 h-4 mr-2" />}
-                  Sign out
+                  Deconectare
                 </Button>
               ) : (
                 <Link href="/sign-in" onClick={() => setMobileOpen(false)}>
-                  <Button className="w-full justify-center bg-[#d4af37] text-[#1e3a5f]">Sign In</Button>
+                  <Button className="w-full justify-center bg-[#d4af37] text-[#1e3a5f]">Autentificare</Button>
                 </Link>
               )}
             </div>

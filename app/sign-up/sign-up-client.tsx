@@ -30,12 +30,12 @@ export default function SignUpClient() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!fullName.trim() || !email.trim() || !password || !university.trim()) {
-      setError('Please complete your name, campus email, university, and password.');
+      setError('Completează numele, emailul instituțional, universitatea și parola.');
       return;
     }
 
@@ -70,19 +70,19 @@ export default function SignUpClient() {
         });
       } catch (profileError) {
         console.error('Profile setup failed during sign-up', profileError);
-        setError('Account created, but we could not finish your profile. Please sign in again.');
+        setError('Cont creat, dar nu am putut finaliza profilul. Te rugăm să te autentifici din nou.');
         setIsSubmitting(false);
         return;
       }
 
-      setMessage('Account created! Redirecting...');
+      setMessage('Cont creat! Redirecționăm...');
       router.push('/home');
       router.refresh();
       setIsSubmitting(false);
       return;
     }
 
-    setMessage('Check your email to confirm your account. You can sign in after verifying.');
+    setMessage('Verifică emailul pentru a confirma contul. Te poți autentifica după verificare.');
     setIsSubmitting(false);
   };
 
@@ -102,27 +102,27 @@ export default function SignUpClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div className="space-y-4 animate-fade-in-up">
-                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Join free</p>
+                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Înscriere gratuită</p>
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                  Create your campus account
-                  <span className="text-[#d4af37]"> in minutes</span>
+                  Creează-ți contul de campus
+                  <span className="text-[#d4af37]"> în câteva minute</span>
                 </h1>
                 <p className="text-lg text-gray-200 max-w-xl">
-                  One login for jobs, marketplace listings, and forum threads. Use your campus email to stay verified.
+                  Un singur cont pentru joburi, marketplace și forum. Folosește emailul instituțional pentru verificare.
                 </p>
 
                 <div className="grid sm:grid-cols-3 gap-3 pt-2">
                   <div className="flex items-center gap-2 bg-white/10 border border-white/10 rounded-lg px-3 py-2 backdrop-blur animate-fade-in-up" style={{ animationDelay: '0.05s' }}>
                     <Sparkles className="w-5 h-5 text-[#f4d03f]" />
-                    <span className="text-sm">Set up quickly</span>
+                    <span className="text-sm">Configurare rapidă</span>
                   </div>
                   <div className="flex items-center gap-2 bg-white/10 border border-white/10 rounded-lg px-3 py-2 backdrop-blur animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
                     <Shield className="w-5 h-5 text-[#f4d03f]" />
-                    <span className="text-sm">Campus-first safety</span>
+                    <span className="text-sm">Siguranță în campus</span>
                   </div>
                   <div className="flex items-center gap-2 bg-white/10 border border-white/10 rounded-lg px-3 py-2 backdrop-blur animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
                     <CheckCircle2 className="w-5 h-5 text-[#f4d03f]" />
-                    <span className="text-sm">Verified community</span>
+                    <span className="text-sm">Comunitate verificată</span>
                   </div>
                 </div>
               </div>
@@ -130,9 +130,9 @@ export default function SignUpClient() {
               <div className="animate-fade-in-up" style={{ animationDelay: '0.12s' }}>
                 <Card className="border-2 border-white/20 bg-white/90 backdrop-blur shadow-2xl">
                   <CardHeader className="space-y-2">
-                    <CardTitle className="text-2xl text-[#1e3a5f]">Create account</CardTitle>
+                    <CardTitle className="text-2xl text-[#1e3a5f]">Creează cont</CardTitle>
                     <CardDescription className="text-gray-600">
-                      Enter your campus details to unlock jobs, marketplace, and forum access.
+                      Introdu detaliile de campus pentru acces la joburi, marketplace și forum.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -148,7 +148,7 @@ export default function SignUpClient() {
                     )}
                     <form className="space-y-4" onSubmit={handleSignUp}>
                       <div className="space-y-2">
-                        <Label htmlFor="name">Full name</Label>
+                        <Label htmlFor="name">Nume complet</Label>
                         <Input
                           id="name"
                           type="text"
@@ -162,7 +162,7 @@ export default function SignUpClient() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="email">Campus email</Label>
+                        <Label htmlFor="email">Email instituțional</Label>
                         <Input
                           id="email"
                           type="email"
@@ -176,7 +176,7 @@ export default function SignUpClient() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="university">University</Label>
+                        <Label htmlFor="university">Universitate</Label>
                         <Input
                           id="university"
                           type="text"
@@ -190,7 +190,7 @@ export default function SignUpClient() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Parolă</Label>
                         <div className="relative">
                           <Input
                             id="password"
@@ -206,7 +206,7 @@ export default function SignUpClient() {
                             type="button"
                             className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center text-sm text-gray-500 hover:text-[#1e3a5f]"
                             onClick={() => setShowPassword((prev) => !prev)}
-                            aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            aria-label={showPassword ? 'Ascunde parola' : 'Afișează parola'}
                           >
                             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                           </button>
@@ -218,19 +218,19 @@ export default function SignUpClient() {
                         disabled={isSubmitting}
                         className="w-full bg-[#1e3a5f] hover:bg-[#2a4a6f] text-white h-11 shadow-[0_15px_40px_rgba(30,58,95,0.35)]"
                       >
-                        {isSubmitting ? 'Creating...' : 'Create account'}
+                        {isSubmitting ? 'Se creează...' : 'Creează cont'}
                       </Button>
 
                       <div className="text-sm text-gray-600 text-center">
-                        By continuing you agree to our{' '}
-                        <Link href="/legal/terms" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">Terms</Link>
-                        {' '}and{' '}
-                        <Link href="/legal/privacy" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">Privacy</Link>.
+                        Prin continuare ești de acord cu{' '}
+                        <Link href="/legal/terms" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">Termenii</Link>
+                        {' '}și{' '}
+                        <Link href="/legal/privacy" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">Confidențialitatea</Link>.
                       </div>
 
                       <div className="text-sm text-center">
-                        Already have an account?{' '}
-                        <Link href="/sign-in" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">Sign in</Link>
+                        Ai deja cont?{' '}
+                        <Link href="/sign-in" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">Autentifică-te</Link>
                       </div>
                     </form>
                   </CardContent>

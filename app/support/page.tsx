@@ -6,27 +6,27 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 
 const supportResources = [
   {
-    title: 'Help Center',
-    description: 'Guides and FAQs covering jobs, marketplace listings, and forum posts.',
+    title: 'Centru de ajutor',
+    description: 'Ghiduri și întrebări frecvente despre joburi, marketplace și forum.',
     href: '/support/help-center',
     icon: LifeBuoy,
   },
   {
-    title: 'Safety Tips',
-    description: 'Stay safe while meeting up, paying, and collaborating with other students.',
+    title: 'Sfaturi de siguranță',
+    description: 'Fii în siguranță când te întâlnești, plătești sau colaborezi cu alți studenți.',
     href: '/support/safety-tips',
     icon: Shield,
   },
   {
-    title: 'Contact Us',
-    description: 'Need a hand? Reach the Campus Helper team directly for support.',
+    title: 'Contact',
+    description: 'Ai nevoie de ajutor? Contactează direct echipa Campus Helper.',
     href: '/support/contact',
     icon: Mail,
   },
 ];
 
 export const metadata = {
-  title: 'Support | Campus Helper',
+  title: 'Suport | Campus Helper',
 };
 
 export default function SupportPage() {
@@ -46,11 +46,11 @@ export default function SupportPage() {
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,0,0,0.32),transparent_38%),radial-gradient(circle_at_80%_15%,rgba(21,44,74,0.4),transparent_38%),radial-gradient(circle_at_45%_85%,rgba(26,188,156,0.18),transparent_40%)] opacity-80" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Support</p>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">How can we help?</h1>
+            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Suport</p>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Cum te putem ajuta?</h1>
             <p className="text-lg text-gray-200 max-w-3xl">
-              Browse quick resources, safety guidance, and ways to reach us. We are here to make sure Campus Helper
-              is reliable for every student.
+              Accesează resurse rapide, recomandări de siguranță și modalități de contact. Suntem aici ca Campus Helper
+              să fie de încredere pentru fiecare student.
             </p>
           </div>
         </section>
@@ -71,7 +71,7 @@ export default function SupportPage() {
                     </CardHeader>
                     <CardContent className="pt-0">
                       <span className="inline-flex items-center text-[#1e3a5f] font-semibold hover:text-[#d4af37]">
-                        <span>Open {resource.title}</span>
+                        <span>Deschide {resource.title}</span>
                         <span className="ml-2">→</span>
                       </span>
                     </CardContent>
@@ -82,23 +82,23 @@ export default function SupportPage() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-4 animate-fade-in-up" style={{ animationDelay: '0.28s' }}>
-            <h2 className="text-2xl font-semibold text-[#1e3a5f]">Quick tips to get help faster</h2>
+            <h2 className="text-2xl font-semibold text-[#1e3a5f]">Sfaturi rapide pentru ajutor mai prompt</h2>
             <ul className="grid md:grid-cols-2 gap-3 text-gray-700">
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[#d4af37]" />
-                <span>Use your campus email for sign-ups so we can verify your account quickly.</span>
+                <span>Folosește emailul instituțional la înregistrare pentru a verifica rapid contul.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[#d4af37]" />
-                <span>Include screenshots when reporting an issue, especially payment or chat details.</span>
+                <span>Include capturi de ecran când raportezi o problemă, mai ales la plăți sau conversații.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[#d4af37]" />
-                <span>Use the forum categories that match your topic so others can find answers.</span>
+                <span>Folosește categoria de forum potrivită, astfel încât alții să poată găsi răspunsuri.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[#d4af37]" />
-                <span>Check your notification settings if you are not receiving replies or offers.</span>
+                <span>Verifică setările de notificări dacă nu primești răspunsuri sau oferte.</span>
               </li>
             </ul>
           </div>

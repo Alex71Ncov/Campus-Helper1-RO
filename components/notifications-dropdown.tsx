@@ -1,6 +1,7 @@
 'use client';
 
 import { formatDistanceToNow } from 'date-fns';
+import { ro } from 'date-fns/locale';
 import { Bell, MessageCircle, Briefcase, MessageSquare, CheckCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,9 +24,9 @@ const typeIcon: Record<NotificationType, JSX.Element> = {
 };
 
 const typeLabel: Record<NotificationType, string> = {
-  message: 'Message',
+  message: 'Mesaj',
   job: 'Job',
-  comment: 'Comment',
+  comment: 'Comentariu',
 };
 
 export function NotificationsDropdown() {
@@ -37,7 +38,7 @@ export function NotificationsDropdown() {
         <Button
           variant="ghost"
           className="relative text-white hover:text-[#d4af37] hover:bg-[#2a4a6f] p-2 h-10 w-10"
-          aria-label="Notifications"
+          aria-label="Notificări"
         >
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (
@@ -47,7 +48,7 @@ export function NotificationsDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80 p-0" align="end">
         <div className="flex items-center justify-between px-4 py-3">
-          <DropdownMenuLabel className="text-base font-semibold">Notifications</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-base font-semibold">Notificări</DropdownMenuLabel>
           <Button
             variant="ghost"
             size="sm"
@@ -56,14 +57,14 @@ export function NotificationsDropdown() {
             disabled={!unreadCount}
           >
             <CheckCheck className="w-4 h-4 mr-1" />
-            Mark all read
+            Marchează toate ca citite
           </Button>
         </div>
         <DropdownMenuSeparator />
         <ScrollArea className="h-80">
           <div className="divide-y divide-gray-100">
             {notifications.length === 0 ? (
-              <div className="px-4 py-6 text-sm text-gray-600">You&apos;re all caught up.</div>
+              <div className="px-4 py-6 text-sm text-gray-600">Nu ai notificări noi.</div>
             ) : (
               notifications.map((notification: Notification) => (
                 <DropdownMenuItem
@@ -85,7 +86,7 @@ export function NotificationsDropdown() {
                     </div>
                     <p className="text-sm text-gray-700 leading-snug">{notification.body}</p>
                     <p className="text-xs text-gray-500">
-                      {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                      {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true, locale: ro })}
                     </p>
                   </div>
                 </DropdownMenuItem>

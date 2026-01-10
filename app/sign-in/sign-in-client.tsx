@@ -28,12 +28,12 @@ export default function SignInClient() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!email.trim()) {
-      setError('Enter your campus email to reset your password.');
+      setError('Introdu emailul instituțional pentru resetarea parolei.');
       return;
     }
 
@@ -47,7 +47,7 @@ export default function SignInClient() {
     if (resetError) {
       setError(resetError.message);
     } else {
-      setMessage('Check your email for a link to reset your password.');
+      setMessage('Verifică emailul pentru linkul de resetare a parolei.');
     }
 
     setIsSubmitting(false);
@@ -59,12 +59,12 @@ export default function SignInClient() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!email.trim() || !password) {
-      setError('Enter your email and password to continue.');
+      setError('Introdu emailul și parola pentru a continua.');
       return;
     }
 
@@ -93,12 +93,12 @@ export default function SignInClient() {
       await ensureProfileExists(supabase, session, { email: email.trim() });
     } catch (profileError) {
       console.error('Profile setup failed after sign-in', profileError);
-      setError('Signed in, but we could not load your profile. Try again.');
+      setError('Te-ai autentificat, dar nu am putut încărca profilul. Încearcă din nou.');
       setIsSubmitting(false);
       return;
     }
 
-    setMessage('Signed in! Redirecting...');
+    setMessage('Autentificare reușită! Redirecționăm...');
     router.push('/home');
     router.refresh();
     setIsSubmitting(false);
@@ -109,12 +109,12 @@ export default function SignInClient() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!email.trim()) {
-      setError('Enter your campus email to receive a sign-in link.');
+      setError('Introdu emailul instituțional pentru a primi un link de autentificare.');
       return;
     }
 
@@ -131,7 +131,7 @@ export default function SignInClient() {
     if (otpError) {
       setError(otpError.message);
     } else {
-      setMessage('Check your email for a magic sign-in link.');
+      setMessage('Verifică emailul pentru linkul de autentificare.');
     }
 
     setIsSubmitting(false);
@@ -153,27 +153,27 @@ export default function SignInClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div className="space-y-4 animate-fade-in-up">
-                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Welcome back</p>
+                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Bine ai revenit</p>
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                  Sign in to reconnect
-                  <span className="text-[#d4af37]"> with campus</span>
+                  Autentifică-te pentru a te reconecta
+                  <span className="text-[#d4af37]"> cu campusul</span>
                 </h1>
                 <p className="text-lg text-gray-200 max-w-xl">
-                  Access jobs, marketplace deals, and your forum threads in one place. Keep your campus network moving.
+                  Accesează joburi, oferte din marketplace și discuții din forum într-un singur loc.
                 </p>
 
                 <div className="grid sm:grid-cols-3 gap-3 pt-2">
                   <div className="flex items-center gap-2 bg-white/10 border border-white/10 rounded-lg px-3 py-2 backdrop-blur animate-fade-in-up" style={{ animationDelay: '0.05s' }}>
                     <Shield className="w-5 h-5 text-[#f4d03f]" />
-                    <span className="text-sm">Safe & verified</span>
+                    <span className="text-sm">Sigur și verificat</span>
                   </div>
                   <div className="flex items-center gap-2 bg-white/10 border border-white/10 rounded-lg px-3 py-2 backdrop-blur animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
                     <Sparkles className="w-5 h-5 text-[#f4d03f]" />
-                    <span className="text-sm">Modern experience</span>
+                    <span className="text-sm">Experiență modernă</span>
                   </div>
                   <div className="flex items-center gap-2 bg-white/10 border border-white/10 rounded-lg px-3 py-2 backdrop-blur animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
                     <KeyRound className="w-5 h-5 text-[#f4d03f]" />
-                    <span className="text-sm">Fast access</span>
+                    <span className="text-sm">Acces rapid</span>
                   </div>
                 </div>
               </div>
@@ -181,9 +181,9 @@ export default function SignInClient() {
               <div className="animate-fade-in-up" style={{ animationDelay: '0.12s' }}>
                 <Card className="border-2 border-white/20 bg-white/90 backdrop-blur shadow-2xl">
                   <CardHeader className="space-y-2">
-                    <CardTitle className="text-2xl text-[#1e3a5f]">Sign in</CardTitle>
+                    <CardTitle className="text-2xl text-[#1e3a5f]">Autentificare</CardTitle>
                     <CardDescription className="text-gray-600">
-                      Use your campus email to stay verified across jobs, marketplace, and forum.
+                      Folosește emailul instituțional pentru a rămâne verificat în joburi, marketplace și forum.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -213,7 +213,7 @@ export default function SignInClient() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Parolă</Label>
                         <div className="relative">
                           <Input
                             id="password"
@@ -229,7 +229,7 @@ export default function SignInClient() {
                             type="button"
                             className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center text-sm text-gray-500 hover:text-[#1e3a5f]"
                             onClick={() => setShowPassword((prev) => !prev)}
-                            aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            aria-label={showPassword ? 'Ascunde parola' : 'Afișează parola'}
                           >
                             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                           </button>
@@ -237,9 +237,9 @@ export default function SignInClient() {
                       </div>
 
                       <div className="flex items-center justify-between text-sm">
-                        <div className="text-gray-500">Need an account?</div>
+                        <div className="text-gray-500">Ai nevoie de cont?</div>
                         <Link href="/sign-up" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">
-                          Create one
+                          Creează unul
                         </Link>
                       </div>
 
@@ -248,7 +248,7 @@ export default function SignInClient() {
                         disabled={isSubmitting}
                         className="w-full bg-[#1e3a5f] hover:bg-[#2a4a6f] text-white h-11 shadow-[0_15px_40px_rgba(30,58,95,0.35)]"
                       >
-                        {isSubmitting ? 'Signing in...' : 'Sign in'}
+                        {isSubmitting ? 'Se autentifică...' : 'Autentificare'}
                       </Button>
 
                       <Button
@@ -258,7 +258,7 @@ export default function SignInClient() {
                         disabled={isSubmitting}
                         className="w-full border-2 border-[#d4af37] text-[#1e3a5f] hover:bg-[#d4af37] hover:text-[#1e3a5f] h-11"
                       >
-                        {isSubmitting ? 'Sending link...' : 'Continue with campus email'}
+                        {isSubmitting ? 'Se trimite linkul...' : 'Continuă cu emailul instituțional'}
                       </Button>
 
                       <button
@@ -267,7 +267,7 @@ export default function SignInClient() {
                         disabled={isSubmitting}
                         className="text-sm text-[#1e3a5f] hover:text-[#d4af37] text-center block w-full"
                       >
-                        Forgot password?
+                        Ai uitat parola?
                       </button>
                     </form>
                   </CardContent>

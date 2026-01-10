@@ -56,7 +56,7 @@ export default function ResetPasswordClient() {
       })
       .catch((err: unknown) => {
         if (!active) return;
-        setError(err instanceof Error ? err.message : 'Could not restore the reset session.');
+        setError(err instanceof Error ? err.message : 'Nu am putut restaura sesiunea de resetare.');
       })
       .finally(() => {
         if (active) setIsSettingSession(false);
@@ -73,22 +73,22 @@ export default function ResetPasswordClient() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!tokens.access_token || !tokens.refresh_token) {
-      setError('Use the password reset link from your email to continue.');
+      setError('Folosește linkul de resetare din email pentru a continua.');
       return;
     }
 
     if (!newPassword || newPassword.length < 6) {
-      setError('Enter a new password (at least 6 characters).');
+      setError('Introdu o parolă nouă (minim 6 caractere).');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Parolele nu se potrivesc.');
       return;
     }
 
@@ -99,7 +99,7 @@ export default function ResetPasswordClient() {
     if (updateError) {
       setError(updateError.message);
     } else {
-      setMessage('Password updated. You can now sign in.');
+      setMessage('Parolă actualizată. Te poți autentifica.');
       router.push('/sign-in');
     }
 
@@ -126,10 +126,10 @@ export default function ResetPasswordClient() {
               <CardHeader className="space-y-2">
                 <CardTitle className="text-2xl text-[#1e3a5f] flex items-center gap-2">
                   <Lock className="w-5 h-5" />
-                  Reset your password
+                  Resetează-ți parola
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                  {hasTokens ? 'Choose a new password to secure your account.' : 'Use the reset link from your email to continue.'}
+                  {hasTokens ? 'Alege o parolă nouă pentru a securiza contul.' : 'Folosește linkul de resetare din email pentru a continua.'}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -146,11 +146,11 @@ export default function ResetPasswordClient() {
 
                 <form className="space-y-4" onSubmit={handleUpdatePassword}>
                   <div className="space-y-2">
-                    <Label htmlFor="new-password">New password</Label>
+                    <Label htmlFor="new-password">Parolă nouă</Label>
                     <Input
                       id="new-password"
                       type="password"
-                      placeholder="Enter a new password"
+                      placeholder="Introdu o parolă nouă"
                       className="h-11"
                       value={newPassword}
                       onChange={(event) => setNewPassword(event.target.value)}
@@ -159,11 +159,11 @@ export default function ResetPasswordClient() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm new password</Label>
+                    <Label htmlFor="confirm-password">Confirmă parola nouă</Label>
                     <Input
                       id="confirm-password"
                       type="password"
-                      placeholder="Re-enter your password"
+                      placeholder="Reintrodu parola"
                       className="h-11"
                       value={confirmPassword}
                       onChange={(event) => setConfirmPassword(event.target.value)}
@@ -176,7 +176,7 @@ export default function ResetPasswordClient() {
                     disabled={!hasTokens || isSubmitting || isSettingSession}
                     className="w-full bg-[#1e3a5f] hover:bg-[#2a4a6f] text-white h-11 shadow-[0_15px_40px_rgba(30,58,95,0.35)]"
                   >
-                    {isSettingSession ? 'Preparing...' : isSubmitting ? 'Updating...' : 'Update password'}
+                    {isSettingSession ? 'Se pregătește...' : isSubmitting ? 'Se actualizează...' : 'Actualizează parola'}
                   </Button>
                 </form>
 
@@ -184,9 +184,9 @@ export default function ResetPasswordClient() {
                   <div className="rounded-md bg-blue-50 border border-blue-100 px-3 py-2 text-sm text-blue-900 flex items-start gap-2">
                     <Mail className="w-4 h-4 mt-0.5" />
                     <div>
-                      <p className="font-semibold">Need a reset link?</p>
+                      <p className="font-semibold">Ai nevoie de linkul de resetare?</p>
                       <p>
-                        Start from the sign-in page and choose Forgot password? after entering your campus email. We will email you a secure link.
+                        Intră în pagina de autentificare și alege „Ai uitat parola?” după ce introduci emailul instituțional. Îți trimitem un link sigur.
                       </p>
                     </div>
                   </div>
@@ -194,7 +194,7 @@ export default function ResetPasswordClient() {
 
                 <div className="text-sm text-center">
                   <Link href="/sign-in" className="font-semibold text-[#1e3a5f] hover:text-[#d4af37]">
-                    Back to sign in
+                    Înapoi la autentificare
                   </Link>
                 </div>
               </CardContent>

@@ -7,8 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { AiChatPanel } from '@/components/ai-chat-panel';
 
 export const metadata: Metadata = {
-  title: 'AI Assistant | Campus Helper',
-  description: 'Chat with the Campus Helper AI to draft posts, improve listings, and get quick campus tips.',
+  title: 'Asistent AI | Campus Helper',
+  description: 'Vorbește cu Campus Helper AI pentru a redacta postări, îmbunătăți anunțuri și primi sfaturi rapide din campus.',
 };
 
 export default function AiAssistantPage() {
@@ -31,7 +31,7 @@ export default function AiAssistantPage() {
               <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(-120deg,rgba(236,72,153,0.05)_1px,transparent_1px)] bg-[length:26px_26px] opacity-40" />
               <span className="pointer-events-none absolute inset-x-10 top-6 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-70" />
               <CardContent className="p-6 md:p-8 space-y-4 relative z-10">
-                <Badge className="bg-white/15 text-white border-white/30 w-fit">New</Badge>
+                <Badge className="bg-white/15 text-white border-white/30 w-fit">Nou</Badge>
                 <h1 className="text-3xl md:text-4xl font-bold leading-tight flex items-center gap-3">
                   <span className="relative">
                     <span className="pointer-events-none absolute inset-0 blur-lg bg-purple-400/60 animate-pulse" />
@@ -40,17 +40,17 @@ export default function AiAssistantPage() {
                   Campus Helper AI
                 </h1>
                 <p className="text-lg text-gray-200 max-w-3xl">
-                  Draft job posts, improve marketplace listings, and get forum replies faster with the Next.js AI SDK,
-                  running securely on Vercel.
+                  Redactează anunțuri de joburi, îmbunătățește listările din marketplace și obține răspunsuri mai rapide
+                  în forum cu Next.js AI SDK, rulat sigur pe Vercel.
                 </p>
                 <div className="flex flex-wrap gap-3 text-sm text-white/90">
                   <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1">
                     <MessageSquare className="w-4 h-4 text-[#f4d03f]" />
-                    Streaming responses
+                    Răspunsuri în timp real
                   </span>
                   <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1">
                     <Shield className="w-4 h-4 text-[#f4d03f]" />
-                    Campus-safe guidance
+                    Recomandări sigure pentru campus
                   </span>
                 </div>
               </CardContent>

@@ -15,7 +15,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase, type ForumPost } from '@/lib/supabase';
 import { getSafeSession } from '@/lib/get-safe-session';
 
-const categories = ['All', 'General', 'Academic', 'Events', 'Housing', 'Other'];
+const categories = [
+  { value: 'all', label: 'Toate' },
+  { value: 'general', label: 'General' },
+  { value: 'academic', label: 'Academic' },
+  { value: 'events', label: 'Evenimente' },
+  { value: 'housing', label: 'Cazare' },
+  { value: 'other', label: 'Altele' },
+];
 
 type DisplayPost = ForumPost & {
   user_name?: string;
@@ -32,14 +39,14 @@ const samplePosts: DisplayPost[] = [
   {
     id: '1',
     user_id: 'demo',
-    title: 'Best study spots on campus?',
-    content: 'Looking for quiet places to study. The library is always packed. Any recommendations?',
+    title: 'Cele mai bune locuri de studiu în campus?',
+    content: 'Caut locuri liniștite de studiu. Biblioteca este mereu plină. Recomandări?',
     category: 'general',
     user_name: 'Alex Thompson',
     user_rating: 4.7,
     views: 245,
     comments: 12,
-    posted: '2 hours ago',
+    posted: 'acum 2 ore',
     trending: true,
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -47,14 +54,14 @@ const samplePosts: DisplayPost[] = [
   {
     id: '2',
     user_id: 'demo',
-    title: 'Group needed for CS 301 project',
-    content: 'Anyone interested in forming a study group for the final project? Meeting twice a week.',
+    title: 'Caut grup pentru proiectul CS 301',
+    content: 'Cine este interesat să formăm un grup pentru proiectul final? Ne întâlnim de două ori pe săptămână.',
     category: 'academic',
     user_name: 'Priya Patel',
     user_rating: 4.9,
     views: 89,
     comments: 8,
-    posted: '5 hours ago',
+    posted: 'acum 5 ore',
     trending: false,
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -62,14 +69,14 @@ const samplePosts: DisplayPost[] = [
   {
     id: '3',
     user_id: 'demo',
-    title: 'Spring Festival volunteers needed!',
-    content: 'Student Union is organizing the Spring Festival. We need volunteers for setup and coordination.',
+    title: 'Căutăm voluntari pentru Festivalul de Primăvară!',
+    content: 'Centrul Studențesc organizează Festivalul de Primăvară. Avem nevoie de voluntari pentru organizare.',
     category: 'events',
     user_name: 'Campus Events',
     user_rating: 5.0,
     views: 156,
     comments: 15,
-    posted: '1 day ago',
+    posted: 'acum 1 zi',
     trending: true,
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -77,14 +84,14 @@ const samplePosts: DisplayPost[] = [
   {
     id: '4',
     user_id: 'demo',
-    title: 'Looking for roommate - Fall semester',
-    content: '2BR apartment near campus, $600/month. Clean, quiet, preferably grad student.',
+    title: 'Caut coleg de apartament - semestrul de toamnă',
+    content: 'Apartament 2 camere lângă campus, 600 RON/lună. Curat, liniștit, preferabil masterand.',
     category: 'housing',
     user_name: 'Jordan Kim',
     user_rating: 4.8,
     views: 203,
     comments: 7,
-    posted: '1 day ago',
+    posted: 'acum 1 zi',
     trending: false,
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -92,14 +99,14 @@ const samplePosts: DisplayPost[] = [
   {
     id: '5',
     user_id: 'demo',
-    title: 'Professor recommendations for ECO 202?',
-    content: 'Which professor would you recommend for Microeconomics? Looking for clear lectures and fair grading.',
+    title: 'Recomandări de profesori pentru ECO 202?',
+    content: 'Ce profesor recomandați la Microeconomie? Caut cursuri clare și evaluare corectă.',
     category: 'academic',
     user_name: 'Marcus Johnson',
     user_rating: 4.6,
     views: 134,
     comments: 19,
-    posted: '2 days ago',
+    posted: 'acum 2 zile',
     trending: true,
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -107,14 +114,14 @@ const samplePosts: DisplayPost[] = [
   {
     id: '6',
     user_id: 'demo',
-    title: 'Free pizza at Engineering Building!',
-    content: 'Tech club is hosting a meetup with free pizza and drinks. Room 301, 6 PM today.',
+    title: 'Pizza gratis la Clădirea de Inginerie!',
+    content: 'Clubul tech organizează un meetup cu pizza și băuturi gratuite. Sala 301, ora 18:00.',
     category: 'events',
     user_name: 'Tech Club',
     user_rating: 4.9,
     views: 312,
     comments: 23,
-    posted: '3 hours ago',
+    posted: 'acum 3 ore',
     trending: true,
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
@@ -123,7 +130,7 @@ const samplePosts: DisplayPost[] = [
 
 export default function ForumPage() {
   const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('recent');
   const [posts, setPosts] = useState<DisplayPost[]>([]);
@@ -165,7 +172,7 @@ export default function ForumPage() {
             trending: post.views ? post.views > 100 : false,
             comments: commentsCount,
             comments_count: commentsCount,
-            user_name: profile?.full_name || profile?.email || 'Campus Helper user',
+            user_name: profile?.full_name || profile?.email || 'Utilizator Campus Helper',
           };
         });
         setPosts(mapped);
@@ -182,8 +189,7 @@ export default function ForumPage() {
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
       const matchesCategory =
-        selectedCategory === 'All' ||
-        (post.category || '').toLowerCase() === selectedCategory.toLowerCase();
+        selectedCategory === 'all' || (post.category || '').toLowerCase() === selectedCategory;
       const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             (post.content || '').toLowerCase().includes(searchTerm.toLowerCase());
       const matchesTab = activeTab === 'recent' || (activeTab === 'trending' && post.trending);
@@ -192,17 +198,19 @@ export default function ForumPage() {
   }, [posts, activeTab, selectedCategory, searchTerm]);
 
   const formatDate = (value?: string | null) =>
-    value ? new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Recently';
+    value ? new Date(value).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric' }) : 'Recent';
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'Academic': return 'bg-blue-100 text-blue-800';
-      case 'Events': return 'bg-green-100 text-green-800';
-      case 'Housing': return 'bg-purple-100 text-purple-800';
-      case 'General': return 'bg-gray-100 text-gray-800';
+      case 'academic': return 'bg-blue-100 text-blue-800';
+      case 'events': return 'bg-green-100 text-green-800';
+      case 'housing': return 'bg-purple-100 text-purple-800';
+      case 'general': return 'bg-gray-100 text-gray-800';
       default: return 'bg-orange-100 text-orange-800';
     }
   };
+  const getCategoryLabel = (value?: string | null) =>
+    categories.find((cat) => cat.value === value)?.label || value || 'categorie';
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -218,15 +226,15 @@ export default function ForumPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Community Forum</h1>
-                <p className="text-gray-200">Connect with students and share campus life</p>
+                <h1 className="text-4xl font-bold mb-2">Forumul comunității</h1>
+                <p className="text-gray-200">Conectează-te cu studenții și împărtășește viața din campus</p>
               </div>
               <Button
                 className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e] font-semibold"
                 onClick={() => router.push('/forum/new')}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                New Post
+                Postare nouă
               </Button>
             </div>
 
@@ -235,7 +243,7 @@ export default function ForumPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="Search discussions..."
+                  placeholder="Caută discuții..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 h-12 bg-white text-gray-900 placeholder:text-gray-500"
@@ -243,12 +251,12 @@ export default function ForumPage() {
               </div>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-full md:w-48 h-12 bg-white text-gray-900 data-[placeholder]:text-gray-500">
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder="Categorie" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
+                    <SelectItem key={cat.value} value={cat.value}>
+                      {cat.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -262,18 +270,18 @@ export default function ForumPage() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
             <TabsList className="bg-white border">
               <TabsTrigger value="recent" className="data-[state=active]:bg-[#1e3a5f] data-[state=active]:text-white">
-                Recent
+                Recente
               </TabsTrigger>
               <TabsTrigger value="trending" className="data-[state=active]:bg-[#1e3a5f] data-[state=active]:text-white">
                 <TrendingUp className="w-4 h-4 mr-2" />
-                Trending
+                Populare
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value={activeTab} className="mt-6">
               <div className="mb-6">
                 <p className="text-gray-600 flex items-center gap-3">
-                  Showing <span className="font-semibold text-[#1e3a5f]">{filteredPosts.length}</span> posts
+                  Afișăm <span className="font-semibold text-[#1e3a5f]">{filteredPosts.length}</span> postări
                   {loading && <Loader2 className="w-4 h-4 animate-spin text-[#1e3a5f]" />}
                 </p>
               </div>
@@ -293,19 +301,19 @@ export default function ForumPage() {
                               {post.trending && (
                                 <Badge className="bg-[#d4af37] text-[#1e3a5f]">
                                   <TrendingUp className="w-3 h-3 mr-1" />
-                                  Trending
+                                  Popular
                                 </Badge>
                               )}
                             </div>
                             <div className="flex items-center gap-3 text-sm text-gray-600">
-                              <span className="font-medium">{post.user_name || 'Campus Helper user'}</span>
+                              <span className="font-medium">{post.user_name || 'Utilizator Campus Helper'}</span>
                               {post.user_rating && <span className="text-[#d4af37]">★ {post.user_rating}</span>}
                               <span className="text-gray-400">•</span>
                               <span>{post.posted ? formatDate(post.posted) : formatDate(post.created_at)}</span>
                             </div>
                           </div>
                           <Badge className={getCategoryColor(post.category)}>
-                            {post.category}
+                            {getCategoryLabel(post.category)}
                           </Badge>
                         </div>
                       </CardHeader>
@@ -316,13 +324,13 @@ export default function ForumPage() {
                         <div className="flex items-center gap-6 text-sm text-gray-600">
                           <div className="flex items-center">
                             <Eye className="w-4 h-4 mr-1 text-[#d4af37]" />
-                            <span>{post.views ?? 0} views</span>
+                            <span>{post.views ?? 0} vizualizări</span>
                           </div>
                           <div className="flex items-center">
                             <MessageSquare className="w-4 h-4 mr-1 text-[#d4af37]" />
-                            <span>{post.comments_count ?? post.comments ?? 0} comments</span>
+                            <span>{post.comments_count ?? post.comments ?? 0} comentarii</span>
                           </div>
-                          <span className="ml-auto text-[#1e3a5f] group-hover:text-[#d4af37]">View Discussion →</span>
+                          <span className="ml-auto text-[#1e3a5f] group-hover:text-[#d4af37]">Vezi discuția →</span>
                         </div>
                       </CardContent>
                     </Card>
@@ -333,9 +341,9 @@ export default function ForumPage() {
               {filteredPosts.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-gray-500 text-lg">
-                    {loading ? 'Loading posts...' : 'No posts found matching your criteria.'}
+                    {loading ? 'Se încarcă postările...' : 'Nu am găsit postări potrivite.'}
                   </p>
-                  <p className="text-gray-400 mt-2">Try adjusting your filters or search terms.</p>
+                  <p className="text-gray-400 mt-2">Încearcă să ajustezi filtrele sau termenii de căutare.</p>
                 </div>
               )}
             </TabsContent>

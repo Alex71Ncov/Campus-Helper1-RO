@@ -20,7 +20,7 @@ export async function ensureProfileExists(
   const user = session.user;
   const emailAddress = defaults.email ?? user.email ?? '';
   const metadata = (user.user_metadata ?? {}) as Record<string, string | undefined>;
-  const resolvedEmail = emailAddress || metadata.email?.trim() || 'unknown@example.com';
+  const resolvedEmail = emailAddress || metadata.email?.trim() || 'necunoscut@exemplu.com';
 
   const { data: existing, error } = await client
     .from('profiles')
@@ -39,8 +39,8 @@ export async function ensureProfileExists(
   const fullName =
     defaults.full_name?.trim() ||
     metadata.full_name?.trim() ||
-    (resolvedEmail ? resolvedEmail.split('@')[0] : 'Campus Helper user');
-  const university = defaults.university?.trim() || metadata.university?.trim() || 'Unknown university';
+    (resolvedEmail ? resolvedEmail.split('@')[0] : 'Utilizator Campus Helper');
+  const university = defaults.university?.trim() || metadata.university?.trim() || 'Universitate necunoscută';
   const major = defaults.major ?? metadata.major ?? '';
   const year = defaults.year ?? metadata.year ?? '';
 

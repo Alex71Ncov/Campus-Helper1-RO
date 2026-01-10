@@ -4,29 +4,29 @@ import { Footer } from '@/components/footer';
 
 const sections = [
   {
-    title: 'Information we collect',
-    body: 'We collect the details you provide when creating an account (like name and email), plus the jobs, listings, and posts you create. Basic technical data such as IP address and device type may also be captured to keep the service secure.',
+    title: 'Informațiile pe care le colectăm',
+    body: 'Colectăm detaliile pe care le oferi la crearea contului (nume, email), plus joburile, anunțurile și postările create. Date tehnice de bază precum adresa IP și tipul dispozitivului pot fi colectate pentru a menține serviciul sigur.',
   },
   {
-    title: 'How we use your data',
-    body: 'Your information lets us deliver the platform, send notifications you request, and keep the community trusted by preventing spam or abuse. Aggregated, non-identifiable data may be used to improve features.',
+    title: 'Cum folosim datele tale',
+    body: 'Informațiile tale ne ajută să livrăm platforma, să trimitem notificările solicitate și să prevenim spamul sau abuzurile. Date agregate, care nu te identifică, pot fi folosite pentru îmbunătățirea funcționalităților.',
   },
   {
-    title: 'When we share data',
-    body: 'We do not sell your personal data. We may share limited information with service providers (like hosting or analytics) who follow strict confidentiality rules, or when required to comply with law or protect the platform.',
+    title: 'Când partajăm date',
+    body: 'Nu vindem datele tale personale. Putem partaja informații limitate cu furnizori de servicii (hosting, analytics) care respectă reguli stricte de confidențialitate, sau când legea ori protecția platformei o cere.',
   },
   {
-    title: 'Retention',
-    body: 'Content you post stays visible until you remove it or mark it complete. We retain account information as long as needed to operate Campus Helper and meet legal or security obligations.',
+    title: 'Păstrarea datelor',
+    body: 'Conținutul publicat rămâne vizibil până îl ștergi sau îl marchezi ca finalizat. Păstrăm informațiile contului atât timp cât este necesar pentru funcționarea Campus Helper și pentru obligații legale sau de securitate.',
   },
   {
-    title: 'Your choices',
-    body: 'You can edit your posts and account details. If you want to request deletion of your data or have questions about access, contact us and we will guide you through the process.',
+    title: 'Opțiunile tale',
+    body: 'Îți poți edita postările și detaliile contului. Dacă vrei să soliciți ștergerea datelor sau ai întrebări despre acces, contactează-ne și te ghidăm prin proces.',
   },
 ];
 
 export const metadata = {
-  title: 'Privacy Policy | Campus Helper',
+  title: 'Politica de confidențialitate | Campus Helper',
 };
 
 export default function PrivacyPage() {
@@ -42,10 +42,10 @@ export default function PrivacyPage() {
             <div className="absolute right-0 top-6 h-60 w-60 rounded-full bg-gradient-to-br from-white/40 via-transparent to-[#d4af37]/25 blur-3xl opacity-70 animate-float" />
           </div>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Privacy</p>
-            <h1 className="text-4xl font-bold mb-3">How we handle your data</h1>
+            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Confidențialitate</p>
+            <h1 className="text-4xl font-bold mb-3">Cum gestionăm datele tale</h1>
             <p className="text-lg text-gray-200 max-w-3xl">
-              This summary explains what we collect and how we keep your information safe while you use Campus Helper.
+              Acest rezumat explică ce colectăm și cum îți păstrăm informațiile în siguranță în timp ce folosești Campus Helper.
             </p>
           </div>
         </section>
@@ -65,9 +65,9 @@ export default function PrivacyPage() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <h2 className="text-xl font-semibold text-[#1e3a5f] mb-2">Have a privacy question?</h2>
+            <h2 className="text-xl font-semibold text-[#1e3a5f] mb-2">Ai o întrebare despre confidențialitate?</h2>
             <p className="text-gray-700">
-              Reach our team through the <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">Contact page</Link>. Please include the email on your account so we can respond quickly.
+              Contactează echipa prin <Link href="/support/contact" className="text-[#1e3a5f] font-semibold hover:text-[#d4af37]">pagina de contact</Link>. Te rugăm să incluzi emailul contului pentru a răspunde rapid.
             </p>
           </div>
         </section>

@@ -13,8 +13,16 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase, type MarketplaceItem } from '@/lib/supabase';
 import { getSafeSession } from '@/lib/get-safe-session';
+import { formatCurrencyRON } from '@/lib/formatters';
 
-const categories = ['All', 'Books', 'Notes', 'Exams', 'Equipment', 'Other'];
+const categories = [
+  { value: 'all', label: 'Toate' },
+  { value: 'books', label: 'Cărți' },
+  { value: 'notes', label: 'Notițe' },
+  { value: 'exams', label: 'Examene' },
+  { value: 'equipment', label: 'Echipament' },
+  { value: 'other', label: 'Altele' },
+];
 
 type DisplayItem = MarketplaceItem & {
   seller?: string;
@@ -29,8 +37,8 @@ const sampleItems: DisplayItem[] = [
   {
     id: '1',
     user_id: 'demo',
-    title: 'Introduction to Psychology Textbook',
-    description: 'PSY 101 textbook in excellent condition. Minimal highlighting.',
+    title: 'Manual de Introducere în Psihologie',
+    description: 'Manual PSY 101 în stare excelentă. Subliniat minim.',
     category: 'books',
     price: 45,
     condition: 'like_new',
@@ -39,13 +47,13 @@ const sampleItems: DisplayItem[] = [
     updated_at: sampleTimestamp,
     seller: 'Emma Wilson',
     seller_rating: 4.9,
-    posted: '1 day ago',
+    posted: 'acum 1 zi',
   },
   {
     id: '2',
     user_id: 'demo',
-    title: 'Calculus II Complete Notes',
-    description: 'Comprehensive notes covering all chapters. Includes practice problems and solutions.',
+    title: 'Notițe complete pentru Analiză II',
+    description: 'Notițe complete pe capitole. Include probleme și soluții.',
     category: 'notes',
     price: 20,
     condition: 'good',
@@ -54,13 +62,13 @@ const sampleItems: DisplayItem[] = [
     updated_at: sampleTimestamp,
     seller: 'James Lee',
     seller_rating: 4.7,
-    posted: '3 days ago',
+    posted: 'acum 3 zile',
   },
   {
     id: '3',
     user_id: 'demo',
-    title: 'Biology Lab Equipment Set',
-    description: 'Complete dissection kit with case. Used once, like new condition.',
+    title: 'Set de echipament laborator biologie',
+    description: 'Kit complet de disecție cu husă. Folosit o singură dată, ca nou.',
     category: 'equipment',
     price: 35,
     condition: 'like_new',
@@ -69,13 +77,13 @@ const sampleItems: DisplayItem[] = [
     updated_at: sampleTimestamp,
     seller: 'Maria Garcia',
     seller_rating: 5.0,
-    posted: '1 week ago',
+    posted: 'acum o săptămână',
   },
   {
     id: '4',
     user_id: 'demo',
-    title: 'Past Exam Collection - CS 201',
-    description: 'Last 3 years of midterms and finals with solutions.',
+    title: 'Colecție examene anterioare - CS 201',
+    description: 'Ultimii 3 ani de examene parțiale și finale cu rezolvări.',
     category: 'exams',
     price: 15,
     condition: 'good',
@@ -84,13 +92,13 @@ const sampleItems: DisplayItem[] = [
     updated_at: sampleTimestamp,
     seller: 'Alex Kumar',
     seller_rating: 4.8,
-    posted: '2 days ago',
+    posted: 'acum 2 zile',
   },
   {
     id: '5',
     user_id: 'demo',
-    title: 'Organic Chemistry Textbook',
-    description: 'Latest edition with access code unused. Great condition.',
+    title: 'Manual de Chimie Organică',
+    description: 'Ediție recentă cu cod de acces nefolosit. Stare foarte bună.',
     category: 'books',
     price: 80,
     condition: 'new',
@@ -99,13 +107,13 @@ const sampleItems: DisplayItem[] = [
     updated_at: sampleTimestamp,
     seller: 'Sophie Martin',
     seller_rating: 4.6,
-    posted: '4 days ago',
+    posted: 'acum 4 zile',
   },
   {
     id: '6',
     user_id: 'demo',
-    title: 'Graphing Calculator TI-84',
-    description: 'Works perfectly, includes case and manual.',
+    title: 'Calculator grafic TI-84',
+    description: 'Funcționează perfect, include husă și manual.',
     category: 'equipment',
     price: 60,
     condition: 'good',
@@ -114,28 +122,34 @@ const sampleItems: DisplayItem[] = [
     updated_at: sampleTimestamp,
     seller: 'David Chen',
     seller_rating: 4.9,
-    posted: '5 days ago',
+    posted: 'acum 5 zile',
   },
 ];
 
 const categoryIcons = {
-  Books: BookOpen,
-  Notes: FileText,
-  Exams: FileText,
-  Equipment: Laptop,
-  Other: Microscope,
+  books: BookOpen,
+  notes: FileText,
+  exams: FileText,
+  equipment: Laptop,
+  other: Microscope,
+};
+const conditionLabels: Record<string, string> = {
+  new: 'nou',
+  like_new: 'ca nou',
+  good: 'bun',
+  fair: 'acceptabil',
 };
 
 export default function MarketplacePage() {
   const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [items, setItems] = useState<DisplayItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const capitalizeCategory = (value?: string | null) => {
+  const getCategoryLabel = (value?: string | null) => {
     if (!value) return '';
-    return value.charAt(0).toUpperCase() + value.slice(1);
+    return categories.find((cat) => cat.value === value)?.label || value;
   };
 
   useEffect(() => {
@@ -169,9 +183,9 @@ export default function MarketplacePage() {
           const profile = (item as any).profiles;
           return {
             ...item,
-            category_label: capitalizeCategory(item.category),
+            category_label: getCategoryLabel(item.category),
             posted: item.created_at,
-            seller: profile?.full_name || profile?.email || 'Campus Helper user',
+            seller: profile?.full_name || profile?.email || 'Utilizator Campus Helper',
           };
         });
         setItems(mapped);
@@ -187,10 +201,9 @@ export default function MarketplacePage() {
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
-      const itemCategory = item.category_label || capitalizeCategory(item.category);
+      const itemCategory = (item.category || '').toLowerCase();
       const matchesCategory =
-        selectedCategory === 'All' ||
-        (itemCategory || '').toLowerCase() === selectedCategory.toLowerCase();
+        selectedCategory === 'all' || itemCategory === selectedCategory;
       const term = searchTerm.toLowerCase();
       const matchesSearch =
         item.title.toLowerCase().includes(term) ||
@@ -209,8 +222,14 @@ export default function MarketplacePage() {
     }
   };
 
-  const formatDate = (value?: string | null) =>
-    value ? new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+  const formatDate = (value?: string | null) => {
+    if (!value) return '';
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) {
+      return value;
+    }
+    return parsed.toLocaleDateString('ro-RO', { month: 'short', day: 'numeric' });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -227,14 +246,14 @@ export default function MarketplacePage() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h1 className="text-4xl font-bold mb-2">Marketplace</h1>
-                <p className="text-gray-200">Buy and sell study materials and equipment</p>
+                <p className="text-gray-200">Cumpără și vinde materiale de studiu și echipamente</p>
               </div>
               <Button
                 className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e] font-semibold"
                 onClick={() => router.push('/marketplace/create')}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                List Item
+                Listează un anunț
               </Button>
             </div>
 
@@ -243,7 +262,7 @@ export default function MarketplacePage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="Search items..."
+                  placeholder="Caută anunțuri..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 h-12 bg-white text-gray-900 placeholder:text-gray-500"
@@ -251,12 +270,12 @@ export default function MarketplacePage() {
               </div>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-full md:w-48 h-12 bg-white text-gray-900 data-[placeholder]:text-gray-500">
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder="Categorie" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
+                    <SelectItem key={cat.value} value={cat.value}>
+                      {cat.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -268,14 +287,14 @@ export default function MarketplacePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-6">
             <p className="text-gray-600 flex items-center gap-3">
-              Showing <span className="font-semibold text-[#1e3a5f]">{filteredItems.length}</span> items
+              Afișăm <span className="font-semibold text-[#1e3a5f]">{filteredItems.length}</span> anunțuri
               {loading && <Loader2 className="w-4 h-4 animate-spin text-[#1e3a5f]" />}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item, index) => {
-              const categoryKey = (item.category_label || item.category || 'Other') as keyof typeof categoryIcons;
+              const categoryKey = (item.category || 'other') as keyof typeof categoryIcons;
               const IconComponent = categoryIcons[categoryKey] || Microscope;
               return (
                 <Link href={`/marketplace/detail?id=${item.id}`} key={item.id}>
@@ -289,7 +308,7 @@ export default function MarketplacePage() {
                           <IconComponent className="w-6 h-6 text-[#1e3a5f]" />
                         </div>
                         <Badge className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e]">
-                          {item.category_label || item.category}
+                          {item.category_label || getCategoryLabel(item.category)}
                         </Badge>
                       </div>
 
@@ -298,24 +317,24 @@ export default function MarketplacePage() {
 
                       <div className="flex items-center justify-between mb-3">
                         <div className="text-2xl font-bold text-[#1e3a5f]">
-                          ${item.price}
+                          {formatCurrencyRON(Number(item.price))}
                         </div>
                         <Badge className={getConditionColor(item.condition)}>
-                          {item.condition.replace('_', ' ')}
+                          {conditionLabels[item.condition] || item.condition.replace('_', ' ')}
                         </Badge>
                       </div>
 
                       <div className="flex items-center text-sm text-gray-600">
-                        <span className="font-medium">{item.seller || 'Campus Helper user'}</span>
+                        <span className="font-medium">{item.seller || 'Utilizator Campus Helper'}</span>
                         {item.seller_rating && <span className="ml-2 text-[#d4af37]">★ {item.seller_rating}</span>}
                         <span className="ml-auto text-gray-400">
-                          {item.posted ? formatDate(item.posted) : formatDate(item.created_at) || 'Recently listed'}
+                          {item.posted ? formatDate(item.posted) : formatDate(item.created_at) || 'Listat recent'}
                         </span>
                       </div>
                     </CardContent>
 
                     <CardFooter className="p-6 pt-0">
-                      <span className="w-full text-center text-[#1e3a5f] group-hover:text-[#d4af37]">View Details</span>
+                      <span className="w-full text-center text-[#1e3a5f] group-hover:text-[#d4af37]">Vezi detalii</span>
                     </CardFooter>
                   </Card>
                 </Link>
@@ -326,9 +345,9 @@ export default function MarketplacePage() {
           {filteredItems.length === 0 && (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">
-                {loading ? 'Loading items...' : 'No items found matching your criteria.'}
+                {loading ? 'Se încarcă anunțurile...' : 'Nu am găsit anunțuri potrivite.'}
               </p>
-              <p className="text-gray-400 mt-2">Try adjusting your filters or search terms.</p>
+              <p className="text-gray-400 mt-2">Încearcă să ajustezi filtrele sau termenii de căutare.</p>
             </div>
           )}
         </div>

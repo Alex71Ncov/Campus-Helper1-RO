@@ -31,7 +31,7 @@ function PublicProfileContent() {
   useEffect(() => {
     const load = async () => {
       if (!id || !supabase) {
-        setError('Profile not available.');
+        setError('Profilul nu este disponibil.');
         setLoading(false);
         return;
       }
@@ -67,18 +67,18 @@ function PublicProfileContent() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Button variant="ghost" className="text-[#1e3a5f] hover:text-[#d4af37] mb-4" onClick={() => router.back()}>
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Back
+            Înapoi
           </Button>
 
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#1e3a5f]">Profile</CardTitle>
+              <CardTitle className="text-2xl text-[#1e3a5f]">Profil</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {loading && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Loading profile...
+                  Se încarcă profilul...
                 </div>
               )}
               {error && (
@@ -101,7 +101,7 @@ function PublicProfileContent() {
                       <p className="text-sm text-gray-600">{profile.email}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge className="bg-[#d4af37] text-[#1e3a5f]">
-                          {profile.rating?.toFixed(1) || '0.0'} ({profile.total_ratings} reviews)
+                          {profile.rating?.toFixed(1) || '0.0'} ({profile.total_ratings} recenzii)
                         </Badge>
                       </div>
                     </div>
@@ -110,21 +110,21 @@ function PublicProfileContent() {
                   <div className="grid md:grid-cols-2 gap-3 text-sm text-gray-700">
                     <div className="flex items-center gap-2">
                       <GraduationCap className="w-4 h-4" />
-                      {profile.major || 'Major not set'}
+                      {profile.major || 'Specializarea nu este setată'}
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4" />
-                      {profile.university || 'University'}
+                      {profile.university || 'Universitate'}
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4" />
-                      {profile.year || 'Year not set'}
+                      {profile.year || 'Anul nu este setat'}
                     </div>
                   </div>
 
                   <div>
-                    <h2 className="text-lg font-semibold text-[#1e3a5f] mb-1">About</h2>
-                    <p className="text-gray-700">{profile.bio || 'No bio yet.'}</p>
+                    <h2 className="text-lg font-semibold text-[#1e3a5f] mb-1">Despre</h2>
+                    <p className="text-gray-700">{profile.bio || 'Fără descriere încă.'}</p>
                   </div>
                 </>
               )}
@@ -145,7 +145,7 @@ function ProfileSuspenseFallback() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Loading profile...
+            Se încarcă profilul...
           </div>
         </div>
       </main>

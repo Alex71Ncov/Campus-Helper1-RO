@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Briefcase, ShoppingBag, MessageSquare, Star, TrendingUp, Shield } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import { supabase, Job, MarketplaceItem, ForumPost } from '@/lib/supabase';
+import { formatCurrencyRON, formatPayRate } from '@/lib/formatters';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Navigation } from '@/components/navigation';
@@ -23,9 +24,9 @@ const FALLBACK_DATA: SupabaseHighlights = {
       description: 'Tură de seară pentru ajutarea studenților la împrumutul cărților și echipamentelor.',
       category: 'Campus',
       pay_rate: 17,
-      pay_type: 'hourly',
+      pay_type: 'cu ora',
       location: 'În campus',
-      status: 'open',
+      status: 'deschis',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     },
@@ -36,9 +37,9 @@ const FALLBACK_DATA: SupabaseHighlights = {
       description: 'Lucrează 4–6 ore/săptămână cu studenții de anul I.',
       category: 'Meditații',
       pay_rate: 22,
-      pay_type: 'hourly',
+      pay_type: 'cu ora',
       location: 'Hibrid',
-      status: 'open',
+      status: 'deschis',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     },
@@ -49,9 +50,9 @@ const FALLBACK_DATA: SupabaseHighlights = {
       user_id: 'demo',
       title: 'MacBook Air M1 8GB/256GB',
       description: 'Puțin utilizat, include încărcător original.',
-      category: 'echipamente',
+      category: 'echipament',
       price: 3200,
-      condition: 'good',
+      condition: 'bun',
       images: [],
       status: 'available',
       created_at: new Date().toISOString(),
@@ -62,9 +63,9 @@ const FALLBACK_DATA: SupabaseHighlights = {
       user_id: 'demo',
       title: 'Cursuri + Flashcard-uri Chimie Organică',
       description: 'Set complet pentru tot semestrul cu întrebări de practică.',
-      category: 'cursuri',
+      category: 'notite',
       price: 150,
-      condition: 'like_new',
+      condition: 'ca_nou',
       images: [],
       status: 'available',
       created_at: new Date().toISOString(),
@@ -102,7 +103,7 @@ async function loadSupabaseHighlights(): Promise<SupabaseHighlights> {
       : supabase;
 
   if (!client) {
-    console.warn('Supabase is not configured; using fallback homepage content.');
+    console.warn('Supabase nu este configurat; folosim conținutul implicit pentru homepage.');
     return FALLBACK_DATA;
   }
 
@@ -145,12 +146,6 @@ async function loadSupabaseHighlights(): Promise<SupabaseHighlights> {
   }
 }
 
-const currency = new Intl.NumberFormat('ro-RO', {
-  style: 'currency',
-  currency: 'RON',
-  maximumFractionDigits: 0,
-});
-
 export default async function Home() {
   const { jobs, items, posts } = await loadSupabaseHighlights();
 
@@ -184,7 +179,7 @@ export default async function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f]">Live Campus Feed</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f]">Flux live din campus</h2>
                 <p className="text-lg text-gray-600">
                   Vezi ce se întâmplă acum în comunitatea ta!
                 </p>
@@ -215,10 +210,12 @@ export default async function Home() {
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               <p className="font-semibold text-[#1e3a5f]">{job.title}</p>
-                              <p className="text-sm text-gray-600">{job.location === 'On campus' ? 'În campus' : job.location}</p>
+                              <p className="text-sm text-gray-600">
+                                {job.location === 'On campus' ? 'În campus' : job.location}
+                              </p>
                             </div>
                             <span className="text-sm font-semibold text-[#d4af37]">
-                              {currency.format(Number(job.pay_rate))}/{job.pay_type === 'hourly' ? 'h' : 'proiect'}
+                              {formatPayRate(Number(job.pay_rate), job.pay_type)}
                             </span>
                           </div>
                         </div>
@@ -242,10 +239,12 @@ export default async function Home() {
                             <div>
                               <p className="font-semibold text-[#1e3a5f]">{item.title}</p>
                               <p className="text-sm text-gray-600 capitalize">
-                                {item.condition === 'good' ? 'Stare bună' : 'Ca nou'}
+                                {item.condition === 'bun' ? 'Stare bună' : 'Ca nou'}
                               </p>
                             </div>
-                            <span className="text-sm font-semibold text-[#d4af37]">{currency.format(Number(item.price))}</span>
+                            <span className="text-sm font-semibold text-[#d4af37]">
+                              {formatCurrencyRON(Number(item.price))}
+                            </span>
                           </div>
                         </div>
                       ))}

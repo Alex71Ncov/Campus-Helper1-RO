@@ -48,7 +48,7 @@ type ReportSectionProps = {
 const REPORT_FIELDS =
   'id, target_type, target_table, target_id, target_user_id, reporter_user_id, reason, details, status, created_at';
 
-const formatDate = (value: string) => new Date(value).toLocaleString();
+const formatDate = (value: string) => new Date(value).toLocaleString('ro-RO');
 
 const ReportCard = ({
   report,
@@ -61,21 +61,21 @@ const ReportCard = ({
     <div className="flex items-center justify-between">
       <div className="text-sm text-gray-700">
         <span className="font-semibold text-[#1e3a5f]">{report.target_type}</span>{' '}
-        on <span className="text-gray-800">{report.target_table}</span>
+        în <span className="text-gray-800">{report.target_table}</span>
       </div>
-      <Badge>{report.status}</Badge>
+      <Badge>{report.status === 'open' ? 'deschis' : 'verificat'}</Badge>
     </div>
     <div className="text-sm text-gray-600">
-      Reason: <span className="font-semibold text-gray-800">{report.reason}</span>
-      {report.details && <div className="mt-1">Details: {report.details}</div>}
+      Motiv: <span className="font-semibold text-gray-800">{report.reason}</span>
+      {report.details && <div className="mt-1">Detalii: {report.details}</div>}
     </div>
-    <div className="text-xs text-gray-500">Reported at {formatDate(report.created_at)}</div>
+    <div className="text-xs text-gray-500">Raportat la {formatDate(report.created_at)}</div>
     {showActions && (
       <div className="flex flex-wrap gap-2">
         {onMarkReviewed && (
           <Button variant="outline" size="sm" onClick={() => onMarkReviewed(report.id)}>
             <CheckCircle className="mr-1 h-4 w-4" />
-            Mark reviewed
+            Marchează ca verificat
           </Button>
         )}
         {onDeleteContent && (
@@ -86,7 +86,7 @@ const ReportCard = ({
             onClick={() => onDeleteContent(report)}
           >
             <Trash2 className="mr-1 h-4 w-4" />
-            Delete content
+            Șterge conținutul
           </Button>
         )}
         {onBanUser && (
@@ -97,7 +97,7 @@ const ReportCard = ({
             onClick={() => onBanUser(report.target_user_id)}
           >
             <Ban className="mr-1 h-4 w-4" />
-            Ban user
+            Blochează utilizatorul
           </Button>
         )}
       </div>
@@ -150,7 +150,7 @@ export default function AdminReportsPage() {
   useEffect(() => {
     const load = async () => {
       if (!supabase) {
-        setError('Supabase is not configured.');
+        setError('Supabase nu este configurat.');
         setLoading(false);
         return;
       }
@@ -161,7 +161,7 @@ export default function AdminReportsPage() {
       }
       const isAdmin = session?.user?.user_metadata?.role === 'admin';
       if (!isAdmin) {
-        setError('You must be an admin to view this page.');
+        setError('Trebuie să fii admin pentru a vedea această pagină.');
         setLoading(false);
         return;
       }
@@ -191,7 +191,7 @@ export default function AdminReportsPage() {
       return;
     }
     setReports((prev) => prev.map((r) => (r.id === id ? { ...r, status: 'reviewed' } : r)));
-    setActionMessage('Marked as reviewed.');
+    setActionMessage('Marcat ca verificat.');
   };
 
   const handleDeleteContent = async (report: Report) => {
@@ -201,7 +201,7 @@ export default function AdminReportsPage() {
       setActionMessage(deleteError.message);
       return;
     }
-    setActionMessage('Content deleted.');
+    setActionMessage('Conținut șters.');
   };
 
   const handleBanUser = async (userId: string | null) => {
@@ -211,7 +211,7 @@ export default function AdminReportsPage() {
       setActionMessage(banError.message);
       return;
     }
-    setActionMessage('User banned.');
+    setActionMessage('Utilizator blocat.');
   };
 
   const openReports = useMemo(() => reports.filter((r) => r.status === 'open'), [reports]);
@@ -225,17 +225,17 @@ export default function AdminReportsPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold text-[#1e3a5f]">Admin Reports</h1>
-              <p className="text-sm text-gray-600">Review and act on user reports.</p>
+              <p className="text-sm text-gray-600">Revizuiește și acționează asupra rapoartelor.</p>
             </div>
             <Button variant="ghost" onClick={() => router.refresh()}>
-              Refresh
+              Reîncarcă
             </Button>
           </div>
 
           {loading && (
             <div className="flex items-center gap-2 text-gray-600 text-sm">
               <Loader2 className="w-4 h-4 animate-spin" />
-              Loading reports...
+              Se încarcă rapoartele...
             </div>
           )}
 
@@ -255,8 +255,8 @@ export default function AdminReportsPage() {
             <div className="space-y-6">
               <ReportSection
                 title="Open Reports"
-                description={`${openReports.length} open`}
-                emptyText="No open reports."
+                description={`${openReports.length} deschise`}
+                emptyText="Nu există rapoarte deschise."
                 icon={ShieldAlert}
                 reports={openReports}
                 showActions
@@ -267,8 +267,8 @@ export default function AdminReportsPage() {
 
               <ReportSection
                 title="Reviewed Reports"
-                description={`${reviewedReports.length} reviewed`}
-                emptyText="No reviewed reports."
+                description={`${reviewedReports.length} verificate`}
+                emptyText="Nu există rapoarte verificate."
                 icon={CheckCircle}
                 reports={reviewedReports}
               />

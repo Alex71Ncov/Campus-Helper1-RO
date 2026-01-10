@@ -16,7 +16,13 @@ import { ensureProfileExists } from '@/lib/profile';
 import type { Session } from '@supabase/supabase-js';
 import { getSafeSession } from '@/lib/get-safe-session';
 
-const categories = ['General', 'Academic', 'Events', 'Housing', 'Other'];
+const categories = [
+  { value: 'general', label: 'General' },
+  { value: 'academic', label: 'Academic' },
+  { value: 'events', label: 'Evenimente' },
+  { value: 'housing', label: 'Cazare' },
+  { value: 'other', label: 'Altele' },
+];
 
 export default function NewForumPostPage() {
   const router = useRouter();
@@ -26,10 +32,10 @@ export default function NewForumPostPage() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState(categories[0].value);
 
   const [error, setError] = useState(() =>
-    supabaseConfigured ? '' : 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.'
+    supabaseConfigured ? '' : 'Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.'
   );
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,7 +52,7 @@ export default function NewForumPostPage() {
         return;
       }
       if (!session?.user) {
-        setError('Please sign in to create a post.');
+        setError('Te rugăm să te autentifici pentru a crea o postare.');
         router.push('/sign-in');
         setCheckingSession(false);
         return;
@@ -71,17 +77,17 @@ export default function NewForumPostPage() {
     setMessage('');
 
     if (!supabase) {
-      setError('Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_* env vars.');
+      setError('Supabase nu este configurat. Adaugă variabilele NEXT_PUBLIC_SUPABASE_*.');
       return;
     }
 
     if (!session?.user) {
-      setError('Please sign in to create a post.');
+      setError('Te rugăm să te autentifici pentru a crea o postare.');
       return;
     }
 
     if (!title.trim() || !content.trim()) {
-      setError('Please add a title and content for your post.');
+      setError('Adaugă un titlu și conținut pentru postare.');
       return;
     }
 
@@ -98,7 +104,7 @@ export default function NewForumPostPage() {
     if (insertError) {
       setError(insertError.message);
     } else {
-      setMessage('Post published! Redirecting...');
+      setMessage('Postare publicată! Redirecționăm...');
       router.push('/forum');
     }
 
@@ -122,8 +128,8 @@ export default function NewForumPostPage() {
                 <MessageSquare className="w-6 h-6 text-[#f4d03f]" />
               </div>
               <div>
-                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Create</p>
-                <h1 className="text-3xl font-bold">New Forum Post</h1>
+                <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold">Creează</p>
+                <h1 className="text-3xl font-bold">Postare nouă</h1>
               </div>
             </div>
           </div>
@@ -132,14 +138,14 @@ export default function NewForumPostPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl text-[#1e3a5f]">Post details</CardTitle>
-              <CardDescription>Share your question, idea, or update with the community.</CardDescription>
+              <CardTitle className="text-xl text-[#1e3a5f]">Detalii postare</CardTitle>
+              <CardDescription>Împărtășește întrebarea, ideea sau noutatea ta cu comunitatea.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {checkingSession && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Checking your session...
+                  Se verifică sesiunea...
                 </div>
               )}
               {error && (
@@ -156,10 +162,10 @@ export default function NewForumPostPage() {
 
               <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="title">Titlu</Label>
                   <Input
                     id="title"
-                    placeholder="Looking for study partners for CS 201"
+                    placeholder="Caut parteneri de studiu pentru CS 201"
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
                     disabled={isSubmitting}
@@ -168,10 +174,10 @@ export default function NewForumPostPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="content">Content</Label>
+                  <Label htmlFor="content">Conținut</Label>
                   <Textarea
                     id="content"
-                    placeholder="Share the details of your question or topic."
+                    placeholder="Scrie detaliile întrebării sau subiectului."
                     value={content}
                     onChange={(event) => setContent(event.target.value)}
                     rows={6}
@@ -181,15 +187,15 @@ export default function NewForumPostPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">Categorie</Label>
                   <Select value={category} onValueChange={(value) => setCategory(value)}>
                     <SelectTrigger id="category">
-                      <SelectValue placeholder="Select a category" />
+                      <SelectValue placeholder="Selectează o categorie" />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map((cat) => (
-                        <SelectItem key={cat} value={cat}>
-                          {cat}
+                        <SelectItem key={cat.value} value={cat.value}>
+                          {cat.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -198,10 +204,10 @@ export default function NewForumPostPage() {
 
                 <div className="flex items-center gap-3">
                   <Button type="submit" disabled={isSubmitting || checkingSession} className="bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                    {isSubmitting ? 'Posting...' : 'Publish post'}
+                    {isSubmitting ? 'Se publică...' : 'Publică postarea'}
                   </Button>
                   <Button type="button" variant="outline" onClick={() => router.push('/forum')}>
-                    Cancel
+                    Anulează
                   </Button>
                 </div>
               </form>

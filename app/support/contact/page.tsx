@@ -6,30 +6,30 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 
 const contactOptions = [
   {
-    title: 'Email support',
-    description: 'Send details, links, and screenshots so we can troubleshoot quickly.',
+    title: 'Suport prin email',
+    description: 'Trimite detalii, linkuri și capturi pentru a rezolva rapid.',
     value: 'support@campushelper.com',
     href: 'mailto:support@campushelper.com',
     icon: Mail,
   },
   {
-    title: 'Chat with us',
-    description: 'Share your question or report and we will route it to the right teammate.',
-    value: 'Message support',
+    title: 'Scrie-ne pe chat',
+    description: 'Trimite întrebarea sau raportul tău și îl direcționăm către colegul potrivit.',
+    value: 'Mesaj către suport',
     href: '/support/help-center',
     icon: MessageSquare,
   },
   {
-    title: 'Response times',
-    description: 'We answer most requests within one business day. Urgent safety issues are prioritized.',
-    value: 'Mon-Fri, 9am-5pm ET',
+    title: 'Timp de răspuns',
+    description: 'Răspundem la majoritatea solicitărilor în 1 zi lucrătoare. Urgențele de siguranță au prioritate.',
+    value: 'Lun-Vin, 09:00-17:00',
     href: '/support/safety-tips',
     icon: Clock,
   },
 ];
 
 export const metadata = {
-  title: 'Contact Us | Campus Helper',
+  title: 'Contact | Campus Helper',
 };
 
 export default function ContactPage() {
@@ -50,9 +50,9 @@ export default function ContactPage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,0,0,0.32),transparent_38%),radial-gradient(circle_at_80%_15%,rgba(21,44,74,0.4),transparent_38%),radial-gradient(circle_at_45%_85%,rgba(26,188,156,0.18),transparent_40%)] opacity-80" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Contact</p>
-            <h1 className="text-4xl font-bold mb-3">We are here to help</h1>
+            <h1 className="text-4xl font-bold mb-3">Suntem aici să ajutăm</h1>
             <p className="text-lg text-gray-200 max-w-3xl">
-              Reach the Campus Helper team for account support, safety concerns, or feedback on how we can improve.
+              Contactează echipa Campus Helper pentru suport de cont, probleme de siguranță sau feedback.
             </p>
           </div>
         </section>
@@ -93,10 +93,10 @@ export default function ContactPage() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-4 animate-fade-in-up" style={{ animationDelay: '0.36s' }}>
-            <h2 className="text-2xl font-semibold text-[#1e3a5f]">What to include</h2>
+            <h2 className="text-2xl font-semibold text-[#1e3a5f]">Ce să incluzi</h2>
             <p className="text-gray-700">
-              To help us resolve your request faster, include the link to the job, listing, or post plus any screenshots of the conversation or payment receipts.
-              For urgent safety issues, briefly describe what happened and where you met.
+              Ca să rezolvăm mai repede, include linkul către job, anunț sau postare, plus capturi din conversație ori chitanțe.
+              Pentru urgențe de siguranță, descrie pe scurt ce s-a întâmplat și unde v-ați întâlnit.
             </p>
           </div>
         </section>

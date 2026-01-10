@@ -49,7 +49,7 @@ function ConversationPageContent() {
   const conversationId = params.get('id') || '';
 
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
-  const [otherName, setOtherName] = useState('All conversations');
+  const [otherName, setOtherName] = useState('Toate conversațiile');
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ function ConversationPageContent() {
   const [startLoading, setStartLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<TargetProfile[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [currentUserName, setCurrentUserName] = useState('You');
+  const [currentUserName, setCurrentUserName] = useState('Tu');
   const [typingUser, setTypingUser] = useState<string | null>(null);
   const channelRef = useRef<RealtimeChannel | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -99,7 +99,7 @@ function ConversationPageContent() {
       event: 'typing',
       payload: {
         userId,
-        name: currentUserName || 'Someone',
+        name: currentUserName || 'Cineva',
         isTyping,
       },
     });
@@ -176,7 +176,7 @@ function ConversationPageContent() {
       convRows?.map((c: any) => {
         const others = (c.conversation_participants || []).filter((p: any) => p.user_id !== currentUserId);
         const other =
-          others[0]?.profiles?.full_name || others[0]?.profiles?.email || 'Conversation';
+          others[0]?.profiles?.full_name || others[0]?.profiles?.email || 'Conversație';
         const last = (c.messages || []).sort(
           (a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         )[0];
@@ -251,9 +251,9 @@ function ConversationPageContent() {
   useEffect(() => {
     const load = async () => {
     if (!supabase) {
-      setError('Supabase is not configured.');
+      setError('Supabase nu este configurat.');
       setLoading(false);
-      toast.error('Supabase is not configured.');
+      toast.error('Supabase nu este configurat.');
       return;
     }
 
@@ -270,7 +270,7 @@ function ConversationPageContent() {
 
     if (!conversationId) {
       setLoading(false);
-      setOtherName('All conversations');
+      setOtherName('Toate conversațiile');
       return;
     }
 
@@ -288,17 +288,17 @@ function ConversationPageContent() {
       if (participantsError) {
         setError(participantsError.message);
         setLoading(false);
-        toast.error('Could not load the participants for this chat.');
+        toast.error('Nu am putut încărca participanții pentru această conversație.');
         return;
       }
 
       const other = participantRows?.find((p) => p.user_id !== currentUserId);
       const me = participantRows?.find((p) => p.user_id === currentUserId);
       setCurrentUserName(
-        (me as any)?.profiles?.full_name || (me as any)?.profiles?.email || 'You'
+        (me as any)?.profiles?.full_name || (me as any)?.profiles?.email || 'Tu'
       );
       const resolvedName =
-        (other as any)?.profiles?.full_name || (other as any)?.profiles?.email || 'Conversation';
+        (other as any)?.profiles?.full_name || (other as any)?.profiles?.email || 'Conversație';
       setOtherName(resolvedName);
 
       const { data: messageRows, error: messagesError } = await supabase
@@ -310,7 +310,7 @@ function ConversationPageContent() {
       if (messagesError) {
         setError(messagesError.message);
         setLoading(false);
-        toast.error('Could not load messages for this conversation.');
+        toast.error('Nu am putut încărca mesajele pentru această conversație.');
         return;
       }
 
@@ -320,7 +320,7 @@ function ConversationPageContent() {
           body: m.body,
           sender_id: m.sender_id,
           created_at: m.created_at,
-          author: (m as any).profiles?.full_name || (m as any).profiles?.email || 'Campus Helper user',
+          author: (m as any).profiles?.full_name || (m as any).profiles?.email || 'Utilizator Campus Helper',
         })) || [];
       setMessages(mapped);
       setLoading(false);
@@ -342,7 +342,7 @@ function ConversationPageContent() {
                 const author =
                   newMessage.sender_id === currentUserId
                     ? 'You'
-                    : newMessage.profiles?.full_name || newMessage.profiles?.email || 'Campus Helper user';
+                    : newMessage.profiles?.full_name || newMessage.profiles?.email || 'Utilizator Campus Helper';
                 return [
                   ...prev,
                   {
@@ -386,7 +386,7 @@ function ConversationPageContent() {
             if (!typingPayload?.userId || typingPayload.userId === currentUserId) return;
 
             if (typingPayload.isTyping) {
-              setTypingUser(typingPayload.name || 'Someone');
+              setTypingUser(typingPayload.name || 'Cineva');
               if (typingIndicatorTimeoutRef.current) {
                 clearTimeout(typingIndicatorTimeoutRef.current);
               }
@@ -431,13 +431,13 @@ function ConversationPageContent() {
 
   const sendMessage = async () => {
     if (!supabase) {
-      setError('Supabase is not configured.');
-      toast.error('Supabase is not configured.');
+      setError('Supabase nu este configurat.');
+      toast.error('Supabase nu este configurat.');
       return;
     }
     if (!userId) {
-      setError('Please sign in to send messages.');
-      toast.error('Please sign in to send messages.');
+      setError('Te rugăm să te autentifici pentru a trimite mesaje.');
+      toast.error('Te rugăm să te autentifici pentru a trimite mesaje.');
       return;
     }
     if (!message.trim() || !conversationId) return;
@@ -455,7 +455,7 @@ function ConversationPageContent() {
     if (insertError) {
       setError(insertError.message);
       setSending(false);
-      toast.error(insertError.message || 'Could not send your message.');
+      toast.error(insertError.message || 'Nu am putut trimite mesajul.');
       return;
     }
     if (typingBroadcastTimeoutRef.current) {
@@ -499,19 +499,19 @@ function ConversationPageContent() {
     }
     setMessage('');
     setSending(false);
-    toast.success('Message sent', { id: 'message-status' });
+    toast.success('Mesaj trimis', { id: 'message-status' });
   };
 
   const startConversation = async (profileOverride?: TargetProfile) => {
     setStartError('');
     if (!supabase) {
-      setStartError('Supabase is not configured.');
-      toast.error('Supabase is not configured.');
+      setStartError('Supabase nu este configurat.');
+      toast.error('Supabase nu este configurat.');
       return;
     }
     const rawInput = newEmail.trim();
     if (!profileOverride && !rawInput) {
-      setStartError('Enter an email, name, or ID to start a chat.');
+      setStartError('Introdu un email, nume sau ID pentru a începe o conversație.');
       return;
     }
     const { session } = await getSafeSession();
@@ -537,18 +537,18 @@ function ConversationPageContent() {
         .or(searchClauses.join(','))
         .maybeSingle();
       if (profileError || !fetched?.id) {
-        setStartError(profileError?.message || 'User not found with that contact info.');
+        setStartError(profileError?.message || 'Nu am găsit utilizator cu aceste date de contact.');
         setStartLoading(false);
-        toast.error(profileError?.message || 'User not found with that contact info.');
+        toast.error(profileError?.message || 'Nu am găsit utilizator cu aceste date de contact.');
         return;
       }
       targetProfile = fetched;
     }
 
     if (targetProfile.id === currentUserId) {
-      setStartError('You cannot start a chat with yourself.');
+      setStartError('Nu poți începe o conversație cu tine.');
       setStartLoading(false);
-      toast.error('You cannot start a chat with yourself.');
+      toast.error('Nu poți începe o conversație cu tine.');
       return;
     }
 
@@ -575,9 +575,9 @@ function ConversationPageContent() {
         .select('id')
         .single();
       if (convError || !newConv?.id) {
-        setStartError(convError?.message || 'Could not start conversation.');
+        setStartError(convError?.message || 'Nu am putut începe conversația.');
         setStartLoading(false);
-        toast.error(convError?.message || 'Could not start conversation.');
+        toast.error(convError?.message || 'Nu am putut începe conversația.');
         return;
       }
       conversationId = newConv.id;
@@ -597,14 +597,14 @@ function ConversationPageContent() {
 
     setStartLoading(false);
     setNewEmail('');
-    const fallbackTitle = targetProfile.full_name || targetProfile.email || 'Conversation';
+    const fallbackTitle = targetProfile.full_name || targetProfile.email || 'Conversație';
     setConversations((prev) => [
       { id: conversationId as string, title: fallbackTitle, lastMessage: '', lastAt: new Date().toISOString() },
       ...prev.filter((c) => c.id !== conversationId),
     ]);
     loadConversations();
     router.push(`/messages?id=${conversationId}`);
-    toast.success('Conversation ready', { description: 'Start sending your first message.' });
+    toast.success('Conversația este gata', { description: 'Începe să trimiți primul mesaj.' });
   };
 
   const formatTime = (value?: string | null) =>
@@ -619,21 +619,21 @@ function ConversationPageContent() {
           <div className="flex items-center gap-3 mb-4">
             <Button variant="ghost" className="text-[#1e3a5f] hover:text-[#d4af37]" onClick={handleBack}>
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              Înapoi
             </Button>
             <div>
-              <p className="text-sm text-gray-500">Chats</p>
+              <p className="text-sm text-gray-500">Chat-uri</p>
               <p className="text-lg font-semibold text-[#1e3a5f]">
-                {conversationId ? otherName : 'All conversations'}
+                {conversationId ? otherName : 'Toate conversațiile'}
               </p>
             </div>
           </div>
 
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-[#1e3a5f]">All conversations</CardTitle>
+              <CardTitle className="text-[#1e3a5f]">Toate conversațiile</CardTitle>
               <CardDescription className="text-gray-600">
-                Select a thread or start a new one to message privately.
+                Selectează o conversație sau începe una nouă pentru mesaje private.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -641,13 +641,13 @@ function ConversationPageContent() {
                 <div className="md:col-span-1 space-y-3">
                   <div className="flex items-center gap-2 text-[#1e3a5f]">
                     <MessageSquare className="w-4 h-4" />
-                    <span className="font-semibold">Conversations</span>
+                    <span className="font-semibold">Conversații</span>
                   </div>
                   <div className="rounded-lg border border-gray-200 bg-white p-2 max-h-96 overflow-y-auto space-y-2">
                     {conversationsLoading ? (
-                      <p className="text-sm text-gray-500">Loading...</p>
+                      <p className="text-sm text-gray-500">Se încarcă...</p>
                     ) : conversations.length === 0 ? (
-                      <p className="text-sm text-gray-500">No conversations yet.</p>
+                      <p className="text-sm text-gray-500">Nu există conversații încă.</p>
                     ) : (
                       conversations.map((conv) => (
                         <button
@@ -663,7 +663,7 @@ function ConversationPageContent() {
                           )}
                           {conv.lastAt && (
                             <p className="text-[11px] text-gray-400 mt-1">
-                              {new Date(conv.lastAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}{' '}
+                              {new Date(conv.lastAt).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric' })}{' '}
                               {new Date(conv.lastAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
                             </p>
                           )}
@@ -672,16 +672,16 @@ function ConversationPageContent() {
                     )}
                   </div>
                   <div className="rounded-lg border border-dashed border-gray-300 bg-white p-3 space-y-2">
-                    <p className="text-sm font-semibold text-[#1e3a5f]">Start new chat</p>
+                    <p className="text-sm font-semibold text-[#1e3a5f]">Începe un chat nou</p>
                     <Input
-                      placeholder="Enter email, name, or user ID"
+                      placeholder="Introdu email, nume sau ID"
                       value={newEmail}
                       onChange={(e) => setNewEmail(e.target.value)}
                       className="text-sm placeholder:text-gray-500 text-gray-900"
                       style={{ minHeight: 44 }}
                     />
                     {startError && <p className="text-xs text-red-600">{startError}</p>}
-                    {searchLoading && <p className="text-xs text-gray-500">Searching...</p>}
+                    {searchLoading && <p className="text-xs text-gray-500">Se caută...</p>}
                     {searchResults.length > 0 && (
                       <div className="space-y-1">
                         {searchResults.slice(0, 5).map((profile) => (
@@ -690,7 +690,7 @@ function ConversationPageContent() {
                             onClick={() => startConversation(profile)}
                             className="w-full rounded-md border border-gray-200 px-3 py-2 text-left text-sm hover:bg-gray-50"
                           >
-                            <p className="font-semibold text-[#1e3a5f]">{profile.full_name || 'Campus Helper user'}</p>
+                            <p className="font-semibold text-[#1e3a5f]">{profile.full_name || 'Utilizator Campus Helper'}</p>
                             <p className="text-xs text-gray-600">{profile.email}</p>
                           </button>
                         ))}
@@ -702,7 +702,7 @@ function ConversationPageContent() {
                       onClick={() => startConversation()}
                       disabled={startLoading}
                     >
-                      {startLoading ? 'Starting...' : 'Start conversation'}
+                      {startLoading ? 'Se pornește...' : 'Începe conversația'}
                     </Button>
                   </div>
                 </div>
@@ -710,13 +710,13 @@ function ConversationPageContent() {
                 <div className="md:col-span-2 space-y-4">
                   {conversationId ? (
                     <>
-                      {loading && <p className="text-sm text-gray-600">Loading conversation...</p>}
+                      {loading && <p className="text-sm text-gray-600">Se încarcă conversația...</p>}
                       {error && (
                         <div className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-md">{error}</div>
                       )}
                       <div className="h-96 overflow-y-auto rounded-lg border border-gray-200 bg-white px-3 py-2 space-y-2">
                         {messages.length === 0 && !loading ? (
-                          <p className="text-sm text-gray-500">No messages yet. Start the conversation.</p>
+                          <p className="text-sm text-gray-500">Nu există mesaje încă. Începe conversația.</p>
                         ) : (
                           messages.map((msg) => {
                             const isMe = msg.sender_id === userId;
@@ -728,7 +728,7 @@ function ConversationPageContent() {
                                   }`}
                                 >
                                   <div className="text-xs opacity-80 flex justify-between gap-2">
-                                    <span>{isMe ? 'You' : msg.author}</span>
+                                    <span>{isMe ? 'Tu' : msg.author}</span>
                                     <span>{formatTime(msg.created_at)}</span>
                                   </div>
                                   <p className="whitespace-pre-line mt-1">{msg.body}</p>
@@ -740,7 +740,7 @@ function ConversationPageContent() {
                         {typingUser && (
                           <div className="flex items-center gap-2 text-xs text-gray-600 pl-1">
                             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                            <span>{typingUser} is typing...</span>
+                            <span>{typingUser} scrie...</span>
                           </div>
                         )}
                         <div ref={bottomRef} />
@@ -748,7 +748,7 @@ function ConversationPageContent() {
 
                       <div className="space-y-2">
                         <Textarea
-                          placeholder="Write a message..."
+                          placeholder="Scrie un mesaj..."
                           value={message}
                           onChange={(e) => handleMessageChange(e.target.value)}
                           rows={3}
@@ -760,15 +760,15 @@ function ConversationPageContent() {
                             onClick={sendMessage}
                             disabled={sending}
                           >
-                            {sending ? 'Sending...' : <span className="flex items-center gap-2">Send <Send className="w-4 h-4" /></span>}
+                            {sending ? 'Se trimite...' : <span className="flex items-center gap-2">Trimite <Send className="w-4 h-4" /></span>}
                           </Button>
                         </div>
                       </div>
                     </>
                   ) : (
                     <div className="rounded-lg border border-dashed border-gray-300 bg-white px-4 py-12 text-center text-gray-600">
-                      <p className="text-lg font-semibold text-[#1e3a5f] mb-2">Select a conversation</p>
-                      <p className="text-sm">Choose a chat from the list or start a new one to begin messaging.</p>
+                      <p className="text-lg font-semibold text-[#1e3a5f] mb-2">Selectează o conversație</p>
+                      <p className="text-sm">Alege un chat din listă sau începe unul nou.</p>
                     </div>
                   )}
                 </div>
@@ -789,7 +789,7 @@ function MessagesSuspenseFallback() {
       <Navigation />
       <main className="flex-1">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p className="text-sm text-gray-600">Loading messages...</p>
+          <p className="text-sm text-gray-600">Se încarcă mesajele...</p>
         </div>
       </main>
       <Footer />

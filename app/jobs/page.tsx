@@ -13,8 +13,17 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase, type Job } from '@/lib/supabase';
 import { getSafeSession } from '@/lib/get-safe-session';
+import { formatPayRate } from '@/lib/formatters';
 
-const categories = ['All', 'Tutoring', 'Research', 'Campus Tasks', 'Events', 'Tech', 'Other'];
+const categories = [
+  { value: 'All', label: 'Toate' },
+  { value: 'Tutoring', label: 'Meditații' },
+  { value: 'Research', label: 'Cercetare' },
+  { value: 'Campus Tasks', label: 'Sarcini în campus' },
+  { value: 'Events', label: 'Evenimente' },
+  { value: 'Tech', label: 'Tehnologie' },
+  { value: 'Other', label: 'Altele' },
+];
 
 type DisplayJob = Job & {
   user_name?: string;
@@ -28,66 +37,66 @@ const sampleJobs: DisplayJob[] = [
   {
     id: '1',
     user_id: 'demo',
-    title: 'Math Tutor Needed',
-    description: 'Looking for a patient math tutor for Calculus II. 2-3 sessions per week.',
+    title: 'Căutăm meditator la matematică',
+    description: 'Căutăm un meditator răbdător pentru Analiză II. 2-3 ședințe pe săptămână.',
     category: 'Tutoring',
     pay_rate: 25,
     pay_type: 'hourly',
-    location: 'Library or Online',
+    location: 'Bibliotecă sau online',
     status: 'open',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
     user_name: 'Sarah Chen',
     user_rating: 4.8,
-    posted: '2 days ago',
+    posted: '2 zile în urmă',
   },
   {
     id: '2',
     user_id: 'demo',
-    title: 'Research Assistant - Psychology Lab',
-    description: 'Help with data collection and analysis for cognitive psychology study. 10 hours/week.',
+    title: 'Asistent de cercetare - laborator de psihologie',
+    description: 'Ajutor la colectarea și analiza datelor pentru un studiu de psihologie cognitivă. 10 ore/săptămână.',
     category: 'Research',
     pay_rate: 18,
     pay_type: 'hourly',
-    location: 'Psychology Building',
+    location: 'Clădirea de Psihologie',
     status: 'open',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
     user_name: 'Dr. Martinez',
     user_rating: 5.0,
-    posted: '1 week ago',
+    posted: 'acum o săptămână',
   },
   {
     id: '3',
     user_id: 'demo',
-    title: 'Event Setup Help',
-    description: 'Need 3 people to help set up tables and chairs for campus event. Quick 2-hour job.',
+    title: 'Ajutor la organizarea unui eveniment',
+    description: 'Avem nevoie de 3 persoane pentru montarea meselor și scaunelor. Job rapid, 2 ore.',
     category: 'Events',
     pay_rate: 100,
     pay_type: 'fixed',
-    location: 'Student Union',
+    location: 'Centrul Studențesc',
     status: 'open',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
-    user_name: 'Campus Events',
+    user_name: 'Evenimente Campus',
     user_rating: 4.6,
-    posted: '3 days ago',
+    posted: 'acum 3 zile',
   },
   {
     id: '4',
     user_id: 'demo',
-    title: 'Web Development Project',
-    description: 'Build a simple portfolio website. Experience with React preferred.',
+    title: 'Proiect de dezvoltare web',
+    description: 'Construirea unui site de portofoliu simplu. Experiența cu React este un plus.',
     category: 'Tech',
     pay_rate: 500,
     pay_type: 'fixed',
-    location: 'Remote',
+    location: 'La distanță',
     status: 'open',
     created_at: sampleTimestamp,
     updated_at: sampleTimestamp,
     user_name: 'Michael Brown',
     user_rating: 4.9,
-    posted: '5 days ago',
+    posted: 'acum 5 zile',
   },
 ];
 
@@ -130,7 +139,7 @@ export default function JobsPage() {
           return {
             ...job,
             posted: job.created_at,
-            user_name: profile?.full_name || profile?.email || 'Campus Helper user',
+            user_name: profile?.full_name || profile?.email || 'Utilizator Campus Helper',
           };
         });
         setJobs(mapped);
@@ -158,7 +167,7 @@ export default function JobsPage() {
   }, [jobs, searchTerm, selectedCategory]);
 
   const formatDate = (value?: string | null) =>
-    value ? new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+    value ? new Date(value).toLocaleDateString('ro-RO', { month: 'short', day: 'numeric' }) : '';
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -174,15 +183,15 @@ export default function JobsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Student Jobs</h1>
-                <p className="text-gray-200">Find flexible work that fits your schedule</p>
+                <h1 className="text-4xl font-bold mb-2">Joburi pentru studenți</h1>
+                <p className="text-gray-200">Găsește muncă flexibilă care se potrivește programului tău</p>
               </div>
               <Button
                 className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e] font-semibold"
                 onClick={() => router.push('/jobs/create')}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Post a Job
+                Publică un job
               </Button>
             </div>
 
@@ -191,7 +200,7 @@ export default function JobsPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="Search jobs..."
+                  placeholder="Caută joburi..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 h-12 bg-white text-gray-900 placeholder:text-gray-500"
@@ -199,12 +208,12 @@ export default function JobsPage() {
               </div>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-full md:w-48 h-12 bg-white text-gray-900 data-[placeholder]:text-gray-500">
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder="Categorie" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
+                    <SelectItem key={cat.value} value={cat.value}>
+                      {cat.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -216,7 +225,7 @@ export default function JobsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-6">
             <p className="text-gray-600 flex items-center gap-3">
-              Showing <span className="font-semibold text-[#1e3a5f]">{filteredJobs.length}</span> jobs
+              Afișăm <span className="font-semibold text-[#1e3a5f]">{filteredJobs.length}</span> joburi
               {loading && <Loader2 className="w-4 h-4 animate-spin text-[#1e3a5f]" />}
             </p>
           </div>
@@ -234,15 +243,15 @@ export default function JobsPage() {
                         <CardTitle className="text-xl text-[#1e3a5f] mb-2 line-clamp-2">{job.title}</CardTitle>
                         <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                           <div className="flex items-center">
-                            <span className="font-medium">{job.user_name || 'Campus Helper user'}</span>
+                            <span className="font-medium">{job.user_name || 'Utilizator Campus Helper'}</span>
                             {job.user_rating && <span className="ml-2 text-[#d4af37]">★ {job.user_rating}</span>}
                           </div>
                           <span className="text-gray-400">•</span>
-                          <span>{job.posted ? formatDate(job.posted) : formatDate(job.created_at) || 'Recently posted'}</span>
+                          <span>{job.posted ? formatDate(job.posted) : formatDate(job.created_at) || 'Publicat recent'}</span>
                         </div>
                       </div>
                       <Badge className="bg-[#d4af37] text-[#1e3a5f] hover:bg-[#c19b2e]">
-                        {job.category}
+                        {categories.find((cat) => cat.value === job.category)?.label || job.category}
                       </Badge>
                     </div>
                   </CardHeader>
@@ -253,10 +262,7 @@ export default function JobsPage() {
                       <div className="flex items-center text-gray-600">
                         <DollarSign className="w-4 h-4 mr-1 text-[#d4af37]" />
                         <span className="font-semibold text-[#1e3a5f]">
-                          ${job.pay_rate}
-                        </span>
-                        <span className="ml-1">
-                          {job.pay_type === 'hourly' ? '/hr' : job.pay_type === 'fixed' ? 'total' : 'negotiable'}
+                          {formatPayRate(Number(job.pay_rate), job.pay_type)}
                         </span>
                       </div>
 
@@ -267,13 +273,13 @@ export default function JobsPage() {
 
                       <div className="flex items-center text-gray-600">
                         <Clock className="w-4 h-4 mr-1 text-[#d4af37]" />
-                        {(job.status || 'open') === 'open' ? 'Open' : 'Closed'}
+                        {(job.status || 'open') === 'open' ? 'Deschis' : 'Închis'}
                       </div>
                     </div>
 
                     <div className="mt-4 pt-4 border-t flex items-center justify-between text-sm text-gray-500">
-                      <span>Updated {formatDate(job.updated_at || job.created_at) || 'recently'}</span>
-                      <span className="text-[#1e3a5f] group-hover:text-[#d4af37]">View Details →</span>
+                      <span>Actualizat {formatDate(job.updated_at || job.created_at) || 'recent'}</span>
+                      <span className="text-[#1e3a5f] group-hover:text-[#d4af37]">Vezi detalii →</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -284,9 +290,9 @@ export default function JobsPage() {
           {filteredJobs.length === 0 && (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">
-                {loading ? 'Loading jobs...' : 'No jobs found matching your criteria.'}
+                {loading ? 'Se încarcă joburile...' : 'Nu am găsit joburi care să se potrivească.'}
               </p>
-              <p className="text-gray-400 mt-2">Try adjusting your filters or search terms.</p>
+              <p className="text-gray-400 mt-2">Încearcă să ajustezi filtrele sau termenii de căutare.</p>
             </div>
           )}
         </div>

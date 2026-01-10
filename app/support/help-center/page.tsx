@@ -4,33 +4,33 @@ import { Footer } from '@/components/footer';
 
 const faqs = [
   {
-    question: 'How do I post a new job?',
-    answer: 'Open the Jobs page, select "Post a Job", and fill in the role, pay, and location. Clear details and expectations help you get faster responses.',
+    question: 'Cum public un job nou?',
+    answer: 'Deschide pagina Joburi, selectează „Publică un job” și completează rolul, plata și locația. Detaliile clare ajută la răspunsuri mai rapide.',
   },
   {
-    question: 'How do I sell books or materials?',
-    answer: 'Head to the Marketplace, choose "Create listing", and add photos plus a short description. Mark the condition so buyers know what to expect.',
+    question: 'Cum vând cărți sau materiale?',
+    answer: 'Mergi la Marketplace, alege „Creează anunț” și adaugă fotografii plus o descriere scurtă. Marchează starea ca să știe cumpărătorii la ce să se aștepte.',
   },
   {
-    question: 'Can I mark something as complete?',
-    answer: 'Yes. Edit your job or listing and switch the status to closed/complete. This keeps search results fresh for other students.',
+    question: 'Pot marca ceva ca finalizat?',
+    answer: 'Da. Editează jobul sau anunțul și schimbă statusul în închis/finalizat. Așa păstrăm rezultatele relevante.',
   },
   {
-    question: 'How do I report a user or post?',
-    answer: 'Use the report option on the job, listing, or forum post when available, or message us from the Contact page with a link and screenshot.',
+    question: 'Cum raportez un utilizator sau o postare?',
+    answer: 'Folosește opțiunea de raportare din job, anunț sau postare de forum, sau scrie-ne în Contact cu un link și o captură.',
   },
   {
-    question: 'Do you verify campus emails?',
-    answer: 'We encourage sign-ups with campus email addresses to keep the community trusted. If you need to switch emails, reach out via Contact.',
+    question: 'Verificați emailurile instituționale?',
+    answer: 'Încurajăm înregistrările cu email instituțional pentru o comunitate de încredere. Dacă vrei să schimbi emailul, contactează-ne.',
   },
   {
-    question: 'I am not getting replies or notifications.',
-    answer: 'Double-check your inbox spam folder and make sure your posted job/listing is still marked open. If the problem persists, send us the details.',
+    question: 'Nu primesc răspunsuri sau notificări.',
+    answer: 'Verifică folderul spam și asigură-te că jobul/anunțul este încă deschis. Dacă problema persistă, trimite-ne detalii.',
   },
 ];
 
 export const metadata = {
-  title: 'Help Center | Campus Helper',
+  title: 'Centru de ajutor | Campus Helper',
 };
 
 export default function HelpCenterPage() {
@@ -50,10 +50,10 @@ export default function HelpCenterPage() {
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,0,0,0.32),transparent_38%),radial-gradient(circle_at_80%_15%,rgba(21,44,74,0.4),transparent_38%),radial-gradient(circle_at_45%_85%,rgba(26,188,156,0.18),transparent_40%)] opacity-80" />
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Help Center</p>
-            <h1 className="text-4xl font-bold mb-3">Answers to common questions</h1>
+            <p className="uppercase text-sm tracking-widest text-[#f4d03f] font-semibold mb-2">Centru de ajutor</p>
+            <h1 className="text-4xl font-bold mb-3">Răspunsuri la întrebări frecvente</h1>
             <p className="text-lg text-gray-200">
-              Quick guidance for posting jobs, selling materials, and keeping your campus experience safe.
+              Ghid rapid pentru publicarea joburilor, vânzarea materialelor și siguranță în campus.
             </p>
           </div>
         </section>
@@ -73,19 +73,19 @@ export default function HelpCenterPage() {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <h2 className="text-2xl font-semibold text-[#1e3a5f] mb-3">Still need help?</h2>
+            <h2 className="text-2xl font-semibold text-[#1e3a5f] mb-3">Ai nevoie de ajutor în continuare?</h2>
             <p className="text-gray-700 mb-4">
-              If you did not find what you were looking for, try the resources below or contact us with the details of your issue.
+              Dacă nu ai găsit ce căutai, încearcă resursele de mai jos sau contactează-ne cu detaliile problemei.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/support/safety-tips" className="px-4 py-2 rounded-full bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]">
-                Safety tips
+                Sfaturi de siguranță
               </Link>
               <Link href="/support/contact" className="px-4 py-2 rounded-full border border-[#1e3a5f] text-[#1e3a5f] hover:bg-[#1e3a5f] hover:text-white">
-                Contact support
+                Contactează suportul
               </Link>
               <Link href="/legal/terms" className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:border-[#d4af37] hover:text-[#d4af37]">
-                Review our terms
+                Vezi termenii
               </Link>
             </div>
           </div>
